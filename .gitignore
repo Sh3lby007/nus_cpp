@@ -1,0 +1,25 @@
+# Executables
+*.exec
+*.out
+*.app
+a.out
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+*.dSYM/
+
+# VS Code files
+.vscode/
+
+# Build directories
+build/
+Debug/
+Release/
+
+# Ignore all executables (files without extensions)
+*
+!*.*
+!*/
