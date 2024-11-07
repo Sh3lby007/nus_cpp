@@ -14,12 +14,13 @@ a.out
 # VS Code files
 .vscode/
 
-
 # Build directories
 build/
 Debug/
 Release/
 
-# Ignore all executables (files without extensions)
+# Executables without extension (on Unix systems)
 *
+!*.*
 !*/
+!Makefile
