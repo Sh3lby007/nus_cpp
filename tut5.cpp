@@ -55,3 +55,42 @@ void copyArray(int list1[], int list2[], int numElem) {
   for (i = 0; i < numElem; i++) list1[i] = list2[i];
   return;
 }
+
+// Question 2 (3 parts)
+
+/*
+Define a function void init_primes(bool primes[], int n) that
+takes in the array primes together together with an integer
+n, and initialize the representation of all the numbers from
+2 to n to be prime. That is to say, since no sieve is
+performed yet, we assume all numbers to be primes in the beginning.
+*/
+
+void init_primes(bool primes[], int n) {
+  /*
+  1. We're working with a boolean array where each index represents a number
+  2. We want to mark all numbers from 2 to n as prime (true
+  3. Index 0 and 1 should be false as they're not prime numbers
+  */
+
+  // First set everything to false
+  /*
+  Alternative solution (more efficient but same result):
+  primes[0] = primes[1] = false;  // 0 and 1 are not prime
+  */
+  for (int i = 0; i <= n; i++) {
+    primes[i] = false;
+  }
+
+  // Then set all numbers from 2 to n to be true
+  for (int i = 2; i <= n; i++) {
+    primes[i] = true;
+  }
+}
+
+/*
+Define a function void sieve_primes(bool primes[], int size,
+int n) that takes rray primes and two integers max and n, and
+performs the sieve as described above with n up to and
+including max, i.e., it "crosses out" all multiples of n
+*/
