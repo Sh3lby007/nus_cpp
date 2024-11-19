@@ -88,7 +88,12 @@ string &rotate(string &s, int n) {
 //--------//
 
 string &caeser(string &s, int n) {
+  // For each character in the string
   for (int i = 0; i < s.length(); i++) {
+    // Use shift_char from Task 1 which handles all our requirements:
+    // - Case preservation
+    // - Non-letter preservation
+    // - Alphabet wrapping
     s[i] = shift_char(s[i], n);
   }
   return s;
@@ -98,9 +103,56 @@ string &caeser(string &s, int n) {
 // TASK 3 //
 //--------//
 
-string &substitute(string &s, const string key) {}
+string &substitute(string &s, const string key) {
+  // Process each character in input string
+  for (int i = 0; i < s.length(); i++) {
+    // Skip if not a letter
+    if (!isalpha(s[i])) {
+      continue;
+    }
+    // Store whether original char is uppercase
+    bool isUpper = isupper(s[i]);
+    // Get position in alphabet (0-25) of current char
+    int pos = tolower(s[i]) - 'a';
+    // Get substitution character from key at that position
+    char newChar = key[pos];
+    // Put back in original case
+    s[i] = isUpper ? toupper(newChar) : newChar;
+  }
+  return s;
+}
 
-string &unsubstitute(string &s, const string key) {}
+string &unsubstitute(string &s, const string key) {
+  // Create reverse mapping array where:
+  // reverse[0] tells us what 'a' maps to
+  // reverse[1] tells us what 'b' maps to, etc.
+  char reverse[26];
+
+  // Fill the reverse mapping
+  for (int i = 0; i < 26; i++) {
+    // If key[i] maps to letter 'a'+i
+    // Then 'a'+i maps to letter at position key[i]-'a'
+    int keyCharIndex = key[i] - 'a';
+    reverse[keyCharIndex] = 'a' + i;
+  }
+
+  // Process each character in input string
+  for (int i = 0; i < s.length(); i++) {
+    // Skip if not a letter
+    if (!isalpha(s[i])) {
+      continue;
+    }
+    // Store whether original char is uppercase
+    bool isUpper = isupper(s[i]);
+    // Get position in alphabet (0-25) of current char
+    int pos = tolower(s[i]) - 'a';
+    // Get original character using reverse mapping
+    char origChar = reverse[pos];
+    // Put back in original case
+    s[i] = isUpper ? toupper(origChar) : origChar;
+  }
+  return s;
+}
 
 //--------//
 // TASK 4 //
@@ -191,7 +243,6 @@ int main(void) {
   // cout << vigenere(text, vkey) << endl;
   // cout << unvigenere(text, vkey) << endl;
 
-  freq(text);
-
+  // freq(text);
   return 0;
 }
