@@ -1,4 +1,5 @@
 # Executables
+*.exe
 *.exec
 *.out
 *.app
@@ -21,6 +22,6 @@ Release/
 
 # Executables without extension (on Unix systems)
 *
-!*.*
+# !*.*
 !*/
 !Makefile
