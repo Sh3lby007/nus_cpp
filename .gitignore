@@ -1,27 +1,31 @@
-# Executables
+# Executables - Windows
 *.exe
-*.exec
-*.out
-*.app
-a.out
+*.msi
+*.dll
+*.bat
 
-# Object files
+# Executables - macOS
+*.app
+*.out
+*.dylib
+
+# Executables - Unix-like
+*
+!*.*
+!*/
+!Makefile
+
+# Object and Debug files
 *.o
 *.obj
-
-# Debug files
 *.dSYM/
 
-# VS Code files
+# IDE specific
 .vscode/
 
 # Build directories
 build/
 Debug/
 Release/
-
-# Executables without extension (on Unix systems)
-*
-# !*.*
-!*/
-!Makefile
+dist/
+bin/
