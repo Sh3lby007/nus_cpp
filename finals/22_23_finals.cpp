@@ -80,6 +80,120 @@ void testD() {
   // 7
   cout << n;
 }
+/*
+Implement the function int s11(int n) that takes in a
+positive integer n and returns the value of the alternating series s11(n).
+*/
+int s11(int n) {
+  int result = 0;
+  for (int i = 1; i <= n; i++) {
+    if (i % 2)      // for odd numbers
+      result += i;  // add odd numbers (1, 3, 5, ...)
+
+    else            // for even numbers
+      result -= i;  // subtract even numbers (-2, -4, -6, ...)
+  }
+  return result;
+}
+/*
+Implement the function int s(int i, int j, int n) which takes
+in three positive integers i, j and n. The function returns
+the value of sij(n). In other words, s(1, 1, n) returns the
+same result as s11(n)
+*/
+int s(int i, int j, int n) {
+  // i: number of consecutive positive terms
+  // j: number of consecutive negative terms
+  // n: the upper limit
+  int result = 0;
+  for (int c = 0; c < n; c++) {
+    if (c % (i + j) < i) {
+      result += c + 1;
+    } else {
+      result -= c + 1;
+    }
+  }
+  return result;
+}
+
+/*
+Implement the function reverse which takes in vector of
+integers, and modifies it by re-versing the values. For
+example, a vector {1, 2, 3, 4, 5} will become {5, 4, 3, 2, 1}
+*/
+
+void reverse(vector<int> &v) {
+  vector<int> copy;
+  for (int i = v.size() - 1; i >= 0; i--) {
+    copy.push_back(v[i]);
+  }
+  v = copy;
+}
+/*
+Implement the function compact that takes in a vector of
+integers, and compacts the non-zero values to the left. In
+other words, all non-zero values are moved to the left
+(index 0) and the remaining values are zeroed, retaining the
+original length of the vector.
+*/
+
+void compact_ai(vector<int> &v) {
+  int writePos = 0;
+  for (int i = 0; i < v.size(); i++) {
+    if (v[i] != 0) {
+      v[writePos] = v[i];
+      writePos++;
+    }
+  }
+  while (writePos < v.size()) {
+    v[writePos++] = 0;
+  }
+}
+
+void compact(vector<int> &v) {
+  vector<int> copy;
+  for (int i = 0; i < v.size(); i++) {
+    if (v[i] != 0) {
+      copy.push_back(v[i]);
+    }
+  }
+  while (copy.size() < v.size()) {
+    copy.push_back(0);
+  }
+  v = copy;
+}
+/*
+Suppose a vector of integers represents the row of tiles,
+with 0 meaning an empty space. Implement the function
+slide_left which takes in a vector of integers and perform
+the sliding move on the vector as described above.
+*/
+
+void slide_left(vector<int> &v) {
+  // First compact all numbers to left
+  compact(v);
+
+  // Now merge adjacent equal numbers
+  for (int i = 0; i < v.size() - 1; i++) {
+    if (v[i] != 0 && v[i] == v[i + 1]) {
+      v[i] *= 2;     // double the first number
+      v[i + 1] = 0;  // zero out second number
+      i++;           // skip next number (can't merge twice)
+    }
+  }
+  // Compact again to fill gaps from merging
+  compact(v);
+}
+
+/*
+Implement the function slide_right which takes in a vector of
+integers and perform the sliding behaviour towards the right side.
+*/
+void slide_right(vector<int> &v) {
+  reverse(v);
+  slide_left(v);
+  reverse(v);
+}
 
 int main() {
   int x = 8;
