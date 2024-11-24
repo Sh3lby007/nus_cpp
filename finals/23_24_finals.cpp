@@ -249,8 +249,8 @@ bool can_flip(vector<int> board) {
 
 /*
 Implement the function void flip(vector<int> & board) which
-takes as input a valid board that can be flipped, and flips all
-the jumps on the board.
+takes as input a valid board that can be flipped, and flips
+all the jumps on the board.
 */
 void flip(vector<int>& board) {
   // Make copy of original board
