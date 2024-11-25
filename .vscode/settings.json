@@ -3,6 +3,7 @@
     "*.vue": "vue",
     "*.nvue": "vue",
     "*.json": "jsonc",
-    "vector": "cpp"
+    "vector": "cpp",
+    "ostream": "cpp"
   }
 }
