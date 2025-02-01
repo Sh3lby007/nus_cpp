@@ -5,6 +5,7 @@
     "*.json": "jsonc",
     "vector": "cpp",
     "ostream": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "string": "cpp"
   }
 }
