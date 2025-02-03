@@ -134,10 +134,10 @@ int main() {
   init_alien_planet("planet_sample.txt", myPlanet);
 
   // Evolve the planet for 3 generations
-  evolve_alien_planet(myPlanet, 3);
+  // evolve_alien_planet(myPlanet, 3);
 
   // Save the final state to a file
-  save_alien_planet("myresult_gen_3.txt", myPlanet);
+  // save_alien_planet("myresult_gen_3.txt", myPlanet);
 
   cout << "Evolution completed. Final state saved to myresult_gen_3.txt"
        << endl;
