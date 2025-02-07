@@ -96,5 +96,4 @@ int main() {
   cout << "NCopy = 2, Result = " << result << endl;
 
   return 0;
-  return 0;
 }
