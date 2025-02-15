@@ -42,6 +42,11 @@ Task 2.
 ******************************************/
 void n_unique(const string &input, string &result, int nCopy) {
   int char_count[26] = {0};
+  /*
+  Initial char_count array:
+  [a b c d e f g h i j k l m n o p q r s t u v w x y z]
+  [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+*/
   result = "";
 
   for (int i = 0; i < input.length(); i++) {
@@ -50,10 +55,22 @@ void n_unique(const string &input, string &result, int nCopy) {
     if (!isalpha(c)) {
       result += c;
       continue;
+      /*
+      ignore remaining code below if its not an alphabet
+      for e.g. ! , and empty space to add to result string
+      */
     }
 
+    /*
+    Step 1: Process 'a'
+    - char_index = 'a' - 'a' = 0
+    */
     int char_index = c - 'a';
 
+    /*
+    char_count[0] = 0 < nCopy(2), so add 'a'
+    then the first element in char_count array ++ for count
+    */
     if (char_count[char_index] < nCopy) {
       result += c;
       char_count[char_index]++;
@@ -83,17 +100,17 @@ int main() {
   n_unique(task2Str, result, 1);
   cout << "NCopy = 1, Result = " << result << endl;
 
-  n_unique(task2Str, result, 2);
-  cout << "NCopy = 2, Result = " << result << endl;
+  // n_unique(task2Str, result, 2);
+  // cout << "NCopy = 2, Result = " << result << endl;
 
-  n_unique(task2Str, result, 3);
-  cout << "NCopy = 3, Result = " << result << endl;
+  // n_unique(task2Str, result, 3);
+  // cout << "NCopy = 3, Result = " << result << endl;
 
-  n_unique(task2Str, result, 4);
-  cout << "NCopy = 4, Result = " << result << endl;
+  // n_unique(task2Str, result, 4);
+  // cout << "NCopy = 4, Result = " << result << endl;
 
-  n_unique("!!!*&%^ #$##$$!!", result, 2);
-  cout << "NCopy = 2, Result = " << result << endl;
+  // n_unique("!!!*&%^ #$##$$!!", result, 2);
+  // cout << "NCopy = 2, Result = " << result << endl;
 
   return 0;
 }
