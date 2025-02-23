@@ -62,6 +62,40 @@ void printPolynomial(int termArray[], int nTerm) {
   cout << endl;
 }
 
+/******************************************
+Task 3.
+******************************************/
+struct Point {
+  int X, Y;
+};
+
+// Compare two points: returns true if a should come after b
+bool compare(const Point& a, const Point& b) {
+  if (a.X != b.X) {
+      return a.X > b.X; // Sort by X-coordinate
+  } else {
+      return a.Y > b.Y; // If X is equal, sort by Y-coordinate
+  }
+}
+
+// Recursive Bubble Sort implementation
+void sort(Point a[], int n) {
+  if (n <= 1) return; // Base case: array of size 1 or less is already sorted
+
+  // Perform one pass of Bubble Sort
+  for (int i = 0; i < n - 1; i++) {
+      if (compare(a[i], a[i + 1])) {
+          // Swap the elements if they are in the wrong order
+          Point temp = a[i];
+          a[i] = a[i + 1];
+          a[i + 1] = temp;
+      }
+  }
+
+  // Recursively sort the remaining n-1 elements
+  sort(a, n - 1);
+}
+
 int main() {
   // Task 1
   int N;
@@ -86,6 +120,16 @@ int main() {
   printPolynomial(poly2, 4);
   cout << "When X = 11, = " << polynomial(11, poly2, 4) << endl;
   cout << "When X = 13, = " << polynomial(13, poly2, 4) << endl;
+
+// task 3
+  Point ptArray[5] = { {11, 34}, {5, 73}, {11, 19}, {13, 5}, {11, 68} };
+
+  sort(ptArray, 5);
+
+  // The output should match the order given in the question
+  for (int i = 0; i < 5; i++) {
+      printf("(%d, %d)\n", ptArray[i].X, ptArray[i].Y);
+  }
 
   return 0;
 }
