@@ -48,7 +48,7 @@ vector<int> bar(vector<int> v) {
 
 /*
 Q2
-Base case n = 1
+Base case n = 0
 loan_left(1000000, 0.005, 6000, 1) = 999000.00
 */
 double loan_left(double prin, double intr, double pymt, int n) {
