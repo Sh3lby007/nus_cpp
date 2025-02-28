@@ -82,7 +82,7 @@ Point get_centre(vector<Point> blk) {
 vector<Point> get_move(vector<Point> o, vector<Point> m) {
   vector<Point> v;
   for (int i = 0; i < o.size(); i++) {
-    v.push_back({m[i].row o[i].row, m[i].col o[i].col});
+    v.push_back({m[i].row - o[i].row, m[i].col - o[i].col});
   }
   return v;
 }
