@@ -92,7 +92,7 @@ void move(vector<Point>& puzzle, char dir) {
   Point p = new_point(puzzle[0], dir);
   // find the replacement number
   for (int i = 0; i < puzzle.size(); i++) {
-    if (puzzle[i].row == p.row and puzzle[i].col == p.col) {
+    if (puzzle[i].row == p.row && puzzle[i].col == p.col) {
       puzzle[i] = puzzle[0];
       puzzle[0] = p;
       return;
