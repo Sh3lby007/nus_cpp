@@ -10,10 +10,10 @@
 *.dylib
 
 # Executables - Unix-like
-*
-!*.*
-!*/
-!Makefile
+# *
+# !*.*
+# !*/
+# !Makefile
 
 # Object and Debug files
 *.o
