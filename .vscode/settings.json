@@ -16,6 +16,9 @@
     "numeric": "cpp",
     "streambuf": "cpp",
     "tuple": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "set": "cpp",
+    "map": "cpp",
+    "queue": "cpp"
   }
 }
