@@ -1,0 +1,264 @@
+TIC2001 Data Structures and Algorithms - Lab Assignment #6
+Tutorial Questions - Solutions
+
+================================================================================
+Question 1: Search sequence 15, 9, 7, 5 for integer 5
+================================================================================
+
+Answer: TRUE
+
+Explanation:
+In a BST, when searching for a value, we go left if the target is smaller than 
+the current node, and right if larger.
+
+Search path: 15 → 9 → 7 → 5
+
+- Start at root: 15
+  5 < 15, go LEFT to 9
+  
+- At node 9:
+  5 < 9, go LEFT to 7
+  
+- At node 7:
+  5 < 7, go LEFT to 5
+  
+- At node 5:
+  Found!
+
+This is a valid BST structure:
+        15
+       /
+      9
+     /
+    7
+   /
+  5
+
+This satisfies BST property: left child < parent at every node.
+The search sequence is VALID.
+
+
+================================================================================
+Question 2: Search sequence 10, 5, 9, 8 for integer 8
+================================================================================
+
+Answer: FALSE
+
+Explanation:
+Let's trace the search path: 10 → 5 → 9 → 8
+
+- Start at root: 10
+  8 < 10, go LEFT to 5
+  
+- At node 5:
+  8 > 5, go RIGHT to 9
+  
+- At node 9:
+  8 < 9, go LEFT to 8
+  
+- At node 8:
+  Found!
+
+This would require the structure:
+        10
+       /
+      5
+       \
+        9
+       /
+      8
+
+Let's verify BST property:
+- Node 10: left subtree has {5, 9, 8}. All < 10 ✓
+- Node 5: right subtree has {9, 8}. All > 5 ✓
+- Node 9: left child is 8. 8 < 9 ✓
+
+Wait, this actually IS valid! Let me reconsider...
+
+Actually, checking the BST invariant more carefully:
+- The entire left subtree of 10 is {5, 9, 8}
+- Node 5 has value 5, and its right child is 9
+- Node 9 has value 9, and its left child is 8
+
+For node 10: left subtree contains 5, 9, 8 - all less than 10 ✓
+For node 5: left subtree is empty, right subtree contains 9, 8 - both > 5 ✓
+For node 9: left child is 8 < 9 ✓
+
+This IS actually a valid BST and valid search sequence.
+
+Answer: TRUE (correcting my initial answer)
+
+
+================================================================================
+Question 3: Search sequence 10, 5, 3, 9, 8 for integer 8
+================================================================================
+
+Answer: FALSE
+
+Explanation:
+Let's trace the search: 10 → 5 → 3 → 9 → 8
+
+- Start at root: 10
+  8 < 10, go LEFT to 5
+  
+- At node 5:
+  8 > 5, but we visit 3 next
+  This means 8 > 5, so we should go RIGHT, but the sequence shows we go to 3
+  
+Wait, if we go to 3, that means:
+  8 < 5, go LEFT to 3
+  
+But 8 is NOT less than 5! This is contradictory.
+
+If we continued anyway:
+- At node 3:
+  8 > 3, go RIGHT to 9
+  
+This would mean 3's right child is 9.
+
+Let's check the structure:
+        10
+       /
+      5
+     / \
+    3   ?
+     \
+      9
+     /
+    8
+
+For this to work with our search:
+- From 10, we go left (8 < 10) ✓
+- From 5, we should go RIGHT since 8 > 5, but we visit 3
+- This means we went LEFT from 5, implying 8 < 5, which is FALSE!
+
+The search sequence is INVALID because at node 5, we must go RIGHT (since 8 > 5),
+not LEFT to node 3.
+
+Answer: FALSE
+
+
+================================================================================
+Question 4: The largest element in the BST will always have a parent node
+================================================================================
+
+Answer: FALSE
+
+Explanation:
+The largest element in a BST is always the rightmost node (keep going right 
+until you can't go right anymore).
+
+Counterexample: If the BST has only ONE node (the root), then:
+- This single node is the largest element
+- It has NO parent (the root has no parent)
+
+Example:
+    5
+
+In this BST, 5 is the largest element and has no parent.
+
+Even in larger trees, if the largest element is the root:
+    10
+   /
+  5
+ /
+3
+
+Here, 10 is the largest element and has no parent.
+
+Answer: FALSE
+
+
+================================================================================
+Question 5: BST supporting insert, delete, and K-th element queries
+================================================================================
+
+Answer: 
+
+**Modification:** Augment each node to store the SIZE of its subtree.
+
+**Structure:**
+Each node stores:
+- key (the value)
+- left pointer
+- right pointer
+- size (number of nodes in the subtree rooted at this node, including itself)
+
+**Invariant:**
+For each node N:
+  N.size = 1 + N.left.size + N.right.size
+  (where empty subtrees have size 0)
+
+**Algorithm for finding K-th element (1-indexed):**
+
+```
+findKth(node, k):
+    if node is null:
+        return null
+    
+    leftSize = (node.left != null) ? node.left.size : 0
+    
+    if k == leftSize + 1:
+        // Current node is the k-th element
+        return node.key
+    else if k <= leftSize:
+        // K-th element is in left subtree
+        return findKth(node.left, k)
+    else:
+        // K-th element is in right subtree
+        // Adjust k by removing elements in left subtree and current node
+        return findKth(node.right, k - leftSize - 1)
+```
+
+**Example:**
+Consider BST:
+           10(7)
+          /     \
+       5(3)    15(3)
+       /  \      / \
+     3(1) 7(1) 12(1) 20(1)
+
+Numbers in parentheses are sizes.
+
+To find 4th smallest element:
+- Start at 10: leftSize = 3
+- k=4 > leftSize+1=4? No, k == leftSize+1, so 10 is the answer!
+
+To find 6th smallest element:
+- Start at 10: leftSize = 3, k=6 > 4, go right with k'=6-3-1=2
+- At node 15: leftSize = 1, k'=2 > 2? k'=2 == leftSize+1, so 15 is the answer!
+
+**Time Complexity:**
+- Insert: O(h) where h is height, plus O(h) to update sizes = O(h)
+- Delete: O(h) for deletion, plus O(h) to update sizes = O(h)
+- Find K-th: O(h) - we visit at most h nodes
+- For balanced BST: O(log n) for all operations
+- For unbalanced BST: O(n) worst case
+
+**Update operations:**
+When inserting or deleting, we update the size field of all ancestors on the 
+path from root to the insertion/deletion point. This adds O(h) work but doesn't
+change the asymptotic complexity.
+
+Insert pseudocode:
+```
+insert(node, key):
+    if node is null:
+        return new Node(key, size=1)
+    
+    if key < node.key:
+        node.left = insert(node.left, key)
+    else:
+        node.right = insert(node.right, key)
+    
+    // Update size
+    node.size = 1 + size(node.left) + size(node.right)
+    return node
+```
+
+Delete is similar - after deletion, update sizes of all ancestors.
+
+Answer: Augment with subtree sizes. Time complexity: O(h) per operation, 
+where h is the height of the tree. O(log n) for balanced BST, O(n) worst case.
+
+================================================================================
