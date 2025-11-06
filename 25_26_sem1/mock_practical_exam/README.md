@@ -1,6 +1,6 @@
 # Mock Practical Exam Solutions
 
-This folder contains correct implementations for all 6 mock practical exam problems from TIC2001 Data Structures and Algorithms.
+This folder contains correct implementations for all 6 mock practical exam problems plus Uncle Tan's Checkpointed Leaderboard from TIC2001 Data Structures and Algorithms.
 
 ## Problem 1: Pop Middle (problem1_pop_middle.cpp)
 
@@ -126,6 +126,78 @@ Subset {1, 3, 5}:
 
 ---
 
+## Uncle Tan's Checkpointed Leaderboard (uncle_tan_leaderboard.cpp)
+
+**Data Structures:** HashMap + Ordered Set + Stack
+
+**Algorithm:** State management with checkpointing
+
+**Approach:**
+1. Use `map<string, int>` to store player scores (id → score)
+2. Use `set<pair<int, string>>` with custom comparator for ranking
+   - Comparator sorts by: score descending, then id ascending
+   - Each entry is (score, id) pair
+3. Use `stack<Snapshot>` for SNAP/UNDO functionality
+   - Each snapshot stores complete copies of scores map and leaderboard set
+
+**Operations:**
+- **ADD id delta:**
+  - Remove old (score, id) from leaderboard
+  - Update score: `scores[id] += delta`
+  - Insert new (score, id) into leaderboard
+  - Time: O(log n)
+
+- **SNAP:**
+  - Push complete copy of current state onto stack
+  - Time: O(n) for copying
+
+- **UNDO:**
+  - Pop from stack and restore scores + leaderboard
+  - Print "EMPTY" if stack is empty
+  - Time: O(n) for restoring
+
+- **TOP k:**
+  - Iterate through first k elements of ordered set
+  - Print player IDs
+  - Time: O(k)
+
+- **SCORE id:**
+  - Lookup in scores map, print 0 if not found
+  - Time: O(log n)
+
+**Time Complexity:**
+- Per operation: O(log n) for ADD/SCORE, O(n) for SNAP/UNDO, O(k) for TOP
+- Overall: O(Q·n) worst case where Q is number of operations
+
+**Space Complexity:** O(n·s) where n is number of players, s is number of snapshots
+
+**Key Design Decisions:**
+1. **Why ordered set?** Maintains players sorted by ranking criteria automatically
+2. **Why full snapshots?** Simpler than operation logging, acceptable for Q ≤ 200,000
+3. **Custom comparator:** Ensures correct ranking (score desc, id asc)
+
+**Example Trace:**
+```
+ADD alice 10, ADD bob 5 → {alice:10, bob:5}
+TOP 2 → "alice bob" (alice has higher score)
+
+SNAP → checkpoint saved
+
+ADD bob 20 → {alice:10, bob:25}
+ADD carl -3 → {alice:10, bob:25, carl:-3}
+TOP 3 → "bob alice carl" (sorted by score desc)
+
+UNDO → restore to checkpoint
+TOP 3 → "alice bob" (only 2 players exist)
+SCORE carl → "0" (carl doesn't exist anymore)
+
+UNDO → "EMPTY" (no checkpoint left)
+```
+
+**Test Results:** ✅ Verified against provided examples
+
+---
+
 ## Compilation & Testing
 
 To compile any problem:
@@ -150,6 +222,7 @@ To test:
 | 4. Instruction | - | Bitmask DP | O(N * 2^N) |
 | 5. LIS | Array | DP | O(N²) |
 | 6. XOR | - | Bitmask enumeration | O(N * 2^N) |
+| 7. Leaderboard | Map + Set + Stack | Checkpointing | O(Q*n) |
 
 ---
 
