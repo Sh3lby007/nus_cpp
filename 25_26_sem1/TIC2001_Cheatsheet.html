@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIC2001 Cheatsheet</title>
+    <title>TIC2001 DSA Complete Cheatsheet</title>
     <style>
         @page {
-            size: A4 landscape;
-            margin: 0.3in;
+            size: A4;
+            margin: 0.8cm;
+            padding: 0;
+        }
+
+        @page :first {
+            margin-top: 1cm;
         }
 
         * {
@@ -17,646 +22,2442 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            font-size: 7pt;
-            line-height: 1.2;
-            column-count: 3;
-            column-gap: 12px;
-            padding: 0.3in;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 8pt;
+            line-height: 1.25;
+            color: #000;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0;
         }
 
         h1 {
-            font-size: 18pt;
+            font-size: 14pt;
             text-align: center;
-            margin-bottom: 8px;
-            column-span: all;
+            margin: 0 0 0.2cm 0;
             border-bottom: 2px solid #000;
-            padding-bottom: 4px;
+            padding-bottom: 0.1cm;
+            page-break-after: avoid;
+            font-weight: bold;
         }
 
         h2 {
-            font-size: 9pt;
-            margin-top: 6px;
-            margin-bottom: 3px;
-            background: #333;
-            color: white;
-            padding: 2px 4px;
+            font-size: 10pt;
+            margin: 0.25cm 0 0.1cm 0;
+            background: #e0e0e0;
+            padding: 0.08cm 0.15cm;
+            border-left: 3px solid #000;
+            page-break-after: avoid;
+            font-weight: bold;
         }
 
         h3 {
-            font-size: 8pt;
-            margin-top: 4px;
-            margin-bottom: 2px;
+            font-size: 9pt;
+            margin: 0.15cm 0 0.08cm 0;
             font-weight: bold;
             text-decoration: underline;
+            page-break-after: avoid;
         }
 
-        pre {
-            font-size: 6pt;
+        h4 {
+            font-size: 8pt;
+            margin: 0.1cm 0 0.05cm 0;
+            font-weight: bold;
+            page-break-after: avoid;
+        }
+
+        .code-block {
             background: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 3px;
-            margin: 2px 0;
-            overflow-x: auto;
+            border: 1px solid #999;
+            padding: 0.08cm;
+            margin: 0.08cm 0;
+            font-size: 7pt;
             white-space: pre-wrap;
             word-wrap: break-word;
-        }
-
-        code {
+            overflow-wrap: break-word;
+            page-break-inside: avoid;
             font-family: 'Courier New', monospace;
-            font-size: 6pt;
+            line-height: 1.15;
         }
 
-        p {
-            margin: 2px 0;
+        .inline-code {
+            background: #f0f0f0;
+            padding: 0px 2px;
+            border: 1px solid #ddd;
+            font-family: 'Courier New', monospace;
+            font-size: 7pt;
         }
 
         ul, ol {
-            margin-left: 12px;
-            margin-bottom: 2px;
+            margin-left: 0.4cm;
+            margin-bottom: 0.08cm;
         }
 
         li {
-            margin-bottom: 1px;
+            margin-bottom: 0.03cm;
         }
 
-        .note {
-            background: #ffffcc;
-            padding: 2px;
-            margin: 2px 0;
-            border-left: 2px solid #ff9900;
+        p {
+            margin: 0.05cm 0;
         }
 
-        .complexity {
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #999;
+            padding: 0.08cm;
+            margin: 0.08cm 0;
+            page-break-inside: avoid;
+            font-size: 8pt;
+        }
+
+        .tip-box {
+            background: #e8f4f8;
+            border: 1px solid #999;
+            padding: 0.08cm;
+            margin: 0.08cm 0;
+            page-break-inside: avoid;
+            font-size: 8pt;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.08cm 0;
+            font-size: 7pt;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 0.03cm 0.08cm;
+            text-align: left;
+        }
+
+        th {
+            background: #d3d3d3;
             font-weight: bold;
-            color: #c00;
         }
 
-        .keyword {
-            color: #00f;
-            font-weight: bold;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .two-column {
+            column-count: 2;
+            column-gap: 0.3cm;
+            column-rule: 1px solid #ccc;
+        }
+
+        .complexity-table {
+            font-size: 6.5pt;
+        }
+
+        .section-break {
+            page-break-before: always;
+            margin-top: 0;
         }
 
         @media print {
             body {
-                column-count: 3;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                -moz-print-color-adjust: exact;
             }
-            h2 {
+
+            .code-block, .warning-box, .tip-box, table {
+                page-break-inside: avoid;
+            }
+
+            h2, h3 {
                 page-break-after: avoid;
             }
+
+            /* Prevent orphaned headers */
+            h1, h2, h3 {
+                orphans: 3;
+                widows: 3;
+            }
+        }
+
+        .key-point {
+            font-weight: bold;
+            color: #c00;
+        }
+
+        /* Print-friendly spacing */
+        @media print {
+            .container {
+                padding: 0;
+            }
+        }
+
+        /* Remove scrollbars and optimize for print */
+        .code-block {
+            max-width: 100%;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>TIC2001 Data Structures & Algorithms - Practical Exam Cheatsheet</h1>
+        
+        <div style="text-align: center; font-size: 8pt; margin-bottom: 0.3cm;">
+            Complete Reference: STL, Algorithms, Data Structures, Problem-Solving Patterns
+        </div>
 
-<h1>TIC2001 DATA STRUCTURES & ALGORITHMS<br>Quick Reference Cheatsheet</h1>
+<!-- ======================== SECTION 1: PROBLEM-SOLVING FRAMEWORK ======================== -->
+<h2>1. SYSTEMATIC PROBLEM-SOLVING APPROACH</h2>
 
-<h2>1. SORTING ALGORITHMS</h2>
+<h3>Step-by-Step Framework</h3>
+<ol>
+    <li><strong>Read & Understand:</strong> Identify input/output, constraints, edge cases</li>
+    <li><strong>Pattern Recognition:</strong> Match to known problem types (see patterns below)</li>
+    <li><strong>Choose Data Structure:</strong> Based on operations needed (access, insert, delete, search)</li>
+    <li><strong>Algorithm Selection:</strong> Consider time/space complexity vs. constraints</li>
+    <li><strong>Code Structure:</strong> Main loop → process operations → output results</li>
+    <li><strong>Edge Cases:</strong> Empty input, single element, duplicates, negative numbers, overflow</li>
+</ol>
 
-<h3>Bubble Sort - O(n²)</h3>
-<pre><code>void bubbleSort(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  for (int i = 0; i &lt; n-1; i++) {
-    bool swapped = false;
-    for (int j = 0; j &lt; n-i-1; j++) {
-      if (arr[j] > arr[j+1]) {
-        swap(arr[j], arr[j+1]);
-        swapped = true;
-      }
-    }
-    if (!swapped) break;
-  }
-}</code></pre>
-<p><strong>Use:</strong> Small datasets, nearly sorted. <strong>Stable</strong>.</p>
+<h3>Common Problem Patterns & DS/Algorithm Mapping</h3>
+<table>
+    <tr>
+        <th>Pattern</th>
+        <th>Data Structure(s)</th>
+        <th>Key Indicator</th>
+    </tr>
+    <tr>
+        <td>Duplicates removal (sorted)</td>
+        <td>Linked List / Vector</td>
+        <td>"non-decreasing order", "remove duplicates"</td>
+    </tr>
+    <tr>
+        <td>Find min/max repeatedly</td>
+        <td>Priority Queue (heap)</td>
+        <td>"extract minimum", "top-k", repeated min/max</td>
+    </tr>
+    <tr>
+        <td>Frequency counting</td>
+        <td>Map/Unordered_map</td>
+        <td>"count occurrences", "frequency"</td>
+    </tr>
+    <tr>
+        <td>Ordered ranking/leaderboard</td>
+        <td>Set/Multiset (BST)</td>
+        <td>"top-k", "ranking", maintain order</td>
+    </tr>
+    <tr>
+        <td>Undo/Redo operations</td>
+        <td>Stack</td>
+        <td>"checkpoint", "undo", "revert"</td>
+    </tr>
+    <tr>
+        <td>Recent/Sequential processing</td>
+        <td>Queue/Deque</td>
+        <td>"FIFO", "sliding window", "BFS"</td>
+    </tr>
+    <tr>
+        <td>Fast lookup by key</td>
+        <td>Unordered_map/Unordered_set</td>
+        <td>"query score", "exists", O(1) lookup</td>
+    </tr>
+    <tr>
+        <td>All subsets/combinations</td>
+        <td>Recursion + Backtracking</td>
+        <td>2^n possibilities, "all possible"</td>
+    </tr>
+    <tr>
+        <td>Optimal substructure</td>
+        <td>Dynamic Programming</td>
+        <td>"maximum/minimum", "count ways", overlapping subproblems</td>
+    </tr>
+    <tr>
+        <td>Intervals/ranges</td>
+        <td>Sorting + Greedy/DP</td>
+        <td>"schedule", "merge intervals"</td>
+    </tr>
+    <tr>
+        <td>Parentheses/brackets</td>
+        <td>Stack</td>
+        <td>"valid", "balanced"</td>
+    </tr>
+</table>
 
-<h3>Selection Sort - O(n²)</h3>
-<pre><code>void selectionSort(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  for (int i = 0; i &lt; n-1; i++) {
-    int minIdx = i;
-    for (int j = i+1; j &lt; n; j++) {
-      if (arr[j] &lt; arr[minIdx])
-        minIdx = j;
-    }
-    swap(arr[i], arr[minIdx]);
-  }
-}</code></pre>
-<p><strong>Use:</strong> When writes are costly. <strong>Unstable</strong>.</p>
+<h3>Complexity Quick Reference</h3>
+<table class="complexity-table">
+    <tr>
+        <th>Constraint</th>
+        <th>Max Complexity</th>
+        <th>Suitable Algorithms</th>
+    </tr>
+    <tr>
+        <td>n ≤ 10</td>
+        <td>O(n!), O(2^n)</td>
+        <td>Brute force, permutations, all subsets</td>
+    </tr>
+    <tr>
+        <td>n ≤ 20</td>
+        <td>O(2^n)</td>
+        <td>Bitmask DP, subsets generation</td>
+    </tr>
+    <tr>
+        <td>n ≤ 500</td>
+        <td>O(n^3)</td>
+        <td>Floyd-Warshall, DP with 2D states</td>
+    </tr>
+    <tr>
+        <td>n ≤ 5,000</td>
+        <td>O(n^2)</td>
+        <td>Bubble/Selection sort, nested loops, basic DP</td>
+    </tr>
+    <tr>
+        <td>n ≤ 10^5</td>
+        <td>O(n log n)</td>
+        <td>Sorting, balanced BST, priority queue</td>
+    </tr>
+    <tr>
+        <td>n ≤ 10^6</td>
+        <td>O(n)</td>
+        <td>Linear scan, hash map, counting sort</td>
+    </tr>
+    <tr>
+        <td>n ≤ 10^9</td>
+        <td>O(log n), O(1)</td>
+        <td>Binary search, math formulas, bit operations</td>
+    </tr>
+</table>
 
-<h3>Insertion Sort - O(n²)</h3>
-<pre><code>void insertionSort(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  for (int i = 1; i &lt; n; i++) {
-    int key = arr[i];
-    int j = i - 1;
-    while (j >= 0 && arr[j] > key) {
-      arr[j+1] = arr[j];
-      j--;
-    }
-    arr[j+1] = key;
-  }
-}</code></pre>
-<p><strong>Use:</strong> Small/nearly sorted, online. <strong>Stable</strong>.</p>
+<!-- ======================== SECTION 2: C++ STL COMPREHENSIVE GUIDE ======================== -->
+<div class="section-break"></div>
+<h2>2. C++ STL LIBRARIES - COMPLETE REFERENCE</h2>
 
-<h3>Merge Sort - O(n log n)</h3>
-<pre><code>void merge(vector&lt;int&gt;& arr, int l, int m, int r) {
-  vector&lt;int&gt; left(arr.begin()+l, arr.begin()+m+1);
-  vector&lt;int&gt; right(arr.begin()+m+1, arr.begin()+r+1);
-  int i=0, j=0, k=l;
-  while (i &lt; left.size() && j &lt; right.size()) {
-    if (left[i] &lt;= right[j]) arr[k++] = left[i++];
-    else arr[k++] = right[j++];
-  }
-  while (i &lt; left.size()) arr[k++] = left[i++];
-  while (j &lt; right.size()) arr[k++] = right[j++];
+<h3>Essential Headers</h3>
+<div class="code-block">#include &lt;iostream&gt;      // cin, cout
+#include &lt;vector&gt;        // dynamic arrays
+#include &lt;string&gt;        // strings
+#include &lt;algorithm&gt;     // sort, binary_search, etc.
+#include &lt;map&gt;           // ordered map (BST)
+#include &lt;unordered_map&gt; // hash map
+#include &lt;set&gt;           // ordered set (BST)
+#include &lt;unordered_set&gt; // hash set
+#include &lt;queue&gt;         // queue, priority_queue
+#include &lt;stack&gt;         // stack
+#include &lt;deque&gt;         // double-ended queue
+#include &lt;utility&gt;       // pair, make_pair
+#include &lt;cmath&gt;         // abs, pow, sqrt
+#include &lt;climits&gt;       // INT_MAX, INT_MIN
+using namespace std;</div>
+
+<h3>2.1 VECTOR (Dynamic Array)</h3>
+<div class="code-block">// Declaration & Initialization
+vector&lt;int&gt; v;                    // empty vector
+vector&lt;int&gt; v(n);                 // size n, default values
+vector&lt;int&gt; v(n, value);          // size n, all = value
+vector&lt;int&gt; v = {1, 2, 3};        // initialize with values
+vector&lt;vector&lt;int&gt;&gt; matrix(r, vector&lt;int&gt;(c, 0)); // 2D vector
+
+// Access
+v[i]              // access (no bounds check)
+v.at(i)           // access (with bounds check)
+v.front()         // first element
+v.back()          // last element
+
+// Modification
+v.push_back(x)    // add to end - O(1) amortized
+v.pop_back()      // remove from end - O(1)
+v.insert(it, x)   // insert before iterator - O(n)
+v.erase(it)       // erase at iterator - O(n)
+v.erase(it1, it2) // erase range [it1, it2) - O(n)
+v.clear()         // remove all - O(n)
+
+// Size & Capacity
+v.size()          // number of elements
+v.empty()         // check if empty
+v.resize(n)       // resize to n elements
+v.reserve(n)      // reserve capacity (no resize)
+
+// Iteration
+for(int i = 0; i < v.size(); i++) cout << v[i];
+for(int x : v) cout << x;  // range-based for
+for(auto it = v.begin(); it != v.end(); it++) cout << *it;</div>
+
+<div class="warning-box"><strong>⚠ Common Mistakes:</strong>
+• <span class="inline-code">v.size()</span> returns <span class="inline-code">size_t</span> (unsigned) - avoid <span class="inline-code">v.size() - 1</span> when v is empty!
+• Vector grows dynamically - iterators may become invalid after insert/erase
+• Use <span class="inline-code">reserve()</span> for performance if final size is known</div>
+
+<h3>2.2 MAP (Ordered Map - Red-Black Tree)</h3>
+<div class="code-block">// Declaration
+map&lt;string, int&gt; m;                // key → value
+map&lt;int, int, greater&lt;int&gt;&gt; m;    // descending order
+
+// Operations
+m[key] = value;    // insert/update - O(log n)
+m.insert({k, v});  // insert pair
+m.erase(key);      // remove by key - O(log n)
+m.count(key);      // 0 or 1 (exists?) - O(log n)
+m.find(key);       // returns iterator or m.end() - O(log n)
+m.clear();         // remove all
+m.size();          // number of pairs
+
+// Access (creates if doesn't exist!)
+int val = m[key];  // ⚠ creates key with default value if missing
+
+// Safe access (doesn't create)
+if (m.find(key) != m.end()) {
+    int val = m[key];
+}
+// OR
+if (m.count(key)) {
+    int val = m[key];
 }
 
-void mergeSort(vector&lt;int&gt;& arr, int l, int r) {
-  if (l &lt; r) {
-    int m = l + (r - l) / 2;
-    mergeSort(arr, l, m);
-    mergeSort(arr, m+1, r);
-    merge(arr, l, m, r);
-  }
+// Iteration (sorted by key)
+for(auto& p : m) {
+    cout << p.first << " → " << p.second;
 }
-// Call: mergeSort(arr, 0, arr.size()-1);</code></pre>
-<p><strong>Use:</strong> Large datasets, guaranteed O(n log n). <strong>Stable</strong>. Space: O(n).</p>
+for(auto it = m.begin(); it != m.end(); it++) {
+    cout << it->first << " → " << it->second;
+}</div>
 
-<h3>Quick Sort - O(n log n) avg, O(n²) worst</h3>
-<pre><code>int partition(vector&lt;int&gt;& arr, int low, int high) {
-  int pivot = arr[high];
-  int i = low - 1;
-  for (int j = low; j &lt; high; j++) {
-    if (arr[j] &lt;= pivot) {
-      i++;
-      swap(arr[i], arr[j]);
+<div class="tip-box"><strong>💡 Map vs Unordered_map:</strong>
+• <strong>Use map when:</strong> need sorted keys, range queries, top-k by key
+• <strong>Use unordered_map when:</strong> only need fast lookup, no order required</div>
+
+<h3>2.3 UNORDERED_MAP (Hash Map)</h3>
+<div class="code-block">// Declaration
+unordered_map&lt;string, int&gt; um;
+
+// Operations (same as map but O(1) average)
+um[key] = value;   // insert/update - O(1) avg, O(n) worst
+um.erase(key);     // remove - O(1) avg
+um.count(key);     // exists? - O(1) avg
+um.find(key);      // iterator - O(1) avg
+
+// ⚠ NO ORDERING - iteration order is random!</div>
+
+<div class="warning-box"><strong>⚠ Hash Map Gotchas:</strong>
+• NO order maintained - don't rely on insertion/key order
+• Worst case O(n) for all operations (hash collisions)
+• For custom types, need to define hash function</div>
+
+<h3>2.4 SET (Ordered Set - BST)</h3>
+<div class="code-block">// Declaration
+set&lt;int&gt; s;                     // ascending order
+set&lt;int, greater&lt;int&gt;&gt; s;       // descending order
+multiset&lt;int&gt; ms;               // allows duplicates
+
+// Operations
+s.insert(x);       // insert - O(log n)
+s.erase(x);        // remove ALL occurrences - O(log n)
+s.erase(it);       // remove at iterator - O(1)
+s.count(x);        // 0 or 1 (multiset: can be > 1)
+s.find(x);         // iterator or s.end() - O(log n)
+s.clear();
+s.size();
+
+// Access
+*s.begin();        // smallest (or largest if greater<>)
+*s.rbegin();       // largest (or smallest if greater<>)
+s.lower_bound(x);  // iterator to first ≥ x
+s.upper_bound(x);  // iterator to first > x
+
+// Iteration (sorted order)
+for(int x : s) cout << x;</div>
+
+<h3>2.5 UNORDERED_SET (Hash Set)</h3>
+<div class="code-block">unordered_set&lt;int&gt; us;
+us.insert(x);      // O(1) avg
+us.erase(x);       // O(1) avg
+us.count(x);       // O(1) avg
+// No ordering, no duplicates</div>
+
+<h3>2.6 PRIORITY QUEUE (Heap)</h3>
+<div class="code-block">// Declaration
+priority_queue&lt;int&gt; pq;                          // max-heap (largest on top)
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq; // min-heap (smallest on top)
+
+// Operations
+pq.push(x);        // insert - O(log n)
+pq.pop();          // remove top - O(log n)
+pq.top();          // access top - O(1)
+pq.size();
+pq.empty();
+
+// ⚠ NO iteration, NO random access!
+
+// Custom comparator (e.g., for pairs - sort by second descending)
+auto cmp = [](pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
+    return a.second < b.second;  // max-heap by second
+};
+priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, decltype(cmp)&gt; pq(cmp);</div>
+
+<div class="tip-box"><strong>💡 Priority Queue Use Cases:</strong>
+• Dijkstra's algorithm, A* search
+• Find k-th largest/smallest element
+• Merge k sorted lists
+• Event scheduling by priority</div>
+
+<h3>2.7 STACK</h3>
+<div class="code-block">stack&lt;int&gt; st;
+st.push(x);        // O(1)
+st.pop();          // O(1) - removes top (no return value!)
+st.top();          // O(1) - access top
+st.size();
+st.empty();</div>
+
+<h3>2.8 QUEUE</h3>
+<div class="code-block">queue&lt;int&gt; q;
+q.push(x);         // enqueue - O(1)
+q.pop();           // dequeue - O(1)
+q.front();         // first element
+q.back();          // last element
+q.size();
+q.empty();</div>
+
+<h3>2.9 LIST (Doubly-Linked List)</h3>
+<div class="code-block">// Declaration
+list&lt;int&gt; l;
+
+// Insertion - O(1) if iterator known
+l.push_back(x);    // add to end - O(1)
+l.push_front(x);   // add to front - O(1)
+l.insert(it, x);   // insert before iterator - O(1)
+
+// Deletion - O(1) if iterator known
+l.pop_back();      // remove end - O(1)
+l.pop_front();     // remove front - O(1)
+l.erase(it);       // erase at iterator - O(1)
+l.erase(it1, it2); // erase range - O(n)
+
+// Access
+l.front();         // first element - O(1)
+l.back();          // last element - O(1)
+// ⚠ NO random access! l[i] NOT available!
+
+// Iteration (forward/backward only)
+for(int x : l) cout << x;
+for(auto it = l.begin(); it != l.end(); it++)
+    cout << *it;</div>
+
+<div class="warning-box"><strong>⚠ STL list vs Manual Linked List:</strong>
+<ul style="font-size: 7pt; margin: 0.05cm 0;">
+    <li><strong>STL list:</strong> Use when you need linked list operations (insert/delete in middle)</li>
+    <li><strong>Manual linked list:</strong> Use when problem requires you to implement it</li>
+    <li><strong>Key difference:</strong> STL list is doubly-linked, manual might be singly-linked</li>
+    <li><strong>Iterator safety:</strong> STL list iterators stay valid after insert/erase (except erased node)</li>
+</ul>
+</div>
+
+<h4>STL list: When to Use vs Avoid</h4>
+<table style="font-size: 7pt;">
+    <tr><th>Operation</th><th>vector</th><th>list</th><th>deque</th></tr>
+    <tr><td>Random access</td><td>O(1) ✓</td><td>O(n) ✗</td><td>O(1) ✓</td></tr>
+    <tr><td>Insert/delete front</td><td>O(n) ✗</td><td>O(1) ✓</td><td>O(1) ✓</td></tr>
+    <tr><td>Insert/delete middle</td><td>O(n) ✗</td><td>O(1) ✓</td><td>O(n) ✗</td></tr>
+    <tr><td>Iteration speed</td><td>Fast ✓</td><td>Slower</td><td>Fast ✓</td></tr>
+    <tr><td>Memory overhead</td><td>Low</td><td>High</td><td>Low</td></tr>
+</table>
+
+<div class="tip-box"><strong>💡 When to use STL list:</strong>
+• Frequent insert/delete in middle with known iterator
+• Don't need random access (no [i])
+• Problem doesn't require you to implement linked list
+<strong>Avoid when:</strong>
+• Need random access (use vector)
+• Only insert/delete at ends (use deque instead)
+• Problem says "implement linked list" (use manual)</div>
+
+<h3>2.10 DEQUE (Double-Ended Queue)</h3>
+<div class="code-block">deque&lt;int&gt; dq;
+dq.push_back(x);   // O(1) - add to end
+dq.push_front(x);  // O(1) - add to front
+dq.pop_back();     // O(1) - remove from end
+dq.pop_front();    // O(1) - remove from front
+dq.front();        // O(1) - first element
+dq.back();         // O(1) - last element
+dq[i];             // O(1) - random access</div>
+
+<h3>2.11 PAIR & TUPLE</h3>
+<div class="code-block">// Pair
+pair&lt;int, string&gt; p = {1, "hello"};
+pair&lt;int, string&gt; p = make_pair(1, "hello");
+cout << p.first << " " << p.second;
+
+// Pair comparison (lexicographic: first, then second)
+pair&lt;int, int&gt; a = {1, 2};
+pair&lt;int, int&gt; b = {1, 3};
+// a < b is true
+
+// Tuple (more than 2 elements)
+tuple&lt;int, string, double&gt; t = {1, "hi", 3.14};
+get&lt;0&gt;(t);  // access by index</div>
+
+<!-- ======================== SECTION 3: ALGORITHM LIBRARY ======================== -->
+<div class="section-break"></div>
+<h2>3. ALGORITHM LIBRARY (STL)</h2>
+
+<h3>3.1 SORTING</h3>
+<div class="code-block">vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+
+// Basic sorting
+sort(v.begin(), v.end());              // ascending - O(n log n)
+sort(v.begin(), v.end(), greater&lt;int&gt;());  // descending
+
+// Partial sorting
+sort(v.begin(), v.begin() + k);        // sort first k elements
+
+// Custom comparator
+sort(v.begin(), v.end(), [](int a, int b) {
+    return a > b;  // descending
+});
+
+// Sort pairs (default: lexicographic)
+vector&lt;pair&lt;int, int&gt;&gt; vp = {{2,3}, {1,4}, {2,1}};
+sort(vp.begin(), vp.end());
+// Result: {1,4}, {2,1}, {2,3}
+
+// Sort by second element
+sort(vp.begin(), vp.end(), [](auto a, auto b) {
+    return a.second < b.second;
+});
+
+// Stable sort (preserves relative order of equal elements)
+stable_sort(v.begin(), v.end());
+
+// Check if sorted
+is_sorted(v.begin(), v.end());         // returns bool</div>
+
+<h3>3.2 SEARCHING</h3>
+<div class="code-block">vector&lt;int&gt; v = {1, 2, 3, 4, 5};  // must be sorted!
+
+// Binary search - O(log n)
+bool found = binary_search(v.begin(), v.end(), 3);  // returns true/false
+
+// Find position
+auto it = lower_bound(v.begin(), v.end(), 3);  // first ≥ 3
+auto it = upper_bound(v.begin(), v.end(), 3);  // first > 3
+
+// Get index
+int idx = lower_bound(v.begin(), v.end(), 3) - v.begin();
+
+// Linear search - O(n)
+auto it = find(v.begin(), v.end(), 3);  // iterator or v.end()
+if (it != v.end()) {
+    cout << "Found at index " << (it - v.begin());
+}</div>
+
+<h3>3.3 MIN/MAX OPERATIONS</h3>
+<div class="code-block">// Min/max of two values
+int a = 5, b = 10;
+int minimum = min(a, b);
+int maximum = max(a, b);
+
+// Min/max in container
+vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+int min_val = *min_element(v.begin(), v.end());
+int max_val = *max_element(v.begin(), v.end());
+
+// Iterator to min/max
+auto it_min = min_element(v.begin(), v.end());
+auto it_max = max_element(v.begin(), v.end());</div>
+
+<h3>3.4 REVERSING & ROTATING</h3>
+<div class="code-block">vector&lt;int&gt; v = {1, 2, 3, 4, 5};
+
+// Reverse
+reverse(v.begin(), v.end());  // {5, 4, 3, 2, 1}
+
+// Rotate
+rotate(v.begin(), v.begin() + 2, v.end());  // {3, 4, 5, 1, 2}</div>
+
+<h3>3.5 REMOVING & UNIQUE</h3>
+<div class="code-block">vector&lt;int&gt; v = {1, 2, 2, 3, 3, 3, 4};
+
+// Remove specific value (must erase after!)
+v.erase(remove(v.begin(), v.end(), 3), v.end());  // removes all 3s
+
+// Remove duplicates (must sort first!)
+sort(v.begin(), v.end());
+v.erase(unique(v.begin(), v.end()), v.end());  // {1, 2, 3, 4}
+
+// unique() moves duplicates to end, returns iterator to new end</div>
+
+<h3>3.6 COUNTING & ACCUMULATING</h3>
+<div class="code-block">vector&lt;int&gt; v = {1, 2, 3, 2, 4, 2};
+
+// Count occurrences
+int cnt = count(v.begin(), v.end(), 2);  // 3
+
+// Sum of elements
+int sum = accumulate(v.begin(), v.end(), 0);  // 0 is initial value
+
+// Product
+int product = accumulate(v.begin(), v.end(), 1, multiplies&lt;int&gt;());</div>
+
+<h3>3.7 PERMUTATIONS</h3>
+<div class="code-block">vector&lt;int&gt; v = {1, 2, 3};
+
+// Next permutation
+do {
+    for(int x : v) cout << x;
+    cout << endl;
+} while(next_permutation(v.begin(), v.end()));
+
+// Previous permutation
+prev_permutation(v.begin(), v.end());</div>
+
+<!-- ======================== SECTION 4: CUSTOM SORTING ALGORITHMS ======================== -->
+<div class="section-break"></div>
+<h2>4. SORTING ALGORITHMS (MANUAL IMPLEMENTATION)</h2>
+
+<div class="warning-box"><strong>⚠ When to Implement Manually:</strong>
+If problem explicitly states "do not use STL sort" or constraints require specific algorithm (e.g., stable sort, in-place, specific time/space complexity)</div>
+
+<h3>4.1 BUBBLE SORT - O(n²)</h3>
+<div class="code-block">void bubbleSort(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    for(int i = 0; i < n - 1; i++) {
+        bool swapped = false;
+        for(int j = 0; j < n - i - 1; j++) {
+            if(arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;  // optimization: already sorted
     }
-  }
-  swap(arr[i+1], arr[high]);
-  return i + 1;
+}
+// Stable: Yes | In-place: Yes | Best: O(n) | Avg/Worst: O(n²)</div>
+
+<h3>4.2 SELECTION SORT - O(n²)</h3>
+<div class="code-block">void selectionSort(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    for(int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for(int j = i + 1; j < n; j++) {
+            if(arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        swap(arr[i], arr[minIdx]);
+    }
+}
+// Stable: No | In-place: Yes | All cases: O(n²)</div>
+
+<h3>4.3 INSERTION SORT - O(n²)</h3>
+<div class="code-block">void insertionSort(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    for(int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+// Stable: Yes | In-place: Yes | Best: O(n) | Avg/Worst: O(n²)
+// Good for: nearly sorted data, small arrays</div>
+
+<h3>4.4 MERGE SORT - O(n log n)</h3>
+<div class="code-block">void merge(vector&lt;int&gt;& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    vector&lt;int&gt; L(n1), R(n2);
+    for(int i = 0; i < n1; i++) L[i] = arr[left + i];
+    for(int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
+    
+    int i = 0, j = 0, k = left;
+    while(i < n1 && j < n2) {
+        if(L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+    while(i < n1) arr[k++] = L[i++];
+    while(j < n2) arr[k++] = R[j++];
+}
+
+void mergeSort(vector&lt;int&gt;& arr, int left, int right) {
+    if(left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+// Usage: mergeSort(arr, 0, arr.size() - 1);
+// Stable: Yes | In-place: No | All cases: O(n log n)</div>
+
+<h3>4.5 QUICK SORT - O(n log n) average</h3>
+<div class="code-block">int partition(vector&lt;int&gt;& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    
+    for(int j = low; j < high; j++) {
+        if(arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
 }
 
 void quickSort(vector&lt;int&gt;& arr, int low, int high) {
-  if (low &lt; high) {
-    int pi = partition(arr, low, high);
-    quickSort(arr, low, pi-1);
-    quickSort(arr, pi+1, high);
-  }
-}
-// Call: quickSort(arr, 0, arr.size()-1);</code></pre>
-<p><strong>Use:</strong> General purpose. <strong>Unstable</strong>. Space: O(log n).</p>
-
-<h3>Heap Sort - O(n log n)</h3>
-<pre><code>void heapify(vector&lt;int&gt;& arr, int n, int i) {
-  int largest = i;
-  int l = 2*i + 1, r = 2*i + 2;
-  if (l &lt; n && arr[l] > arr[largest]) largest = l;
-  if (r &lt; n && arr[r] > arr[largest]) largest = r;
-  if (largest != i) {
-    swap(arr[i], arr[largest]);
-    heapify(arr, n, largest);
-  }
+    if(low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
 }
 
-void heapSort(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  for (int i = n/2-1; i >= 0; i--)
-    heapify(arr, n, i);
-  for (int i = n-1; i > 0; i--) {
-    swap(arr[0], arr[i]);
-    heapify(arr, i, 0);
-  }
-}</code></pre>
-<p><strong>Use:</strong> O(n log n) guaranteed + O(1) space. <strong>Unstable</strong>.</p>
+// Usage: quickSort(arr, 0, arr.size() - 1);
+// Stable: No | In-place: Yes | Best/Avg: O(n log n) | Worst: O(n²)</div>
 
-<h3>Counting Sort - O(n+k)</h3>
-<pre><code>void countingSort(vector&lt;int&gt;& arr) {
-  int maxVal = *max_element(arr.begin(), arr.end());
-  vector&lt;int&gt; count(maxVal + 1, 0);
-  for (int x : arr) count[x]++;
-  int idx = 0;
-  for (int i = 0; i &lt;= maxVal; i++)
-    for (int j = 0; j &lt; count[i]; j++)
-      arr[idx++] = i;
-}</code></pre>
-<p><strong>Use:</strong> Small range of integers. <strong>Stable</strong>. Space: O(k).</p>
+<h3>4.6 COUNTING SORT - O(n + k)</h3>
+<div class="code-block">// Only for non-negative integers, k = max value
+void countingSort(vector&lt;int&gt;& arr) {
+    if(arr.empty()) return;
+    
+    int maxVal = *max_element(arr.begin(), arr.end());
+    vector&lt;int&gt; count(maxVal + 1, 0);
+    
+    // Count occurrences
+    for(int x : arr) count[x]++;
+    
+    // Reconstruct array
+    int idx = 0;
+    for(int i = 0; i <= maxVal; i++) {
+        while(count[i]-- > 0) {
+            arr[idx++] = i;
+        }
+    }
+}
+// Stable: Can be | In-place: No | Time: O(n + k) | Space: O(k)
+// Good for: small range of integers</div>
 
-<h3>Quick Select - O(n) avg</h3>
-<pre><code>// Find k-th smallest
-int quickSelect(vector&lt;int&gt;& arr, int l, int r, int k) {
-  if (l == r) return arr[l];
-  int pi = partition(arr, l, r);
-  if (pi == k-1) return arr[pi];
-  else if (k-1 &lt; pi)
-    return quickSelect(arr, l, pi-1, k);
-  else
-    return quickSelect(arr, pi+1, r, k);
-}</code></pre>
+<h3>Sorting Algorithm Comparison Table</h3>
+<table class="complexity-table">
+    <tr>
+        <th>Algorithm</th>
+        <th>Best</th>
+        <th>Average</th>
+        <th>Worst</th>
+        <th>Space</th>
+        <th>Stable</th>
+        <th>When to Use</th>
+    </tr>
+    <tr>
+        <td>Bubble</td>
+        <td>O(n)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+        <td>Yes</td>
+        <td>Nearly sorted, educational</td>
+    </tr>
+    <tr>
+        <td>Selection</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+        <td>No</td>
+        <td>Small arrays, minimal swaps needed</td>
+    </tr>
+    <tr>
+        <td>Insertion</td>
+        <td>O(n)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+        <td>Yes</td>
+        <td>Nearly sorted, small arrays</td>
+    </tr>
+    <tr>
+        <td>Merge</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n)</td>
+        <td>Yes</td>
+        <td>Stable sort needed, linked lists</td>
+    </tr>
+    <tr>
+        <td>Quick</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n²)</td>
+        <td>O(log n)</td>
+        <td>No</td>
+        <td>General purpose, in-place needed</td>
+    </tr>
+    <tr>
+        <td>Counting</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(k)</td>
+        <td>Yes</td>
+        <td>Small integer range</td>
+    </tr>
+</table>
 
-<h2>2. DATA STRUCTURES</h2>
+<!-- ======================== SECTION 5: RECURSION ======================== -->
+<div class="section-break"></div>
+<h2>5. RECURSION PATTERNS & TECHNIQUES</h2>
 
-<h3>Linked List - Basic Operations</h3>
-<pre><code>struct Node {
-  int data;
-  Node* next;
-  Node(int val) : data(val), next(nullptr) {}
+<h3>5.1 Recursion Fundamentals</h3>
+<div class="code-block">// Template for recursion
+returnType function(parameters) {
+    // BASE CASE(S) - must come first!
+    if (baseCondition) {
+        return baseValue;
+    }
+    
+    // RECURSIVE CASE
+    // 1. Do some work (optional - before recursive call)
+    // 2. Make recursive call(s) with SMALLER problem
+    // 3. Process result (optional - after recursive call)
+    return combineResults(function(smallerProblem));
+}</div>
+
+<div class="warning-box"><strong>⚠ Recursion Debugging Tips:</strong>
+• Always check base case first - missing base case = infinite recursion!
+• Ensure recursive calls make progress toward base case
+• Add print statements to trace recursion depth
+• Check stack overflow for deep recursion (max ~10^4-10^5 calls)</div>
+
+<h3>5.2 Common Recursion Patterns</h3>
+
+<h4>Pattern 1: Linear Recursion (single recursive call)</h4>
+<div class="code-block">// Factorial
+int factorial(int n) {
+    if(n <= 1) return 1;  // base case
+    return n * factorial(n - 1);
+}
+
+// Sum of array
+int sumArray(vector&lt;int&gt;& arr, int n) {
+    if(n == 0) return 0;
+    return arr[n-1] + sumArray(arr, n-1);
+}
+
+// Fibonacci (inefficient without memoization)
+int fib(int n) {
+    if(n <= 1) return n;
+    return fib(n-1) + fib(n-2);
+}</div>
+
+<h4>Pattern 2: Divide & Conquer (multiple recursive calls)</h4>
+<div class="code-block">// Binary search (recursive)
+int binarySearch(vector&lt;int&gt;& arr, int left, int right, int target) {
+    if(left > right) return -1;  // not found
+    
+    int mid = left + (right - left) / 2;
+    if(arr[mid] == target) return mid;
+    if(arr[mid] > target) return binarySearch(arr, left, mid-1, target);
+    return binarySearch(arr, mid+1, right, target);
+}
+
+// Maximum in array
+int findMax(vector&lt;int&gt;& arr, int left, int right) {
+    if(left == right) return arr[left];
+    
+    int mid = left + (right - left) / 2;
+    int maxLeft = findMax(arr, left, mid);
+    int maxRight = findMax(arr, mid+1, right);
+    return max(maxLeft, maxRight);
+}</div>
+
+<h4>Pattern 3: Backtracking (try all possibilities)</h4>
+<div class="code-block">// Generate all subsets (power set)
+void generateSubsets(vector&lt;int&gt;& arr, int idx, vector&lt;int&gt;& current, 
+                      vector&lt;vector&lt;int&gt;&gt;& result) {
+    if(idx == arr.size()) {
+        result.push_back(current);
+        return;
+    }
+    
+    // Don't include arr[idx]
+    generateSubsets(arr, idx+1, current, result);
+    
+    // Include arr[idx]
+    current.push_back(arr[idx]);
+    generateSubsets(arr, idx+1, current, result);
+    current.pop_back();  // backtrack
+}
+
+// Generate all permutations
+void permute(vector&lt;int&gt;& arr, int start, vector&lt;vector&lt;int&gt;&gt;& result) {
+    if(start == arr.size()) {
+        result.push_back(arr);
+        return;
+    }
+    
+    for(int i = start; i < arr.size(); i++) {
+        swap(arr[start], arr[i]);
+        permute(arr, start+1, result);
+        swap(arr[start], arr[i]);  // backtrack
+    }
+}</div>
+
+<h4>Pattern 4: Memoization (avoid redundant computation)</h4>
+<div class="code-block">// Fibonacci with memoization
+map&lt;int, long long&gt; memo;
+
+long long fib(int n) {
+    if(n <= 1) return n;
+    if(memo.count(n)) return memo[n];
+    
+    memo[n] = fib(n-1) + fib(n-2);
+    return memo[n];
+}
+
+// Or use vector for better performance
+vector&lt;long long&gt; dp(100, -1);
+
+long long fib2(int n) {
+    if(n <= 1) return n;
+    if(dp[n] != -1) return dp[n];
+    
+    dp[n] = fib2(n-1) + fib2(n-2);
+    return dp[n];
+}</div>
+
+<h3>5.3 Tail Recursion (can be optimized to iteration)</h3>
+<div class="code-block">// Tail recursive (last operation is recursive call)
+int factorialTail(int n, int acc = 1) {
+    if(n <= 1) return acc;
+    return factorialTail(n-1, n * acc);
+}
+
+// Equivalent iterative version
+int factorialIter(int n) {
+    int result = 1;
+    for(int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}</div>
+
+<h3>5.4 Recursion to Iteration Conversion</h3>
+<div class="code-block">// Recursion: traversing linked list
+void printListRecursive(Node* head) {
+    if(head == nullptr) return;
+    cout << head->data << " ";
+    printListRecursive(head->next);
+}
+
+// Iteration: same traversal
+void printListIterative(Node* head) {
+    while(head != nullptr) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+}
+
+// General approach: use explicit stack for non-tail recursion
+// Tail recursion → simple loop
+// Non-tail recursion → stack + loop</div>
+
+<h3>5.5 Recursion Complexity Analysis</h3>
+<div class="code-block">// Time Complexity Formula: T(n) = [# of recursive calls] * T(n/k) + [work per call]
+
+// Examples:
+// factorial(n): T(n) = T(n-1) + O(1) → O(n)
+// fib(n) (no memo): T(n) = T(n-1) + T(n-2) + O(1) → O(2^n)
+// binarySearch(n): T(n) = T(n/2) + O(1) → O(log n)
+// mergeSort(n): T(n) = 2*T(n/2) + O(n) → O(n log n)
+
+// Space Complexity = recursion depth
+// factorial: O(n) stack space
+// binarySearch: O(log n) stack space</div>
+
+<div class="tip-box"><strong>💡 When to Use Recursion:</strong>
+• Problem naturally recursive (trees, graphs, divide & conquer)
+• Subproblems overlap → use memoization or convert to DP
+• Small input size (avoid stack overflow)
+• Code clarity more important than performance</div>
+
+<!-- ======================== SECTION 6: LINKED LISTS ======================== -->
+<div class="section-break"></div>
+<h2>6. LINKED LIST IMPLEMENTATIONS</h2>
+
+<h3>6.1a Node Structure & Constructor</h3>
+<div class="code-block">struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
 };
 
-// Insert at head - O(1)
-void insertHead(Node*& head, int val) {
-  Node* newNode = new Node(val);
-  newNode->next = head;
-  head = newNode;
-}
+class LinkedList {
+private:
+    Node* head;
 
-// Insert at tail - O(n)
-void insertTail(Node*& head, int val) {
-  Node* newNode = new Node(val);
-  if (!head) { head = newNode; return; }
-  Node* curr = head;
-  while (curr->next) curr = curr->next;
-  curr->next = newNode;
-}
-
-// Delete node - O(n)
-void deleteNode(Node*& head, int val) {
-  if (!head) return;
-  if (head->data == val) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-    return;
-  }
-  Node* curr = head;
-  while (curr->next && curr->next->data != val)
-    curr = curr->next;
-  if (curr->next) {
-    Node* temp = curr->next;
-    curr->next = curr->next->next;
-    delete temp;
-  }
-}
-
-// Reverse list - O(n)
-Node* reverse(Node* head) {
-  Node *prev = nullptr, *curr = head, *next;
-  while (curr) {
-    next = curr->next;
-    curr->next = prev;
-    prev = curr;
-    curr = next;
-  }
-  return prev;
-}</code></pre>
-
-<h3>Stack - LIFO</h3>
-<pre><code>#include &lt;stack&gt;
-stack&lt;int&gt; st;
-st.push(10);         // Add to top
-st.pop();            // Remove top
-int top = st.top();  // View top
-bool empty = st.empty();
-
-// Monotonic Stack (Largest Rectangle)
-stack&lt;int&gt; st;
-for (int i = 0; i &lt; n; i++) {
-  while (!st.empty() && arr[i] &lt; arr[st.top()]) {
-    int h = arr[st.top()]; st.pop();
-    int w = st.empty() ? i : i - st.top() - 1;
-    maxArea = max(maxArea, h * w);
-  }
-  st.push(i);
-}</code></pre>
-
-<h3>Queue - FIFO</h3>
-<pre><code>#include &lt;queue&gt;
-queue&lt;int&gt; q;
-q.push(10);          // Add to back
-q.pop();             // Remove front
-int front = q.front();
-int back = q.back();</code></pre>
-
-<h3>Deque - Double-ended Queue</h3>
-<pre><code>#include &lt;deque&gt;
-deque&lt;int&gt; dq;
-dq.push_back(10);    // Add to back
-dq.push_front(5);    // Add to front
-dq.pop_back();       // Remove back
-dq.pop_front();      // Remove front
-int val = dq[i];     // Random access O(1)</code></pre>
-
-<h3>Priority Queue - Heap</h3>
-<pre><code>#include &lt;queue&gt;
-// Max heap (default)
-priority_queue&lt;int&gt; maxHeap;
-maxHeap.push(10);
-int maxVal = maxHeap.top();
-maxHeap.pop();
-
-// Min heap
-priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap;
-
-// Custom comparator
-auto cmp = [](pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
-  return a.second &lt; b.second; // Max heap by second
+public:
+    LinkedList() : head(nullptr) {}
 };
-priority_queue&lt;pair&lt;int,int&gt;,
-  vector&lt;pair&lt;int,int&gt;&gt;, decltype(cmp)&gt; pq(cmp);</code></pre>
+</div>
 
-<h3>Set - Ordered, Unique (BST)</h3>
-<pre><code>#include &lt;set&gt;
-set&lt;int&gt; s;
-s.insert(10);        // O(log n)
-s.erase(10);         // O(log n)
-s.count(10);         // Returns 0 or 1
-auto it = s.find(10); // O(log n)
-auto lower = s.lower_bound(10); // >= 10
-auto upper = s.upper_bound(10); // > 10
-
-// Multiset allows duplicates
-multiset&lt;int&gt; ms;
-ms.erase(ms.find(10)); // Erase one
-ms.erase(10);          // Erase all</code></pre>
-
-<h3>Map - Key-Value (BST)</h3>
-<pre><code>#include &lt;map&gt;
-map&lt;int, string&gt; m;
-m[1] = "one";        // Insert/update O(log n)
-m.erase(1);          // O(log n)
-if (m.count(1)) { }  // Check existence
-if (m.find(1) != m.end()) { }
-
-// Iterate
-for (auto& [key, val] : m) { }</code></pre>
-
-<h3>Hash Table - O(1) avg</h3>
-<pre><code>#include &lt;unordered_map&gt;
-#include &lt;unordered_set&gt;
-unordered_map&lt;int, string&gt; umap;
-umap[1] = "one";     // O(1) avg
-umap.erase(1);
-
-unordered_set&lt;int&gt; uset;
-uset.insert(10);
-uset.count(10);</code></pre>
-
-<h2>3. RECURSION PATTERNS</h2>
-
-<h3>Basic Template</h3>
-<pre><code>int recursiveFunc(params) {
-  // BASE CASE
-  if (base_condition) return base_value;
-
-  // RECURSIVE CASE
-  // Pre-order work
-  result = recursiveFunc(smaller_params);
-  // Post-order work
-
-  return result;
-}</code></pre>
-
-<h3>Factorial - Linear</h3>
-<pre><code>int factorial(int n) {
-  if (n &lt;= 1) return 1;
-  return n * factorial(n - 1);
-}
-// O(n) time, O(n) space</code></pre>
-
-<h3>Fibonacci - Tree Recursion</h3>
-<pre><code>// Naive - O(2^n)
-int fib(int n) {
-  if (n &lt;= 1) return n;
-  return fib(n-1) + fib(n-2);
-}
-
-// Memoized - O(n)
-int memo[1000];
-int fib(int n) {
-  if (n &lt;= 1) return n;
-  if (memo[n] != -1) return memo[n];
-  return memo[n] = fib(n-1) + fib(n-2);
-}</code></pre>
-
-<h3>Power - Binary Recursion O(log n)</h3>
-<pre><code>long long power(long long n, int p) {
-  if (p == 0) return 1;
-  long long half = power(n, p/2);
-  if (p % 2 == 0) return half * half;
-  return n * half * half;
-}</code></pre>
-
-<h3>GCD - Euclidean O(log min(a,b))</h3>
-<pre><code>int gcd(int a, int b) {
-  if (b == 0) return a;
-  return gcd(b, a % b);
-}</code></pre>
-
-<h3>Binary Search</h3>
-<pre><code>int binarySearch(vector&lt;int&gt;& arr, int l, int r, int x) {
-  if (l > r) return -1;
-  int mid = l + (r - l) / 2;
-  if (arr[mid] == x) return mid;
-  if (arr[mid] > x)
-    return binarySearch(arr, l, mid-1, x);
-  return binarySearch(arr, mid+1, r, x);
-}</code></pre>
-
-<h3>Permutations - Backtracking</h3>
-<pre><code>void permute(vector&lt;int&gt;& arr, int start,
-             vector&lt;vector&lt;int&gt;&gt;& result) {
-  if (start == arr.size()) {
-    result.push_back(arr);
-    return;
-  }
-  for (int i = start; i &lt; arr.size(); i++) {
-    swap(arr[start], arr[i]);
-    permute(arr, start + 1, result);
-    swap(arr[start], arr[i]); // Backtrack
-  }
-}</code></pre>
-
-<h3>Subsets - Bitmask</h3>
-<pre><code>void subsets(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
-    vector&lt;int&gt; subset;
-    for (int i = 0; i &lt; n; i++) {
-      if (mask & (1 &lt;&lt; i))
-        subset.push_back(arr[i]);
+<h3>6.1b Insert Operations</h3>
+<div class="code-block">    // Insert at head - O(1)
+    void insertHead(int val) {
+        Node* newNode = new Node(val);
+        newNode->next = head;
+        head = newNode;
     }
-    // Process subset
-  }
-}</code></pre>
 
-<h3>N-Queens - Backtracking</h3>
-<pre><code>bool isSafe(vector&lt;string&gt;& board, int row, int col, int n) {
-  for (int i = 0; i &lt; row; i++)
-    if (board[i][col] == 'Q') return false;
-  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
-    if (board[i][j] == 'Q') return false;
-  for (int i = row, j = col; i >= 0 && j &lt; n; i--, j++)
-    if (board[i][j] == 'Q') return false;
-  return true;
+    // Insert at tail - O(n) without tail pointer
+    void insertTail(int val) {
+        Node* newNode = new Node(val);
+        if(head == nullptr) {
+            head = newNode;
+            return;
+        }
+        Node* curr = head;
+        while(curr->next != nullptr) {
+            curr = curr->next;
+        }
+        curr->next = newNode;
+    }
+</div>
+
+<h3>6.1c Delete Operations</h3>
+<div class="code-block">    // Delete head - O(1)
+    void deleteHead() {
+        if(head == nullptr) return;
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    // Delete by value - O(n)
+    void deleteValue(int val) {
+        if(head == nullptr) return;
+
+        // If head needs to be deleted
+        if(head->data == val) {
+            deleteHead();
+            return;
+        }
+
+        Node* curr = head;
+        while(curr->next != nullptr && curr->next->data != val) {
+            curr = curr->next;
+        }
+
+        if(curr->next != nullptr) {
+            Node* temp = curr->next;
+            curr->next = curr->next->next;
+            delete temp;
+        }
+    }
+</div>
+
+<h3>6.1d Search & Query Operations</h3>
+<div class="code-block">    // Search - O(n)
+    bool search(int val) {
+        Node* curr = head;
+        while(curr != nullptr) {
+            if(curr->data == val) return true;
+            curr = curr->next;
+        }
+        return false;
+    }
+
+    // Get tail value - O(n)
+    int tailItem() {
+        if(head == nullptr) return -1;  // or throw exception
+        Node* curr = head;
+        while(curr->next != nullptr) {
+            curr = curr->next;
+        }
+        return curr->data;
+    }
+
+    // Count occurrences - O(n)
+    int count(int val) {
+        int cnt = 0;
+        Node* curr = head;
+        while(curr != nullptr) {
+            if(curr->data == val) cnt++;
+            curr = curr->next;
+        }
+        return cnt;
+    }
+
+    // Alternating sum - O(n)
+    int alternatingSum() {
+        int sum = 0;
+        int sign = 1;
+        Node* curr = head;
+        while(curr != nullptr) {
+            sum += sign * curr->data;
+            sign *= -1;
+            curr = curr->next;
+        }
+        return sum;
+    }
+</div>
+
+<h3>6.1e List Transformation Operations</h3>
+<div class="code-block">    // Reverse list - O(n)
+    void reverse() {
+        Node* prev = nullptr;
+        Node* curr = head;
+        Node* next = nullptr;
+
+        while(curr != nullptr) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    }
+
+    // Remove duplicates (sorted list) - O(n)
+    void removeDuplicates() {
+        if(head == nullptr) return;
+
+        Node* curr = head;
+        while(curr->next != nullptr) {
+            if(curr->data == curr->next->data) {
+                Node* temp = curr->next;
+                curr->next = curr->next->next;
+                delete temp;
+            } else {
+                curr = curr->next;
+            }
+        }
+    }
+</div>
+
+<h3>6.1f Utility Operations</h3>
+<div class="code-block">    // Extract minimum - O(n)
+    int extractMin() {
+        if(head == nullptr) return INT_MAX;  // or throw
+
+        Node* minNode = head;
+        Node* minPrev = nullptr;
+        Node* curr = head->next;
+        Node* prev = head;
+
+        // Find minimum
+        while(curr != nullptr) {
+            if(curr->data < minNode->data) {
+                minNode = curr;
+                minPrev = prev;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        int minVal = minNode->data;
+
+        // Delete minimum node
+        if(minNode == head) {
+            head = head->next;
+        } else {
+            minPrev->next = minNode->next;
+        }
+        delete minNode;
+
+        return minVal;
+    }
+
+    // Print list - O(n)
+    void print() {
+        Node* curr = head;
+        while(curr != nullptr) {
+            cout << curr->data << " ";
+            curr = curr->next;
+        }
+        cout << endl;
+    }
+
+    // Check if empty - O(1)
+    bool isEmpty() {
+        return head == nullptr;
+    }
+
+    // Destructor - free memory
+    ~LinkedList() {
+        while(head != nullptr) {
+            deleteHead();
+        }
+    }
+};
+</div>
+
+<h3>6.2 Common Linked List Patterns</h3>
+
+<h4>Two Pointer Technique</h4>
+<div class="code-block">// Find middle of linked list
+Node* findMiddle(Node* head) {
+    if(head == nullptr) return nullptr;
+    Node* slow = head;
+    Node* fast = head;
+    
+    while(fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;  // slow is at middle
 }
 
-bool solveNQueens(vector&lt;string&gt;& board, int row, int n) {
-  if (row == n) return true;
-  for (int col = 0; col &lt; n; col++) {
-    if (isSafe(board, row, col, n)) {
-      board[row][col] = 'Q';
-      if (solveNQueens(board, row + 1, n)) return true;
-      board[row][col] = '.'; // Backtrack
+// Detect cycle
+bool hasCycle(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
+    
+    while(fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast) return true;
     }
-  }
-  return false;
-}</code></pre>
+    return false;
+}</div>
 
-<h2>4. COMMON PATTERNS</h2>
-
-<h3>Two Pointers</h3>
-<pre><code>// Find pair with sum in sorted array
-pair&lt;int,int&gt; twoSum(vector&lt;int&gt;& arr, int target) {
-  int l = 0, r = arr.size() - 1;
-  while (l &lt; r) {
-    int sum = arr[l] + arr[r];
-    if (sum == target) return {l, r};
-    else if (sum &lt; target) l++;
-    else r--;
-  }
-  return {-1, -1};
-}</code></pre>
-
-<h3>Sliding Window</h3>
-<pre><code>// Max sum of k consecutive
-int maxSum(vector&lt;int&gt;& arr, int k) {
-  int sum = 0, maxSum = 0;
-  for (int i = 0; i &lt; k; i++) sum += arr[i];
-  maxSum = sum;
-  for (int i = k; i &lt; arr.size(); i++) {
-    sum += arr[i] - arr[i-k];
-    maxSum = max(maxSum, sum);
-  }
-  return maxSum;
-}</code></pre>
-
-<h3>Prefix Sum</h3>
-<pre><code>vector&lt;int&gt; prefixSum(n+1, 0);
-for (int i = 1; i &lt;= n; i++)
-  prefixSum[i] = prefixSum[i-1] + arr[i-1];
-// Sum of arr[l..r] = prefixSum[r+1] - prefixSum[l]</code></pre>
-
-<h3>Monotonic Stack - Next Greater</h3>
-<pre><code>vector&lt;int&gt; nextGreater(vector&lt;int&gt;& arr) {
-  int n = arr.size();
-  vector&lt;int&gt; result(n, -1);
-  stack&lt;int&gt; st;
-  for (int i = 0; i &lt; n; i++) {
-    while (!st.empty() && arr[i] > arr[st.top()]) {
-      result[st.top()] = arr[i];
-      st.pop();
+<h4>Merge Two Sorted Lists</h4>
+<div class="code-block">Node* mergeTwoLists(Node* l1, Node* l2) {
+    if(l1 == nullptr) return l2;
+    if(l2 == nullptr) return l1;
+    
+    Node* dummy = new Node(0);
+    Node* curr = dummy;
+    
+    while(l1 != nullptr && l2 != nullptr) {
+        if(l1->data < l2->data) {
+            curr->next = l1;
+            l1 = l1->next;
+        } else {
+            curr->next = l2;
+            l2 = l2->next;
+        }
+        curr = curr->next;
     }
-    st.push(i);
-  }
-  return result;
-}</code></pre>
+    
+    curr->next = (l1 != nullptr) ? l1 : l2;
+    
+    Node* result = dummy->next;
+    delete dummy;
+    return result;
+}</div>
 
-<h3>Binary Search on Answer</h3>
-<pre><code>int binarySearchAnswer(int low, int high) {
-  int result = high;
-  while (low &lt;= high) {
-    int mid = low + (high - low) / 2;
-    if (isValid(mid)) {
-      result = mid;
-      high = mid - 1;
+<!-- ======================== SECTION 7: SPECIFIC PROBLEM STRATEGIES ======================== -->
+<div class="section-break"></div>
+<h2>7. PROBLEM-SPECIFIC STRATEGIES</h2>
+
+<h3>7.1 Stamp Collection (Duplicate Removal)</h3>
+<div class="code-block">// Problem: Remove duplicates from sorted list, count removed & distinct duplicates
+
+void solveDuplicateRemoval() {
+    int n;
+    cin >> n;
+    vector&lt;int&gt; stamps(n);
+    for(int i = 0; i < n; i++) cin >> stamps[i];
+    
+    vector&lt;int&gt; unique;
+    int totalRemoved = 0;
+    int distinctDuplicates = 0;
+    
+    int i = 0;
+    while(i < n) {
+        unique.push_back(stamps[i]);
+        int count = 1;
+        
+        // Count duplicates
+        while(i + count < n && stamps[i + count] == stamps[i]) {
+            count++;
+        }
+        
+        if(count > 1) {
+            totalRemoved += (count - 1);
+            distinctDuplicates++;
+        }
+        
+        i += count;
+    }
+    
+    // Output
+    for(int x : unique) cout << x << " ";
+    cout << endl;
+    cout << totalRemoved << endl;
+    cout << distinctDuplicates << endl;
+}</div>
+
+<h3>7.2 Interval Scheduling / Weighted Scheduling</h3>
+<div class="code-block">// Problem: Select non-overlapping intervals with max total duration/weight
+
+struct Interval {
+    int start, end, weight;
+    bool operator<(const Interval& other) const {
+        return end < other.end;  // sort by end time
+    }
+};
+
+int maxWeightSchedule(vector&lt;Interval&gt;& intervals) {
+    sort(intervals.begin(), intervals.end());
+    
+    int n = intervals.size();
+    vector&lt;int&gt; dp(n);
+    dp[0] = intervals[0].weight;
+    
+    for(int i = 1; i < n; i++) {
+        // Option 1: Don't take current interval
+        dp[i] = dp[i-1];
+        
+        // Option 2: Take current interval
+        int currWeight = intervals[i].weight;
+        
+        // Find latest non-overlapping interval (binary search)
+        int j = i - 1;
+        while(j >= 0 && intervals[j].end > intervals[i].start) {
+            j--;
+        }
+        
+        if(j >= 0) currWeight += dp[j];
+        
+        dp[i] = max(dp[i], currWeight);
+    }
+    
+    return dp[n-1];
+}</div>
+
+<h3>7.3 Longest Increasing Subsequence (LIS)</h3>
+<div class="code-block">// O(n²) DP solution
+int lis_n2(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    vector&lt;int&gt; dp(n, 1);
+    
+    for(int i = 1; i < n; i++) {
+        for(int j = 0; j < i; j++) {
+            if(arr[j] < arr[i]) {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    
+    return *max_element(dp.begin(), dp.end());
+}
+
+// O(n log n) solution using binary search
+int lis_nlogn(vector&lt;int&gt;& arr) {
+    vector&lt;int&gt; tails;  // tails[i] = smallest tail of LIS of length i+1
+    
+    for(int x : arr) {
+        auto it = lower_bound(tails.begin(), tails.end(), x);
+        if(it == tails.end()) {
+            tails.push_back(x);
+        } else {
+            *it = x;
+        }
+    }
+    
+    return tails.size();
+}</div>
+
+<h3>7.4 XOR Problems (Generate All Subsets)</h3>
+<div class="code-block">// Problem: Find maximum XOR of any subset
+
+int maxXorSubset(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    int maxXor = 0;
+    
+    // Generate all subsets (2^n)
+    for(int mask = 0; mask < (1 << n); mask++) {
+        int xorSum = 0;
+        for(int i = 0; i < n; i++) {
+            if(mask & (1 << i)) {
+                xorSum ^= arr[i];
+            }
+        }
+        maxXor = max(maxXor, xorSum);
+    }
+    
+    return maxXor;
+}
+
+// Bit manipulation basics
+// Check if i-th bit is set: (mask & (1 << i)) != 0
+// Set i-th bit: mask |= (1 << i)
+// Clear i-th bit: mask &= ~(1 << i)
+// Toggle i-th bit: mask ^= (1 << i)</div>
+
+<h3>7.5 Top-K Problems</h3>
+<div class="code-block">// Using priority queue (heap)
+vector&lt;int&gt; topKFrequent(vector&lt;int&gt;& nums, int k) {
+    unordered_map&lt;int, int&gt; freq;
+    for(int x : nums) freq[x]++;
+    
+    // Min-heap of (frequency, value)
+    priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, greater&lt;pair&lt;int,int&gt;&gt;&gt; pq;
+    
+    for(auto& p : freq) {
+        pq.push({p.second, p.first});
+        if(pq.size() > k) pq.pop();
+    }
+    
+    vector&lt;int&gt; result;
+    while(!pq.empty()) {
+        result.push_back(pq.top().second);
+        pq.pop();
+    }
+    
+    return result;
+}
+
+// Using set for leaderboard (ordered by score desc, then id asc)
+struct Player {
+    string id;
+    int score;
+    bool operator<(const Player& other) const {
+        if(score != other.score) return score > other.score;  // desc
+        return id < other.id;  // asc
+    }
+};
+
+set&lt;Player&gt; leaderboard;
+unordered_map&lt;string, int&gt; scores;
+
+void updateScore(string id, int delta) {
+    // Remove old entry
+    if(scores.count(id)) {
+        leaderboard.erase({id, scores[id]});
+    }
+    
+    // Update score
+    scores[id] += delta;
+    
+    // Add new entry
+    leaderboard.insert({id, scores[id]});
+}
+
+void printTopK(int k) {
+    int cnt = 0;
+    for(const Player& p : leaderboard) {
+        if(cnt >= k) break;
+        cout << p.id << " ";
+        cnt++;
+    }
+    cout << endl;
+}</div>
+
+<h3>7.6 Checkpoint/Undo System (Stack-based)</h3>
+<div class="code-block">// For Uncle Tan's Leaderboard problem
+
+struct State {
+    unordered_map&lt;string, int&gt; scores;
+    set&lt;Player&gt; ranking;
+};
+
+stack&lt;State&gt; snapshots;
+unordered_map&lt;string, int&gt; currentScores;
+set&lt;Player&gt; currentRanking;
+
+void handleSNAP() {
+    State snapshot;
+    snapshot.scores = currentScores;
+    snapshot.ranking = currentRanking;
+    snapshots.push(snapshot);
+}
+
+void handleUNDO() {
+    if(snapshots.empty()) {
+        cout << "EMPTY" << endl;
+        return;
+    }
+    
+    State snapshot = snapshots.top();
+    snapshots.pop();
+    
+    currentScores = snapshot.scores;
+    currentRanking = snapshot.ranking;
+}
+
+void handleADD(string id, int delta) {
+    // Remove from ranking
+    if(currentScores.count(id)) {
+        currentRanking.erase({id, currentScores[id]});
+    }
+    
+    // Update score
+    currentScores[id] += delta;
+    
+    // Add back to ranking
+    currentRanking.insert({id, currentScores[id]});
+}
+
+void handleSCORE(string id) {
+    if(currentScores.count(id)) {
+        cout << currentScores[id] << endl;
     } else {
-      low = mid + 1;
+        cout << 0 << endl;
     }
-  }
-  return result;
-}</code></pre>
+}
 
-<h2>5. COMPLEXITY ANALYSIS</h2>
+void handleTOP(int k) {
+    int cnt = 0;
+    for(const Player& p : currentRanking) {
+        if(cnt >= k) break;
+        if(cnt > 0) cout << " ";
+        cout << p.id;
+        cnt++;
+    }
+    cout << endl;
+}</div>
 
-<h3>Time Complexity</h3>
-<ul>
-<li><strong>O(1)</strong>: Array access, hash operations</li>
-<li><strong>O(log n)</strong>: Binary search, BST ops</li>
-<li><strong>O(n)</strong>: Linear scan, counting sort</li>
-<li><strong>O(n log n)</strong>: Merge/heap/quick sort</li>
-<li><strong>O(n²)</strong>: Nested loops, simple sorts</li>
-<li><strong>O(2ⁿ)</strong>: Naive recursion, subsets</li>
-<li><strong>O(n!)</strong>: Permutations</li>
-</ul>
+<!-- ======================== SECTION 8: COMMON PITFALLS ======================== -->
+<div class="section-break"></div>
+<h2>8. COMMON PITFALLS & DEBUGGING TIPS</h2>
 
-<h3>Recurrence Relations</h3>
-<ul>
-<li>T(n) = T(n-1) + O(1) → O(n)</li>
-<li>T(n) = 2T(n/2) + O(n) → O(n log n)</li>
-<li>T(n) = T(n/2) + O(1) → O(log n)</li>
-<li>T(n) = 2T(n-1) + O(1) → O(2ⁿ)</li>
-</ul>
+<h3>8.1 Common Mistakes</h3>
+<div class="warning-box">
+<strong>1. Integer Overflow</strong>
+• Problem: <span class="inline-code">int</span> can only hold ±2×10⁹
+• Solution: Use <span class="inline-code">long long</span> for large sums/products
+<div class="code-block">long long sum = 0;  // not int!
+for(int i = 0; i < n; i++) {
+    sum += arr[i];  // sum might exceed int range
+}</div>
 
-<h2>6. TIPS & TRICKS</h2>
+<strong>2. Off-by-One Errors</strong>
+• Array indices: 0 to n-1, not 1 to n
+• Loop conditions: <span class="inline-code">i < n</span> vs <span class="inline-code">i <= n</span>
+• Binary search: <span class="inline-code">mid = left + (right - left) / 2</span> (avoid overflow)
 
-<h3>Fast I/O</h3>
-<pre><code>ios_base::sync_with_stdio(false);
-cin.tie(NULL);</code></pre>
+<strong>3. Uninitialized Variables</strong>
+<div class="code-block">int maxVal;  // ⚠ garbage value!
+maxVal = INT_MIN;  // ✓ initialize first</div>
 
-<h3>STL Algorithms</h3>
-<pre><code>#include &lt;algorithm&gt;
-sort(v.begin(), v.end());
-reverse(v.begin(), v.end());
-int mx = *max_element(v.begin(), v.end());
-int mn = *min_element(v.begin(), v.end());
-bool found = binary_search(v.begin(), v.end(), x);
-auto it = lower_bound(v.begin(), v.end(), x);
-auto it = upper_bound(v.begin(), v.end(), x);
-int cnt = count(v.begin(), v.end(), x);</code></pre>
+<strong>4. Dangling Pointers (Linked Lists)</strong>
+<div class="code-block">Node* temp = head;
+head = head->next;
+delete temp;  // ✓ delete after reassigning
+// NOT: delete head; head = head->next;  ⚠ accesses deleted memory</div>
 
-<h3>Custom Sorting</h3>
-<pre><code>// Descending
-sort(v.begin(), v.end(), [](int a, int b) {
-  return a > b;
-});
+<strong>5. Modifying Container While Iterating</strong>
+<div class="code-block">// ⚠ WRONG
+for(auto it = v.begin(); it != v.end(); it++) {
+    if(*it == 5) v.erase(it);  // iterator invalidated!
+}
 
-// Sort pairs
-sort(pairs.begin(), pairs.end(),
-  [](pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
-    if (a.first != b.first) return a.first > b.first;
-    return a.second &lt; b.second;
-  });</code></pre>
+// ✓ CORRECT
+for(auto it = v.begin(); it != v.end(); ) {
+    if(*it == 5) {
+        it = v.erase(it);  // erase returns next valid iterator
+    } else {
+        it++;
+    }
+}</div>
 
-<h3>Bit Manipulation</h3>
-<pre><code>int setBit = n | (1 &lt;&lt; i);      // Set i-th bit
-int clearBit = n & ~(1 &lt;&lt; i);   // Clear i-th bit
-int toggleBit = n ^ (1 &lt;&lt; i);   // Toggle i-th bit
-bool isSet = n & (1 &lt;&lt; i);      // Check i-th bit
-int countBits = __builtin_popcount(n);</code></pre>
+<strong>6. Map[] Creates Entry</strong>
+<div class="code-block">map&lt;string, int&gt; m;
+if(m["key"] == 0) { ... }  // ⚠ creates "key" with value 0!
 
-<h3>Quick Reference</h3>
-<p><strong>Stable sorts:</strong> Merge, Insertion, Bubble, Counting</p>
-<p><strong>Unstable sorts:</strong> Quick, Heap, Selection</p>
-<p><strong>In-place:</strong> Quick, Heap, Bubble, Selection, Insertion</p>
-<p><strong>Not in-place:</strong> Merge, Counting</p>
+// ✓ Use count() or find()
+if(m.count("key") && m["key"] == 0) { ... }</div>
 
-<h3>Common Pitfalls</h3>
-<ul>
-<li><strong>Integer overflow:</strong> Use long long</li>
-<li><strong>Off-by-one:</strong> Check bounds</li>
-<li><strong>Division by zero:</strong> Validate first</li>
-<li><strong>Uninitialized vars:</strong> Always initialize</li>
-<li><strong>Memory leaks:</strong> Delete allocated memory</li>
-</ul>
+<strong>7. Comparing Signed and Unsigned</strong>
+<div class="code-block">int i = -1;
+if(i < v.size()) { ... }  // ⚠ v.size() is unsigned, comparison fails!
 
-<h3>Problem-Solving Strategy</h3>
+// ✓ Cast or use int
+if(i < (int)v.size()) { ... }</div>
+</div>
+
+<h3>8.2 Debugging Strategies</h3>
 <ol>
-<li>Understand problem & constraints</li>
-<li>Identify patterns</li>
-<li>Choose data structure</li>
-<li>Analyze complexity</li>
-<li>Handle edge cases</li>
-<li>Test with samples</li>
+    <li><strong>Print Intermediate Values:</strong> Add <span class="inline-code">cout << "Debug: " << var << endl;</span></li>
+    <li><strong>Test Edge Cases:</strong>
+        <ul>
+            <li>Empty input (n = 0)</li>
+            <li>Single element (n = 1)</li>
+            <li>All same values</li>
+            <li>Maximum constraints</li>
+            <li>Negative numbers</li>
+        </ul>
+    </li>
+    <li><strong>Check Return Values:</strong> Ensure all code paths return a value</li>
+    <li><strong>Use Assert Statements:</strong> <span class="inline-code">assert(condition);</span> to catch logic errors</li>
+    <li><strong>Simplify Test Cases:</strong> Start with small, hand-traceable inputs</li>
 </ol>
 
+<h3>8.3 Performance Optimization Tips</h3>
+<table>
+    <tr>
+        <th>Slow</th>
+        <th>Fast</th>
+        <th>Reason</th>
+    </tr>
+    <tr>
+        <td><span class="inline-code">map</span></td>
+        <td><span class="inline-code">unordered_map</span></td>
+        <td>O(log n) → O(1) for lookup</td>
+    </tr>
+    <tr>
+        <td><span class="inline-code">set</span></td>
+        <td><span class="inline-code">unordered_set</span></td>
+        <td>O(log n) → O(1) for lookup</td>
+    </tr>
+    <tr>
+        <td><span class="inline-code">vector::insert(begin, x)</span></td>
+        <td><span class="inline-code">deque::push_front(x)</span></td>
+        <td>O(n) → O(1)</td>
+    </tr>
+    <tr>
+        <td>Multiple passes</td>
+        <td>Single pass</td>
+        <td>Cache efficiency</td>
+    </tr>
+    <tr>
+        <td><span class="inline-code">endl</span></td>
+        <td><span class="inline-code">"\n"</span></td>
+        <td>endl flushes buffer (slow)</td>
+    </tr>
+    <tr>
+        <td>Recursion (deep)</td>
+        <td>Iteration</td>
+        <td>Avoid stack overhead</td>
+    </tr>
+</table>
+
+<!-- ======================== SECTION 9: QUICK REFERENCE ======================== -->
+<div class="section-break"></div>
+<h2>9. QUICK REFERENCE TABLES</h2>
+
+<h3>9.1 Data Structure Selection Guide</h3>
+<table>
+    <tr>
+        <th>Need</th>
+        <th>Use</th>
+        <th>Time Complexity</th>
+    </tr>
+    <tr>
+        <td>Fast random access</td>
+        <td>vector, array</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Fast insertion/deletion at ends</td>
+        <td>deque, list</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Fast lookup by key</td>
+        <td>unordered_map/set</td>
+        <td>O(1) avg</td>
+    </tr>
+    <tr>
+        <td>Maintain sorted order</td>
+        <td>map/set</td>
+        <td>O(log n)</td>
+    </tr>
+    <tr>
+        <td>Repeated min/max access</td>
+        <td>priority_queue</td>
+        <td>O(log n) insert, O(1) access</td>
+    </tr>
+    <tr>
+        <td>LIFO (Last In First Out)</td>
+        <td>stack</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>FIFO (First In First Out)</td>
+        <td>queue</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Undo/Redo operations</td>
+        <td>stack</td>
+        <td>O(1)</td>
+    </tr>
+</table>
+
+<h3>9.2 STL Container Complexity Summary</h3>
+<table class="complexity-table">
+    <tr>
+        <th>Container</th>
+        <th>Insert</th>
+        <th>Delete</th>
+        <th>Search</th>
+        <th>Access</th>
+        <th>Ordered</th>
+    </tr>
+    <tr>
+        <td>vector</td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>deque</td>
+        <td>O(1) ends</td>
+        <td>O(1) ends</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>list</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>map</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>unordered_map</td>
+        <td>O(1)*</td>
+        <td>O(1)*</td>
+        <td>O(1)*</td>
+        <td>O(1)*</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>set</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>-</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>unordered_set</td>
+        <td>O(1)*</td>
+        <td>O(1)*</td>
+        <td>O(1)*</td>
+        <td>-</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>priority_queue</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>-</td>
+        <td>O(1) top</td>
+        <td>Yes (heap)</td>
+    </tr>
+    <tr>
+        <td>stack</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>-</td>
+        <td>O(1) top</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>queue</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>-</td>
+        <td>O(1) ends</td>
+        <td>No</td>
+    </tr>
+</table>
+<div style="font-size: 7pt; margin-top: 0.1cm;">* Average case; worst case O(n)</div>
+
+<h3>9.3 Common Algorithm Complexities</h3>
+<table class="complexity-table">
+    <tr>
+        <th>Algorithm</th>
+        <th>Best</th>
+        <th>Average</th>
+        <th>Worst</th>
+        <th>Space</th>
+    </tr>
+    <tr>
+        <td>Linear Search</td>
+        <td>O(1)</td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Binary Search</td>
+        <td>O(1)</td>
+        <td>O(log n)</td>
+        <td>O(log n)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Bubble Sort</td>
+        <td>O(n)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Insertion Sort</td>
+        <td>O(n)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Selection Sort</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(n²)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Merge Sort</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n)</td>
+    </tr>
+    <tr>
+        <td>Quick Sort</td>
+        <td>O(n log n)</td>
+        <td>O(n log n)</td>
+        <td>O(n²)</td>
+        <td>O(log n)</td>
+    </tr>
+    <tr>
+        <td>Counting Sort</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(k)</td>
+    </tr>
+    <tr>
+        <td>DFS/BFS</td>
+        <td>-</td>
+        <td>O(V+E)</td>
+        <td>O(V+E)</td>
+        <td>O(V)</td>
+    </tr>
+</table>
+
+<!-- ======================== SECTION 10: EXAM TEMPLATE ======================== -->
+<div class="section-break"></div>
+<h2>10. EXAM CODE TEMPLATE</h2>
+
+<div class="code-block">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;deque&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);  // faster I/O
+    cin.tie(nullptr);
+    
+    // Read input
+    int n;
+    cin >> n;
+    
+    // Your solution here
+    
+    // Output result
+    
+    return 0;
+}
+</div>
+
+<h3>Common Input/Output Patterns</h3>
+<div class="code-block">// Read n integers
+int n;
+cin >> n;
+vector&lt;int&gt; arr(n);
+for(int i = 0; i < n; i++) {
+    cin >> arr[i];
+}
+
+// Read until EOF
+int x;
+while(cin >> x) {
+    // process x
+}
+
+// Read line by line
+string line;
+while(getline(cin, line)) {
+    // process line
+}
+
+// Read multiple test cases
+int t;
+cin >> t;
+while(t--) {
+    // solve each test case
+}
+
+// Output with specific formatting
+cout << fixed << setprecision(2) << value;  // 2 decimal places
+cout << left << setw(10) << value;  // left-aligned, width 10</div>
+
+<!-- ======================== FINAL TIPS ======================== -->
+<div class="section-break"></div>
+<h2>11. FINAL EXAM TIPS</h2>
+
+<div class="tip-box">
+<h3>Before the Exam</h3>
+<ul>
+    <li>Review all lab assignments and understand the solutions</li>
+    <li>Practice writing code <strong>without autocomplete</strong></li>
+    <li>Memorize common STL function names and signatures</li>
+    <li>Know time complexity of all operations</li>
+    <li>Prepare templates for common patterns (linked list, DP, backtracking)</li>
+</ul>
+
+<h3>During the Exam</h3>
+<ol>
+    <li><strong>Read the entire problem twice</strong> before coding</li>
+    <li><strong>Identify the pattern</strong> - does it match a known problem type?</li>
+    <li><strong>Write down the approach</strong> in comments first</li>
+    <li><strong>Start with brute force</strong> if time is tight, then optimize</li>
+    <li><strong>Test with edge cases</strong> before submitting</li>
+    <li><strong>Check for:</strong>
+        <ul>
+            <li>Integer overflow (use <span class="inline-code">long long</span>)</li>
+            <li>Off-by-one errors</li>
+            <li>Uninitialized variables</li>
+            <li>Memory leaks (linked lists)</li>
+            <li>Correct input/output format</li>
+        </ul>
+    </li>
+    <li><strong>Time management:</strong> If stuck, move on and come back later</li>
+</ol>
+
+<h3>Common Exam Question Types</h3>
+<ul>
+    <li>Linked list manipulation (insert, delete, reverse, remove duplicates)</li>
+    <li>Frequency counting with maps</li>
+    <li>Top-k problems with priority queues or sets</li>
+    <li>Interval scheduling with sorting + DP</li>
+    <li>Subset/permutation generation with recursion</li>
+    <li>Checkpoint/undo systems with stacks</li>
+    <li>DP problems (LIS, knapsack variants, scheduling)</li>
+</ul>
+</div>
+
+<div class="section-break"></div>
+<h2>12. EDGE CASES & TRICKY DETAILS (FROM YOUR ASSIGNMENTS)</h2>
+
+<h3>Common Edge Cases in TIC2001 Problems</h3>
+
+<div class="warning-box">
+<strong>🚨 FREQUENTLY TESTED:</strong>
+<ul style="font-size: 7pt; margin: 0.05cm 0;">
+    <li><strong>n = 1</strong> (single element) - list becomes empty after removing</li>
+    <li><strong>n = 0</strong> (empty input) - some problems don't have this, check constraints!</li>
+    <li><strong>All same values</strong> - duplicates, frequency counting breaks</li>
+    <li><strong>Large numbers (10^9)</strong> - int overflow if multiplying or summing</li>
+    <li><strong>Heights/weights = 0</strong> - fence problem has h_i ≥ 0, not h_i > 0!</li>
+    <li><strong>No valid answer</strong> - returns -1, "Unlucky", or empty output</li>
+    <li><strong>Ties in ranking</strong> - alphabetical order matters (lexicographic)</li>
+    <li><strong>Distinct vs all occurrences</strong> - MAX queries need distinct counting</li>
+</ul>
+</div>
+
+<h3>Assignment-Specific Tricky Details</h3>
+
+<h4>Assignment 1: Stamp Collection (Duplicate Removal)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. Count DUPLICATES removed, not total after
+//    If [1,2,2,3,4,4,4], remove 4 items (not 3 unique)
+// 2. Count DISTINCT duplicate values, not total duplicates
+//    3 and 4 both have duplicates → answer is 2
+// 3. Output must be space-separated on ONE line
+// 4. "in-place" means efficient - don't use extra vector
+
+// Common mistakes:
+// ❌ Counting unique remaining (3 items kept, not removed)
+// ❌ Counting total removed items as "distinct"
+// ✓ Read problem: TWO different counts!
+</div>
+
+<h4>Assignment 3: Largest Rectangle in Histogram (Fence Problem)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. Heights can be 0 ≤ h_i ≤ 10^9 (includes ZERO!)
+//    A zero-height plank creates a "wall" for rectangles
+// 2. Result can be VERY large (up to 10^5 * 10^9 = 10^14)
+//    Must use long long for area!
+// 3. Area = height × width (consecutive planks)
+//    Not height × count, must be CONSECUTIVE
+// 4. Can be solved O(n²) brute force or O(n) stack
+
+// Common mistakes:
+// ❌ Using int for area (overflow!)
+// ❌ Not realizing 0 breaks rectangles
+// ❌ Counting non-consecutive planks
+// ✓ Use long long area = (long long)height * width;
+</div>
+
+<h4>Assignment 3: Lucky Number (Longest Sum Subsequence)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. "Consecutive subsequence" = contiguous subarray
+//    NOT subsequence (can skip elements)
+// 2. Return STARTING INDEX (1-indexed or 0-indexed? Check!)
+//    Example shows index 3 for position in input
+// 3. If MULTIPLE same-length answers, return EARLIEST
+// 4. Very large k (up to 10^10) - can't use array indexing
+//    Use unordered_map<long long, int> for prefix sums!
+// 5. Output "Unlucky" if no solution (exact spelling!)
+
+// Algorithm:
+// prefix[i] = sum of arr[0..i-1]
+// For each pair (i,j), if prefix[j] - prefix[i] == k
+// Then arr[i..j-1] sums to k, length = j-i
+// Track earliest and longest
+
+// Common mistakes:
+// ❌ Confusing subsequence with subarray
+// ❌ Using array instead of map for large k
+// ❌ Wrong indexing (0-indexed vs 1-indexed)
+// ❌ "unlucky" instead of "Unlucky"
+// ✓ Use unordered_map for prefix sums
+</div>
+
+<h4>Assignment 3: Toy / Max-K Queries</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. O(1) requirement for MAX, MAX_2, MAX_3
+//    Can't iterate through all values each time!
+// 2. Distinct values only - duplicates don't count
+//    If you have [11, 7, 7, 6], MAX_1=11, MAX_2=7, MAX_3=6
+// 3. After REMOVE, need to update max values immediately O(1)
+//    Need data structure that tracks top 3 DISTINCT
+// 4. Duplicates in output - QUERY lists all (including dups)
+//    But MAX queries ignore duplicates
+
+// Solution structure:
+// - deque<int> for QUERY (O(n))
+// - set<int> for distinct values, sorted
+// - On remove: check if removed was max, update set
+// - On MAX: iterate set only (O(1) since only 1000 distinct)
+
+// Common mistakes:
+// ❌ Trying to do MAX in O(1) without preparation
+// ❌ Counting duplicates in MAX queries
+// ❌ Not updating max values after remove
+// ✓ Maintain separate set of distinct values
+</div>
+
+<h4>Assignment 4: QuickSelect (K-th Smallest)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. MUST use QuickSelect/partition (not sorting!)
+//    Problem explicitly says "using partition idea"
+// 2. K is 1-indexed: K=1 means smallest (arr[0] after sort)
+// 3. Can use random pivot for better average case
+// 4. Be careful with partition:
+//    Elements < pivot go left
+//    Elements ≥ pivot go right
+//    Or reverse depending on implementation
+
+// Template:
+int quickSelect(vector<int>& arr, int left, int right, int k) {
+    if (left == right) return arr[left];
+
+    int pi = partition(arr, left, right);
+    if (k <= pi) return quickSelect(arr, left, pi, k);
+    else return quickSelect(arr, pi+1, right, k);
+}
+
+// Common mistakes:
+// ❌ Using sort() - fails the requirement!
+// ❌ K is 1-indexed, forgetting -1
+// ❌ Partition logic wrong
+// ✓ Study partition carefully in quicksort section
+</div>
+
+<h4>Assignment 5: Uncle Tan's Curious Collection (Frequency Ranking)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. Each item appears multiple times on "shelf"
+//    If lantern bought 2 times, it takes 2 positions
+// 2. Sort by: higher frequency FIRST, then alphabetically
+//    Example: {lantern:2, teapot:2, compass:1}
+//    Output: lantern, lantern, teapot, teapot, compass
+// 3. QUERY 1 = first position (not index 0 internally)
+// 4. After DELETE, frequencies change, re-sort immediately
+// 5. Need to maintain a structure that's:
+//    - Ordered by frequency (desc) then name (asc)
+//    - Fast insert/delete
+//    - Can query position k
+
+// Solution:
+// - map<string, int> for frequencies
+// - Custom comparator for ordering
+// - Rebuild ordering after each delete
+// OR
+// - multiset with custom comparator
+
+// Common mistakes:
+// ❌ Forgetting each item takes multiple positions
+// ❌ Wrong sort order (alphabetic first instead of freq)
+// ❌ Querying wrong position
+// ✓ Test with example: lantern appears twice!
+</div>
+
+<h4>Assignment 6: Movies (Next Non-Overlapping Interval)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. Find next movie where start >= current_end (not >)
+//    start == end is OK (movie can start when previous ends)
+// 2. If multiple valid next movies, choose earliest start
+//    Use lower_bound(end_time) on set of start times
+// 3. Output -1 if no valid next movie found
+// 4. Need to map: movie_index → movie times
+//    Then for each movie, find "next" efficiently
+
+// Algorithm:
+// - Create set<int> of all start times for quick lookup
+// - For each movie i with end time e:
+//   - Use lower_bound(e) in set to find first start >= e
+//   - Map back to movie index
+// - Use map<int, int> for start_time → movie_index
+
+// Common mistakes:
+// ❌ Using > instead of >= (off by one!)
+// ❌ Linear search for next movie (too slow)
+// ❌ Not finding earliest valid next
+// ✓ Use set + lower_bound for O(log n) lookup
+</div>
+
+<h4>Assignment 7: Tree Tracker (AVL/Balanced BST with Order Statistics)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. KTH query: k=1 means TALLEST (not shortest)
+//    "1-th tallest" = maximum height
+// 2. Need to handle ORDER STATISTICS (k-th element)
+//    Standard set doesn't give position easily
+// 3. COUNT a b = count elements in range [a,b] inclusive
+//    Use: count(<=b) - count(<a)
+// 4. All IDs are unique (constraint)
+// 5. Heights > 10^6 possible? Check constraints!
+
+// Solution:
+// - Use set<int> with heights as keys
+// - Create map<int, int> to track id → height
+// - For COUNT: use lower_bound and upper_bound
+// - For KTH: iterate from end (largest) k times
+//   OR store in vector sorted by height
+
+// Common mistakes:
+// ❌ K means smallest instead of tallest
+// ❌ COUNT not inclusive on both ends
+// ❌ Adding duplicate IDs (shouldn't happen)
+// ✓ Test with example carefully!
+
+// Example:
+// ADD 1 150, ADD 2 180, ADD 3 120
+// KTH 1 should output 180 (tallest)
+// COUNT 100 160 should output 2 (150, 120)
+</div>
+
+<h4>Assignment 7: Pop Middle Queue</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. POPMIDDLE only happens on ODD-length queues
+//    For length 5: middle is position 2 (0-indexed)
+//    For length 7: middle is position 3
+// 2. Middle = (length-1)/2 (0-indexed) or length/2
+// 3. Output format: each removed value on new line
+//    Then final queue space-separated on ONE line
+// 4. At end, at least 1 element remains (guaranteed)
+
+// Solution:
+// - deque<int> for front/back operations
+// - For middle removal, need random access
+// - Deque provides O(1) erase in middle? NO, O(n)
+// - Might need to use list or rebuild deque
+
+// Common mistakes:
+// ❌ Not handling odd length requirement
+// ❌ Getting middle index wrong
+// ❌ Output format (spaces between elements)
+// ✓ Test middle calculation: len=5 → middle=2
+</div>
+
+<h4>Assignment 7: Speakers (Interval Scheduling)</h4>
+<div class="code-block">// TRICKY PARTS:
+// 1. Speech duration is L (same for all)
+// 2. Speech [S, S+L-1] is the actual time range
+//    If S=5, L=4: occupies times 5,6,7,8
+// 3. No overlap means: end_1 < start_2 (strict <, not <=)
+//    If speech 1 ends at 8, speech 2 starts at 9+
+// 4. First-come-first-serve: accept/reject immediately
+// 5. Output Y/N for each INSERT/REMOVE
+// 6. L can be VERY large (10^18) - must use long long!
+
+// Algorithm:
+// - Use set<pair<long long, long long>> for (start, end)
+// - For each INSERT start:
+//   - Check if [start, start+L-1] overlaps with any existing
+//   - Two intervals [a1,b1] and [a2,b2] overlap if:
+//     NOT (b1 < a2 OR b2 < a1)  →  overlaps if (b1 >= a2 AND b2 >= a1)
+
+// Common mistakes:
+// ❌ Using int instead of long long (overflow!)
+// ❌ Wrong overlap condition (≤ vs <)
+// ❌ Not handling REMOVE correctly
+// ✓ Test overlap carefully with examples!
+
+
+<h3>Common Output Format Mistakes (YOU WILL GET THIS WRONG!)</h3>
+<div class="warning-box">
+<strong>🔴 Output Format is 50% of your bugs!</strong>
+<ul style="font-size: 7pt; margin: 0.05cm 0;">
+    <li><strong>Spacing:</strong> "1 2 3" vs "1 2 3 " (trailing space) - MATTERS!</li>
+    <li><strong>Newlines:</strong> endl after each number vs one number per line</li>
+    <li><strong>Case:</strong> "Unlucky" not "unlucky", "YES" not "Yes"</li>
+    <li><strong>Blank line:</strong> Some problems need blank line for empty output</li>
+    <li><strong>Indexing:</strong> 0-indexed vs 1-indexed output - READ CAREFULLY!</li>
+    <li><strong>-1 vs "No":</strong> Some return -1 for no answer, some return message</li>
+    <li><strong>Decimal places:</strong> 2.5 vs 2.50 vs 2 - check examples!</li>
+    <li><strong>Multiple test cases:</strong> Separator between cases? Just newlines?</li>
+</ul>
+<strong>SOLUTION:</strong> Always match the exact format from example output. Copy the spacing!
+</div>
+
+<div class="section-break"></div>
+<h2>13. ULTRA-QUICK REFERENCE (FOR PANIC MOMENTS)</h2>
+
+<h3>Most Common Patterns - Copy & Modify</h3>
+<div class="code-block">// VECTOR + SORT
+vector&lt;int&gt; v(n);
+for(int i=0;i&lt;n;i++)cin&gt;&gt;v[i];
+sort(v.begin(),v.end());
+for(int x:v)cout&lt;&lt;x&lt;&lt;" ";
+
+// MAP FREQUENCY
+unordered_map&lt;int,int&gt; freq;
+for(int x:arr)freq[x]++;
+for(auto p:freq)cout&lt;&lt;p.first&lt;&lt;":"&lt;&lt;p.second;
+
+// PRIORITY QUEUE (MAX-HEAP)
+priority_queue&lt;int&gt; pq;
+pq.push(x);
+cout&lt;&lt;pq.top();
+pq.pop();
+
+// SET ORDERING
+set&lt;int&gt; s;
+s.insert(x);
+for(int x:s)cout&lt;&lt;x;  // sorted!
+
+// STACK UNDO
+stack&lt;map&lt;string,int&gt;&gt; st;
+st.push(currentState);
+if(!st.empty())currentState=st.top(),st.pop();
+</div>
+
+<h3>Quick Decision Tree</h3>
+<table style="font-size: 7pt;">
+    <tr><th>Problem Type</th><th>Use This</th><th>Key Method</th></tr>
+    <tr><td>Remove duplicates</td><td>set + map</td><td>insert() → count()</td></tr>
+    <tr><td>Top-k elements</td><td>priority_queue</td><td>push() → top()</td></tr>
+    <tr><td>Frequency count</td><td>unordered_map</td><td>map[key]++</td></tr>
+    <tr><td>Sorted access</td><td>map/set</td><td>iterate naturally</td></tr>
+    <tr><td>Undo/Checkpoint</td><td>stack</td><td>push() → pop()</td></tr>
+    <tr><td>Queue operations</td><td>queue/deque</td><td>push_back() pop_front()</td></tr>
+    <tr><td>Custom sorting</td><td>sort + lambda</td><td>sort(v.begin(),v.end(),[](a,b){...})</td></tr>
+    <tr><td>Binary search</td><td>lower_bound/upper_bound</td><td>sorted vector required</td></tr>
+</table>
+
+<h3>Common Pitfalls - AVOID THESE!</h3>
+<div class="warning-box">
+<strong>❌ DON'T DO:</strong>
+<ul style="margin: 0.05cm 0; font-size: 7pt;">
+    <li><span class="inline-code">if(i < v.size() - 1)</span> when v empty → crash!</li>
+    <li><span class="inline-code">map[key]</span> to check existence → creates key!</li>
+    <li>Use <span class="inline-code">int</span> for large sums → use <span class="inline-code">long long</span></li>
+    <li>Erase from vector mid-iteration → invalidates iterator</li>
+    <li>Forget page break after big chunks in exam code</li>
+    <li>Assume set/map maintain insertion order → they don't!</li>
+</ul>
+<strong>✓ DO:</strong>
+<ul style="margin: 0.05cm 0; font-size: 7pt;">
+    <li>Use <span class="inline-code">map.count(key)</span> or <span class="inline-code">map.find()</span></li>
+    <li>Use <span class="inline-code">ios_base::sync_with_stdio(false)</span> for speed</li>
+    <li>Check empty containers before accessing</li>
+    <li>Use <span class="inline-code">long long</span> by default in competitive programming</li>
+    <li>Test with edge cases: n=0, n=1, all same, negatives</li>
+</ul>
+</div>
+
+<h3>Input/Output Templates</h3>
+<div class="code-block">// Read n numbers
+int n;
+cin >> n;
+vector&lt;int&gt; arr(n);
+for(int i = 0; i < n; i++) cin >> arr[i];
+
+// Output vector
+for(int i = 0; i < arr.size(); i++) {
+    if(i > 0) cout << " ";
+    cout << arr[i];
+}
+cout << endl;
+
+// OR simple
+for(int x : arr) cout << x << " ";
+cout << endl;
+
+// Operations loop
+int q;
+cin >> q;
+while(q--) {
+    string op;
+    cin >> op;
+    if(op == "ADD") { /* handle */ }
+    else if(op == "QUERY") { /* handle */ }
+}
+</div>
+
+<h3>String Handling</h3>
+<div class="code-block">string s;
+cin >> s;  // read word
+getline(cin, s);  // read line
+
+s[i];  // access character
+s.length() or s.size();
+s.substr(pos, len);  // substring
+s.find(substring);  // returns position or npos
+sort(s.begin(), s.end());  // sort characters
+</div>
+
+<h3>Math Helpers</h3>
+<table style="font-size: 6.5pt;">
+    <tr><th>Operation</th><th>Code</th></tr>
+    <tr><td>Integer overflow check</td><td><span class="inline-code">use long long</span></td></tr>
+    <tr><td>Power (2^n)</td><td><span class="inline-code">1 &lt;&lt; n</span> or <span class="inline-code">pow(2,n)</span></td></tr>
+    <tr><td>Absolute value</td><td><span class="inline-code">abs(x)</span> or <span class="inline-code">fabs()</span></td></tr>
+    <tr><td>Min/Max of two</td><td><span class="inline-code">min(a,b) max(a,b)</span></td></tr>
+    <tr><td>Modulo (safe)</td><td><span class="inline-code">((a%b)+b)%b</span></td></tr>
+    <tr><td>Integer division</td><td><span class="inline-code">a/b</span> (truncates)</td></tr>
+    <tr><td>GCD</td><td><span class="inline-code">__gcd(a,b)</span></td></tr>
+    <tr><td>Check if prime</td><td>Trial division up to sqrt(n)</td></tr>
+</table>
+    </div>
 </body>
 </html>
