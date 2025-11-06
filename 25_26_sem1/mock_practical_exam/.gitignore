@@ -1,0 +1,20 @@
+# Compiled executables
+problem1
+problem2
+problem3
+problem4
+problem5
+problem6
+leaderboard
+
+# Test input files
+test*.txt
+
+# Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
