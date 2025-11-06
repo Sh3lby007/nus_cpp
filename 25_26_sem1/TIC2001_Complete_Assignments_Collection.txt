@@ -1,0 +1,1954 @@
+TIC2001 Data Structures and Algorithms
+Complete Lab Assignments & Mock Practical Exam Collection
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+Lab Assignment #1 Bonus (Not Graded)................................................1
+Lab Assignment #1...................................................................3
+Lab Assignment #2...................................................................5
+Lab Assignment #3...................................................................9
+Lab Assignment #4..................................................................15
+Lab Assignment #5..................................................................19
+Lab Assignment #6..................................................................24
+Lab Assignment #7..................................................................29
+Mock Practical Exam Practice.......................................................34
+Uncle Tan's Checkpointed Leaderboard...............................................43
+
+================================================================================
+LAB ASSIGNMENT #1 BONUS (NOT GRADED)
+================================================================================
+
+A zip file containing source files for MS Visual Studio is provided. It contains:
+• A partial implementation of the Linked List class:
+  - simpleIntLinkedList.h
+  - simpleIntLinkedList.cpp
+• A main file which uses & tests the Linked List:
+  - main.cpp
+
+MAIN PROGRAM
+
+The main.cpp file contains the following code:
+
+int main() {
+    List l;
+    
+    l.insertHead(123);
+    l.insertHead(11);
+    l.insertHead(9);
+    l.insertHead(1);
+    l.insertHead(9);
+    
+    cout << "Head Element: " << l.headItem() << endl;
+    cout << "Tail Element (Call 1): " << l.tailItem() << endl;
+    l.insertTail(42);
+    cout << "Tail Element (Call 2): " << l.tailItem() << endl << endl;
+    
+    while (!l.isEmpty()) {
+        cout << "Alternating sum: " << l.alternatingSum() << endl;
+        cout << "The number of occurrences of 9 in the list: " << l.count(9) << endl;
+        cout << endl;
+        cout << "Removed head: " << l.headItem() << endl;
+        l.removeHead();
+    }
+    
+    return 0;
+}
+
+Five numbers are inserted into a Linked List. The tail of the list is printed 
+before and after appending 42. Then, the alternating sum and the count of 
+occurrences of the integer 9 are printed, followed by removing the head 
+repeatedly until the list is empty.
+
+EXPECTED OUTPUT:
+
+Head Element: 9
+Tail Element (Call 1): 123
+Tail Element (Call 2): 42
+
+Alternating sum: 87
+The number of occurrences of 9 in the list: 2
+
+Removed head: 9
+Alternating sum: -78
+The number of occurrences of 9 in the list: 1
+
+Removed head: 1
+Alternating sum: 79
+The number of occurrences of 9 in the list: 1
+
+Removed head: 9
+Alternating sum: -70
+The number of occurrences of 9 in the list: 0
+
+Removed head: 11
+Alternating sum: 81
+The number of occurrences of 9 in the list: 0
+
+Removed head: 123
+Alternating sum: 42
+The number of occurrences of 9 in the list: 0
+
+Removed head: 42
+
+EXTRA TASKS (NOT GRADED)
+
+You are to modify simpleIntLinkedList.cpp to complete the implementation:
+
+1. Implement tailItem() to return the element at the list's tail.
+
+2. Implement insertTail(int n) to append n to the list's tail.
+
+3. Implement isEmpty() to return true if the list is empty, otherwise false.
+
+4. Implement count(int n) to return the number of occurrences of n in the list.
+
+5. Implement alternatingSum() to return the sum where elements are alternately 
+   added and subtracted.
+
+Stubs for these functions are in the bottom half of simpleIntLinkedList.cpp.
+
+
+================================================================================
+LAB ASSIGNMENT #1
+================================================================================
+
+TASKS (GRADED)
+
+Question 1 (Uncle Tan's Stamp Collection)
+
+Uncle Tan has been collecting stamps for many years. Each stamp is labeled with 
+a number, and the list of stamps is given in non-decreasing order. Due to 
+limited space, he wants to remove duplicate stamps (same number) and keep only 
+one copy of each.
+
+Task: Read the list, remove duplicates in-place (keeping one of each value), 
+then output:
+1. The remaining unique stamp numbers in their original order.
+2. The total number of duplicates removed (i.e., how many nodes/elements were 
+   deleted).
+3. The number of distinct values that had duplicates.
+
+INPUT:
+The first line contains an integer n (1 ≤ n ≤ 10^5).
+The second line contains n integers a1, a2, ..., an (1 ≤ ai ≤ 10^9) in 
+non-decreasing order.
+
+OUTPUT:
+Print three lines:
+1. A single line with the remaining unique stamp numbers (space-separated).
+2. A single integer: the total number of duplicates removed.
+3. A single integer: the number of distinct duplicate values.
+
+Example Input:
+12
+1 2 2 3 4 4 4 5 6 7 7 8
+
+Example Output:
+1 2 3 4 5 6 7 8
+4
+3
+
+Notes:
+• The list is already sorted non-decreasingly.
+• Aim for an O(n) solution using a single pass.
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+1. The current implementation of the List class stores a pointer to the node at 
+   the head of the list. Suppose we also stored a pointer variable pointing to 
+   the tail node. Which of the following functions could we then make simpler / 
+   more efficient? Explain briefly.
+   
+   (a) tailItem()
+   (b) insertTail(int n)
+   (c) removeTail()
+
+2. A doubly-linked list is a linked list variant in which each node has a 
+   pointer to both the previous node and the next node (contrast with 
+   "singly-linked" lists where each node points only to the next node).
+   
+   (a) What are some advantages of a doubly-linked list over a singly-linked 
+       list? Give one or two functions that are easier in doubly-linked lists 
+       than in singly-linked lists / possible only in doubly-linked lists.
+   
+   (b) What are some drawbacks of doubly-linked lists vs. singly-linked lists?
+
+
+================================================================================
+LAB ASSIGNMENT #2
+================================================================================
+
+A zip file containing source files for MS Visual Studio is provided. It contains:
+• A Linked List class mentioned in lecture:
+  - simpleLinkedListTemplate.h
+  - simpleLinkedListTemplate.cpp
+• A main file to use the Linked List:
+  - main.cpp
+• A Food class:
+  - food.h
+  - food.cpp
+
+You will ONLY submit the modifications in these three files:
+• simpleLinkedListTemplate.h
+• simpleLinkedListTemplate.cpp
+• food.cpp
+
+However, you can modify other files, especially for your own testing and 
+debugging. But in our grading, we will assume all the other files are not 
+changed.
+
+More precisely, you are only allowed to ADD more helping members or methods and 
+you should NOT change the existing implemented declarations and implementations.
+
+Look into the main.cpp file. Run it to test your code. It contains:
+
+int main() {
+    testIntLL();
+    testFoodExist();
+    testFoodOpLessThan();
+    testFoodAddition();
+    testIntLLExtractMin();
+    testFoodSort();
+    testReverseOp();
+    return 0;
+}
+
+TASKS (NOT GRADED)
+
+Implement the "<" operation for Food in food.cpp. For example:
+
+Food food1("Salad", 100);
+Food food2("Chicken", 200);
+Food food3("Curry", 40);
+Food food4("Salad", 100);
+
+food1 < food2 will return true. food2 < food3 will return false. That is, Food 
+objects are compared by comparing their calories. We will not be considering 
+cases where two Food objects have equal calories.
+
+The following tasks are to be implemented in simpleLinkedListTemplate.cpp:
+
+1. Implement exist(). Sample output shows testing existence of elements in list.
+
+2. Implement extractMin(). This function will:
+   a. Find the minimum item in the list
+   b. Delete this node from the list and return the minimum item
+   
+   If you have done it right, you can use it to sort the list by:
+   
+   while (!l.empty())
+       cout << l.extractMin() << " ";
+   cout << endl
+
+3. Implement the function reverseOp() in the class List. It will reverse the 
+   order of the items in the list. Each time you call l.reverseOp() to modify 
+   "itself".
+
+Stubs for the above functions are provided in food.cpp and 
+simpleLinkedListTemplate.cpp.
+
+To submit your code, copy ONLY your implementation of the above functions (& 
+auxiliary functions you have implemented, if any) into Coursemology. Remember 
+to "finalize" your submission after you are done. But you can only "finalize" 
+once, remember to do so only if you are done completely.
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+For the following questions, please provide your answer in Coursemology.
+
+1. What are the disadvantages of the "LinkedList extractMin Sorting"? Give two 
+   disadvantages.
+
+2. For the current specification, we have decided not to consider cases where 
+   two Food objects have equal calories. Is it a problem for "extractMin 
+   sorting" if we have a linked list where multiple Food objects have equal 
+   calories? What is the expected behaviour? What are some other ways we can 
+   handle such an edge case?
+
+EXTRA TASKS (NOT GRADED)
+
+If you are looking for extra challenges, you can try the following tasks 
+yourself:
+• Implement the "==" operator for the class Food
+• Implement the "+" operator for the class Food. The food names will be 
+  concatenated, and the food calories will be added.
+• Can we do "cout << food;"? Google how it can be done.
+
+
+================================================================================
+LAB ASSIGNMENT #3
+================================================================================
+
+PROBLEM A: UNCLE TAN'S ECO-FRIENDLY FENCE
+
+Uncle Tan has a long wooden fence in front of his house. After a heavy storm, 
+some of the fence planks broke, leaving the fence uneven. Each plank is 1 meter 
+wide, but the heights are now irregular because of the damage.
+
+Being friendly to the earth, Uncle Tan decides to reuse the standing fence as 
+it is. The planks cannot be removed or rearranged—they must stay fixed in the 
+ground. However, he can choose a stretch of consecutive planks and reinforce 
+them to form a large rectangular wooden panel.
+
+Task: Given the heights of the n planks, find the largest possible rectangular 
+area that can be formed using consecutive planks.
+
+INPUT:
+• The first line contains an integer n (1 ≤ n ≤ 100,000) — the number of planks.
+• The second line contains n integers h1, h2, ..., hn (0 ≤ hi ≤ 10^9) — the 
+  heights of the planks.
+
+OUTPUT: Print a single integer — the maximum rectangular area that can be 
+formed using consecutive planks.
+
+EXAMPLES
+
+Example 1
+Input:
+7
+2 1 5 6 2 3 1
+
+Output:
+10
+
+Explanation: The largest rectangle is formed by the planks of height 5 and 6 
+(positions 3 and 4). Height = 5, Width = 2 ⇒ Area = 10.
+
+Example 2
+Input:
+4
+3 3 3 3
+
+Output:
+12
+
+Explanation: All four planks have the same height; choosing all gives height = 3, 
+width = 4, area = 12.
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+Determine the time complexities of the following algorithms (in terms of their 
+argument variables). Assume all inputs are positive.
+
+int bigO1(int n) {
+    if (n == 0) return 1;
+    return bigO1(n - 1) + bigO1(n - 1);
+}
+
+int bigO2(int n) {
+    if (n <= 1) return 1;
+    return bigO2(n / 2) + bigO2(n / 2);
+}
+
+int bigO3(int n, int *A) {
+    if (n <= 1) return 1;
+    int temp = 0;
+    for (int i = 0; i < n; i++) {
+        temp ^= A[i];
+    }
+    return temp + bigO3(n / 2, A);
+}
+
+int bigO4(int n, int *A) {
+    if (n <= 1) return 1;
+    int temp = 0;
+    for (int i = 0; i < n; i++) {
+        temp ^= A[i];
+    }
+    return temp + bigO4(n / 2, A) + bigO4(n / 2, A + (n + 1) / 2);
+}
+
+long long bigO5(long long n, int p) {
+    if (p == 0) return 1;
+    return n * bigO5(n, p - 1);
+}
+
+long long bigO6(long long n, int p) {
+    if (p == 0) return 1;
+    if (p == 1) return n;
+    long long temp = bigO6(n * n, p / 2);
+    if (p % 2) temp *= n;
+    return temp;
+}
+
+int bigO7(int a, int b) {
+    if (b == 0) return a;
+    return bigO7(b, a % b);
+}
+
+int bigO8(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return bigO8(n - 1) + bigO8(n - 2);
+}
+
+EXTRA TASKS (NOT GRADED)
+
+Question 2 (Lucky Number)
+
+Jeremy takes down n numbers during the day and believes his lucky number is k. 
+At day's end, he wants the longest consecutive subsequence that sums to k.
+
+INPUT:
+• One line with two integers n and k (1 ≤ n ≤ 10^6, 1 ≤ k ≤ 10^10).
+• One line with n space-separated integers a1, ..., an (1 ≤ ai ≤ k).
+
+OUTPUT: Print i, the starting index of the longest contiguous subsequence 
+summing to k. If multiple exist, print the earliest. If none exist, print 
+Unlucky.
+
+Example Input 1:
+7 16
+1 6 10 1 3 8 4
+
+Example Output 1:
+3
+
+Explanation: The longest subsequence summing to 16 is [1, 3, 8, 4], starting at 
+index 3.
+
+Example Input 2:
+5 8
+3 4 0 7 3
+
+Example Output 2:
+Unlucky
+
+Explanation: No contiguous subsequence sums to 8.
+
+Question 3 (Toy)
+
+Fluffy the cat presses a toy n times; each press generates an integer a that is 
+transmitted to Jeremy's phone. Jeremy views his phone history (most recent 
+first) and can also delete the most recent number. Various queries must be 
+supported.
+
+INPUT:
+• One line with integer n (1 ≤ n ≤ 10^3).
+• n lines follow, each with a single integer a (1 ≤ a ≤ 10^3).
+• One line with integer m (1 ≤ m ≤ 10^3).
+• m lines follow, each containing one of the commands below.
+
+COMMANDS AND REQUIRED TIME COMPLEXITIES:
+• QUERY: View the list of numbers (most recent first). O(n)
+• REMOVE: Remove the most recent number from the list. O(1)
+• MAX: Report the largest number generated (distinct by value). O(1)
+• MAX_2: Report the 2nd largest number (distinct by value). O(1)
+• MAX_3: Report the 3rd largest number (distinct by value). O(1)
+
+Duplicates do not count for MAX/MAX_2/MAX_3. If insufficient distinct numbers 
+exist, print None.
+
+Example Input:
+6
+11
+11
+6
+6
+4
+7
+11
+QUERY
+MAX
+MAX_2
+MAX_3
+REMOVE
+QUERY
+MAX
+MAX_2
+MAX_3
+REMOVE
+MAX_3
+
+Example Output:
+7, 4, 6, 6, 11, 11
+11
+7
+6
+4, 6, 6, 11, 11
+11
+6
+4
+None
+
+
+================================================================================
+LAB ASSIGNMENT #4
+================================================================================
+
+A zip file containing source files for MS Visual Studio is provided. It contains:
+• A template for each task, Question 1 and 2 respectively
+  - Q1.cpp
+  - Q2.cpp
+
+In this assignment, you should modify and submit the files: Q1.cpp, Q2.cpp.
+
+TASKS (NOT GRADED)
+
+Question 1: QuickSelect
+
+You are given an array A of N integers. You need to find the K-th smallest 
+element in the array.
+
+For this problem, you need to implement the partition idea in Quick Sort with 
+recursion. Submissions using other approaches will not get full marks.
+
+INPUT FORMAT:
+The first line of input consists of two integers N and K.
+The second line of input consists of N integers A1, A2, ... AN separated by a 
+whitespace.
+
+OUTPUT FORMAT:
+Print the K-th smallest element in the array.
+
+CONSTRAINTS:
+1 ≤ K ≤ N ≤ 100,000
+1 ≤ Ai ≤ 10^9
+
+SAMPLE INPUT:
+10 4
+9 3 2 10 7 9 2 8 5 4
+
+OUTPUT FORMAT:
+4
+
+Question 2: Sorting with Two Values
+
+For this question, please extend your code from question 1 based on the 
+following specifications.
+
+N participants compete in a mathematics question consisting of 2 rounds. The 
+i-th participant, Si, scored Ai in the first round and Bi in the second round. 
+You are tasked to construct a leaderboard for this competition.
+
+In this competition, the participants are ranked first by second round scores, 
+then by first round scores if they are tied by second round score. If their 
+first round scores are also tied, their order should be based on the order that 
+they are given in the input.
+
+INPUT FORMAT:
+The first line of input consists of an integer N, the number of participants.
+Each of the next N lines of input consists of a string Si, and two integers Ai 
+and Bi, describing the participants' scores in the 2 rounds of the competition.
+
+OUTPUT FORMAT:
+Print the ranking of the participants in N lines, where the i-th line represents 
+the name of the participant ranked i.
+
+CONSTRAINTS:
+1 ≤ N ≤ 40,000
+1 ≤ |Si| ≤ 5, |Si| represents the length of string Si.
+0 ≤ Ai, Bi ≤ 10^9
+
+SAMPLE INPUT:
+5
+Terry 1000 1010
+John 1111 1010
+May 1111 2105
+Jadie 1521 2030
+Pablo 1000 1010
+
+SAMPLE OUTPUT:
+May
+Jadie
+John
+Terry
+Pablo
+
+TUTORIAL QUESTIONS (ANSWER ON COURSEMOLOGY, PREPARE TO DISCUSS)
+
+1. Describe a problem where a recursive solution might be less efficient than an 
+   iterative one. What are the trade-offs between using recursion and iteration 
+   for that problem? Is there a way to make the recursive solution as efficient 
+   as the iterative one?
+
+2. Which of the following functions are examples of recursive functions?
+   a. A function that calculates the factorial of a number by calling itself 
+      with decremented values.
+   b. A function that iteratively sums all numbers in a list using a for loop.
+   c. A function that sorts a list by repeatedly dividing it into smaller lists 
+      and recursively sorting each part.
+   d. A function that checks if a string is a palindrome by comparing the first 
+      and last characters, then recursively checking the substring in between.
+
+3. Which of the following are true statements about recursive solutions?
+   a. Recursive solutions always have a base case to stop further recursion.
+   b. Recursive solutions are always more efficient than iterative solutions.
+   c. Recursive solutions are often easier to write for problems with a naturally 
+      recursive structure (e.g., trees).
+   d. Recursive solutions always use less memory than iterative ones.
+
+EXTRA TASKS (NOT GRADED)
+
+Question 1: Counting number of paths
+
+For this question, you are given an m x n grid filled with non-negative integers. 
+A robot is initially located in the top-left corner (grid[0][0]). The robot can 
+only move down or right at each timestep. At a cell (i, j), grid[i][j] will be 
+1 if there is an obstacle, and 0 otherwise. You are given that the number of 
+ways to reach cell (i, j) is the sum of the number of ways to reach cells (i-1, j) 
+and (i, j-1). Count the number of ways that the robot can reach the bottom right 
+corner of the grid.
+
+INPUT FORMAT:
+The first line of input will have 2 integers, m and n.
+The next m lines of input will have n lines each. The j-th integer on the i-th 
+line represents grid[i][j].
+
+OUTPUT FORMAT:
+Output a single integer, the number of ways for the robot to move through the grid.
+
+SAMPLE INPUT:
+4 5
+0 0 0 0 0
+0 1 1 1 0
+0 0 0 0 0
+0 0 1 0 0
+
+SAMPLE OUTPUT:
+3
+
+Question 2: Tower of Hanoi
+
+In the tower of Hanoi, you have N discs of sizes 1, 2, 3, ... N. You have 3 pegs. 
+Initially, all discs are on peg 1. In 1 move, you can remove the topmost disc 
+from 1 peg, and place it at another peg. Note that you are not allowed to place 
+a larger disc on a smaller disc at any point in time. Your task is to find a 
+sequence of moves to move the N discs from peg 1 to peg 3.
+
+INPUT FORMAT:
+A single integer, N
+
+OUTPUT FORMAT:
+The first line of output should be M, the number of moves you intend to make. M 
+does not need to be minimized.
+
+The next M lines of output will contain 2 integers, A[i] and B[i], which means 
+you want to move the topmost disc from peg A[i] to peg B[i].
+
+SAMPLE INPUT:
+3
+
+SAMPLE OUTPUT:
+7
+1 3
+1 2
+3 2
+1 3
+2 1
+2 3
+1 3
+
+
+================================================================================
+LAB ASSIGNMENT #5
+================================================================================
+
+TASKS (GRADED)
+
+Question 1 (Uncle Tan's Curious Collection)
+
+Story: Welcome to Uncle Tan's Bazaar of Curiosities, a legendary shop tucked 
+away in a back alley of the old district. Uncle Tan, a retired teacher with a 
+mysterious past and a love for quirky antiques, runs the shop with a strange 
+system of organizing his wares.
+
+In his shop, you'll find: Lanterns, Compasses, Tea Pots, Skeleton Keys, Scrolls, 
+Pocket Watches, ... and dozens of other oddities.
+
+Instead of price tags or categories, Uncle Tan arranges items by their 
+popularity—measured by how frequently they've been bought. The more an item is 
+sold, the higher up it goes on his shelves.
+
+However, he's also a fair man: if two items have been sold the same number of 
+times, he puts the less expensive (i.e., alphabetically earlier) item first.
+
+To make things more complicated, some customers return items, and curious 
+passersby often ask: "Uncle Tan, what's the k-th item on your shelf right now?"
+
+Task: Manage Uncle Tan's collection through a series of events:
+• INSERT item_name → A customer buys an item. Add it to the shelf.
+• DELETE item_name → A customer returns an item. Remove one occurrence (if it 
+  exists).
+• QUERY k → What is the k-th item on Uncle Tan's shelf, ordered by:
+  (a) higher frequency first,
+  (b) alphabetical order if frequencies are equal.
+
+Each item may appear multiple times. The shelf is a flattened list (i.e., if an 
+item appears three times, it occupies three positions).
+
+INPUT FORMAT:
+Q
+<operation_1>
+<operation_2>
+...
+<operation_Q>
+
+CONSTRAINTS:
+• Q ≤ 10^5.
+• Each operation is one of:
+  - INSERT item_name
+  - DELETE item_name
+  - QUERY k (1 ≤ k ≤ current number of items on shelf)
+• Each item_name is a string of up to 20 lowercase letters (e.g., lantern, scroll).
+
+OUTPUT FORMAT: For each QUERY, print the name of the item at position k on the 
+shelf.
+
+SAMPLE INPUT:
+8
+INSERT teapot
+INSERT lantern
+INSERT lantern
+INSERT compass
+INSERT teapot
+QUERY 1
+DELETE lantern
+QUERY 3
+
+SAMPLE OUTPUT:
+lantern
+teapot
+
+Explanation: After the first five inserts:
+lantern → 2, teapot → 2, compass → 1.
+Sorted by frequency, then name:
+lantern, lantern, teapot, teapot, compass.
+QUERY 1 → lantern.
+
+After DELETE lantern:
+teapot → 2, lantern → 1, compass → 1.
+New shelf:
+teapot, teapot, compass, lantern.
+QUERY 3 → compass.
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+For each problem below, present two approaches: one using sorting and one using 
+hashing. Briefly state average- and worst-case complexities.
+
+1. Given array A with N integers, print all integers that appear at least k times.
+
+2. Given arrays A and B (each of size N), print all integers that appear in both.
+
+A good hash function should be efficient and distribute keys evenly. For each 
+scenario, state whether the hash choice has flaws and why (or justify if it does 
+not):
+
+3. Table size 100; positive even integer keys. h(key) = key mod 100.
+
+4. Table size 100; integer keys in [0, 10000]. h(key) = floor(sqrt(key)) mod 100.
+
+5. Table size 1009; keys are valid email addresses. h(key) = (sum of ASCII values 
+   of all characters) mod 1009.
+
+HASH TABLE SIMULATION EXERCISES
+
+Simulate insert(key) and erase(key) with the given hash function and collision 
+strategy. Identify any flaws in the resolution method.
+
+Example (given): Table size 5; h(key) = key mod 5; Linear Probing.
+[Simulation table showing insertions of 7, 12, 22, erase 7, insert 8]
+
+6. Table size 5; h(key) = key mod 5; Quadratic Probing.
+   Operations: insert(7), insert(12), insert(22), insert(2)
+
+7. Table size 5; h(key) = key mod 5; Double Hashing with g(key) = key mod 3.
+   Operations: insert(7), insert(22), insert(12)
+
+8. Table size 6; h(key) = key mod 6; Double Hashing with g(key) = 7 - (key mod 7).
+   Operations: insert(7), insert(9), insert(19), insert(5)
+
+EXTRA TASKS (NOT GRADED)
+
+Question 1 (Babel)
+
+Problem: You are given an integer N, a window length K (1 ≤ K ≤ N), and a 
+lowercase string s of length N. For every starting index j from 0 to N - K, 
+consider the substring s[j .. j + K - 1]. Let L[j] be the largest index i < j 
+such that s[i .. i + K - 1] = s[j .. j + K - 1], or -1 if no such index exists. 
+Output L[0], L[1], ..., L[N - K] space-separated on one line.
+
+INPUT: First line: N K. Second line: the string s (length N, all lowercase letters).
+
+OUTPUT: One line with N - K + 1 integers: L[0] L[1] ... L[N - K].
+
+CONSTRAINTS: 1 ≤ N ≤ 10^5, 1 ≤ K ≤ N.
+
+Example 1:
+Input:
+7 3
+ababaad
+
+Output:
+-1 -1 0 -1 -1
+
+Explanation: Substrings of length 3: aba, bab, aba, baa, aad. Only aba (at j = 2) 
+has a previous match at i = 0.
+
+Example 2:
+Input:
+6 1
+banana
+
+Output:
+-1 -1 1 -1 1 -1
+
+Implementation Tips: Use a rolling hash to compare fixed-length K substrings in 
+O(1) after O(N) preprocessing.
+
+Question 2 (Mile)
+
+You have N groceries (indexed 0 ... N - 1) with weights W[i]. A supermarket 
+trolley can carry at most two groceries; if two are carried together, their 
+weights must differ by at most D. Pushing a single grocery i costs A[i], pushing 
+it together with another costs B[i] (total B[p] + B[q] for a pair), and B[i] < A[i] 
+for all i. Compute the minimum total effort.
+
+INPUT: First line: N, D (1 ≤ N ≤ 10^5, 1 ≤ D ≤ 10^9). Next N lines: W[i], A[i], 
+B[i] (1 ≤ W[i], A[i], B[i] ≤ 10^9).
+
+OUTPUT: Print a single integer: the minimum effort to transport all groceries.
+
+Example 1:
+Input:
+8 5
+5 8 7
+8 12 8
+30 8 4
+1 10 6
+15 6 5
+28 10 8
+26 5 2
+20 9 6
+
+Output:
+52
+
+Example 2:
+Input:
+4 100
+1000 1000000000 700000000
+1000 1000000000 700000000
+1000000 1000000000 700000000
+1000000000 1000000000 700000000
+
+Output:
+3400000000
+
+Question 3 (Matching)
+
+Given a string S of length N and Q queries, each query gives a string qi (all 
+queries share the same length K). For each qi, output the number of occurrences 
+in S.
+
+INPUT: First line: N, Q, K (1 ≤ N, Q ≤ 10^5, 1 ≤ K ≤ 100). Second line: S. Next 
+Q lines: qi.
+
+OUTPUT: Print Q lines: the number of occurrences of each qi.
+
+Example:
+Input:
+9 3 3
+abcabcabc
+abc
+bca
+cab
+
+Output:
+3
+2
+2
+
+Question 4 (Four Sum)
+
+Given arrays A, B, C, D (each of length N), pick exactly one element from each 
+so that the sum equals K, or report that it is impossible. If multiple solutions 
+exist, any one is acceptable.
+
+INPUT: First line: N, K (1 ≤ N ≤ 10^3, 1 ≤ K ≤ 10^8). Next lines: array A, then 
+B, then C, then D (each has N integers in [1, 10^8]).
+
+OUTPUT: Print indices i, j, k, l such that Ai + Bj + Ck + Dl = K, or -1 if none 
+exists.
+
+Example:
+Input:
+2 100
+41 6
+24 38
+99 44
+26 12
+
+Output:
+2 1 2 1
+
+
+================================================================================
+LAB ASSIGNMENT #6
+================================================================================
+
+This week's assignment mostly revolves around using Binary Search Trees (BST) 
+to solve problems. You are encouraged to use C++ Standard Library data structures 
+and their associated functions, such as set and map.
+
+TASKS (GRADED)
+
+Question 1: Movies
+
+It's movie day! Jeremy wants to watch movies in succession without taking any 
+breaks at all! Help him check which movie he should be watching next after 
+finishing each movie!
+
+You are given a list of n line-separated durations in the form of {start end}, 
+and each start is unique. The next movie b for Jeremy to watch after movie a is 
+such that startb >= enda (movie b starts after movie a ends) and startb is 
+minimized.
+
+INPUT:
+The first line contains a single integer, n, the number of movie listings 
+(1 <= n <= 1,000,000).
+
+Then, n lines follow, each line containing 2 space-separated integers, start and 
+end, the start and end time of a movie listing 
+(-1,000,000 <= start <= end <= 1,000,000)
+
+OUTPUT:
+Print, in order of movie listing, the index (starting from 1) of the next movie 
+Jeremy should watch after watching movie i while wasting the least amount of time. 
+If Jeremy can't find a movie to watch after movie i, print "-1".
+
+Please end your output with a new line.
+
+Sample 1:
+Input:
+3
+3 4
+2 3
+1 2
+
+Output:
+-1
+1
+2
+
+Explanation:
+After movie 1 (3, 4), there is no other movie.
+After movie 2 (2, 3), Jeremy can watch movie 1.
+After movie 3 (1, 2), Jeremy can watch movie 2.
+
+Sample 2:
+Input:
+4
+4 5
+3 5
+2 3
+1 3
+
+Output:
+-1
+-1
+2
+2
+
+Sample 3:
+Input:
+1
+1 2
+
+Output:
+-1
+
+Question 2: Cat communication system
+
+Jeremy is building a new system, dubbed the Cats Communication System (CCS). 
+This horribly inefficient system utilises cats to help transfer information. In 
+this system, there are N cats lined up in a line from cat 0 to cat N-1. If a 
+message needs to be transferred from, say, cat 2 to cat 7, cat 2 will pass on 
+the message to cat 3, to cat 4... and so on, until it reaches cat 7.
+
+However, cats love sleeping. Some cats fall asleep on the job. For instance, if 
+cat 3 falls asleep, the message from cat 2 to cat 7 will not be able to be 
+transmitted. As such, given a list of "SLEEP" and "WAKE" events, as well as 
+"TRANSMIT" requests in between, Jeremy wants you to check if each of these 
+"TRANSMIT" requests will pass. All cats start out awake.
+
+INPUT:
+The first line of input will contain two integers, N and Q. 
+(1 ≤ N ≤ 2^31-1, 1 ≤ Q ≤ 300000)
+
+The next Q lines of input will contain one of the following events:
+1. "WAKE x": cat x wakes up
+2. "SLEEP x": cat x falls asleep
+3. "TRANSMIT x y": attempt to transmit information from cat x to cat y (x ≤ y). 
+   For each of these attempts, determine if the transmission will succeed.
+
+OUTPUT:
+For each "TRANSMIT" operation, output either a "YES" or "NO" followed by a 
+newline character.
+
+Sample:
+Input:
+8 8
+TRANSMIT 2 7
+SLEEP 6
+TRANSMIT 1 7
+TRANSMIT 1 5
+SLEEP 4
+TRANSMIT 1 3
+WAKE 4
+TRANSMIT 1 5
+
+Output:
+YES
+NO
+YES
+YES
+YES
+
+Explanation:
+At first, all cats are awake, so "TRANSMIT 2 7" works
+Then, cat 6 is asleep. So "TRANSMIT 1 7" fails.
+"TRANSMIT 1 5" works as cats 1-5 are awake.
+Then, cat 4 also falls asleep.
+"TRANSMIT 1 3" works as cats 1-3 are awake.
+Cat 4 wakes up. So "TRANSMIT 1 5" works as cats 1-5 are awake.
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+1. Suppose that we have all distinct integers inside a BST of unknown structure 
+   and we want to search for the integer 5. True or False: It is possible to 
+   have a search sequence as follows: 15, 9, 7, 5.
+
+2. Suppose that we have all distinct integers inside a BST of unknown structure 
+   and we want to search for the integer 8. True or False: It is possible to 
+   have a search sequence as follows: 10, 5, 9, 8.
+
+3. Suppose that we have all distinct integers inside a BST of unknown structure 
+   and we want to search for the integer 8. True or False: It is possible to 
+   have a search sequence as follows: 10, 5, 3, 9, 8.
+
+4. True or False: The largest element in the BST will always have a parent node.
+
+5. Suppose we wanted to have a binary search tree that allows for insert, delete 
+   operations, and queries to find the K-th element (K is not fixed between the 
+   queries). Describe a possible modification and algorithm to handle the update 
+   and queries. What would the time complexity?
+
+EXTRA TASKS (NOT GRADED)
+
+Question 1: Agario
+
+Jeremy is playing a game, Agario with his n friends! Jeremy and his friends each 
+control a single Agar of different sizes. To win the game, he has to absorb all 
+of his friends, one at a time! An Agar is absorbed if it is smaller than another 
+Agar, and it will grant a size increase to the winner.
+
+However, the size of the Agar that each player gets is random. As such, the game 
+is not fair! Despite this, Jeremy is confident in his ability to win every game 
+if he is allowed to choose who he fights in order! His friends have accepted his 
+challenge.
+
+Initially, Jeremy's Agar size equals s. If Jeremy tries to absorb one of his 
+friend's Agar of size t, but s < t, Jeremy's Agar will get absorbed instead and 
+he will lose! But if s > t, his friend's Agar will get absorbed, and Jeremy's 
+Agar will increase in size by x.
+
+Jeremy can choose to try to absorb any of his friend's Agars in any order. 
+Determine if he will win the game, which is by absorbing all of his friend's 
+Agars!
+
+INPUT:
+The first line contains 2 space-separated integers, s, the initial size of 
+Jeremy's Agar, 1<=s<=10^4
+n, the number of his friends playing, 1<=n<=10^3
+
+Then, n lines follow, each line containing 2 space-separated integers,
+t, the size of one of his friends' Agar, 1<=t<=10^4
+x, the size increase for absorbing this Agar, 0<=x<=10^4
+
+OUTPUT:
+Print "Yes" if Jeremy can win, or "No" if he can't win.
+
+Example 1:
+Input:
+2 2
+1 99
+100 0
+
+Output:
+Yes
+
+Explanation:
+Jeremy can choose to absorb the first Agar (1, 99). This makes his Agar grow 
+from size 2 to 101. He can now absorb the second Agar (100, 0) and win the game.
+
+Example 2:
+Input:
+2 2
+1 98
+100 100
+
+Output:
+No
+
+Explanation:
+Jeremy can absorb the first Agar (1, 98), but his Agar will only grow from size 
+2 to 100. He is not larger than the second Agar (100, 100), and thus cannot 
+absorb it and will lose the game.
+
+Question 2: Candy
+
+It's Halloween and Jeremy is going trick-or-treating! Unfortunately for his n 
+neighbours, Jeremy is very greedy. Jeremy's backpack can hold exactly m candy 
+packets (not candies). At each of his ith neighbours' houses, there are xi candy 
+packets, and each candy packet contains yi candies.
+
+Help Jeremy find out what's the maximum number of candies that he can get!
+
+INPUT:
+The first line contains 2 space separated integers,
+n, the number of neighbours, 1<=n<=10^8
+m, the number of candy packets Jeremy's backpack can hold, 1<=m<=20
+
+Then, n lines follow, each with 2 space separated integers,
+x, the number of candy packets at one of his neighbours' house, 1<=x<=10^8
+y, the number of candies in the candy packet, 1<=y<=10
+
+OUTPUT:
+Print the maximum number of candies that Jeremy can get.
+
+Example 1:
+Input:
+3 7
+5 10
+2 5
+3 6
+
+Output:
+62
+
+Explanation:
+Jeremy will take all 5 candy packets from the first neighbour for a total of 
+5*10 = 50 candies. He will then take 2 candy packets from the third neighbour 
+for a total of 50+2*6 = 62 candies. He cannot carry any more, as his backpack 
+can only hold 7 candy packets.
+
+Example 2:
+Input:
+3 3
+1 3
+2 2
+3 1
+
+Output:
+7
+
+Explanation:
+Jeremy will take 1 candy packet from the first neighbour for a total of 3 candies.
+He will then take 2 candy packets from the second neighbour for a total of 
+3+2*2 = 7 candies. He cannot carry any more, as his backpack can only hold 3 
+candy packets.
+
+
+================================================================================
+LAB ASSIGNMENT #7
+================================================================================
+
+This week's assignment focuses on using balanced search trees and heaps to solve 
+problems. You are encouraged to use C++ Standard Library data structures and 
+their associated functions (e.g., priority_queue, set, map) where appropriate.
+
+TASKS (GRADED)
+
+Question 1 (Uncle Tan's Tree Tracker)
+
+Uncle Tan runs a smart orchard where each tree has a unique ID (integer) and a 
+height (in centimeters). He often receives queries from researchers and buyers 
+who want to add or remove trees, check how many trees fall within a height range, 
+or find the k-th tallest tree.
+
+Uncle Tan wants this to be fast, even when there are thousands of trees. He 
+remembers from class that BSTs and especially AVL trees can organize data for 
+efficient searching and ranking. Your task is to help him build an efficient 
+system using BST/AVL trees (or library equivalents such as std::set, std::map, 
+or self-written trees) to answer dynamic queries.
+
+INPUT:
+• The first line contains an integer Q (1 ≤ Q ≤ 10^5), the number of queries.
+• Each of the next Q lines is one of the following operations:
+
+ADD id h      Insert a new tree with ID id and height h. E.g. ADD 101 180
+REMOVE id     Remove the tree with the given id. E.g. REMOVE 101
+COUNT a b     Count how many trees have height between a and b (inclusive). 
+              E.g. COUNT 150 200
+KTH k         Find the k-th tallest tree's height (1 = tallest). E.g. KTH 3
+
+Assumptions:
+• All IDs are unique.
+• Heights are positive integers ≤ 10^6.
+• 1 ≤ Q ≤ 10^5
+
+OUTPUT: For each COUNT or KTH query, print one integer per line. If KTH requests 
+a rank larger than the current number of trees, print -1.
+
+REQUIREMENTS AND HINTS:
+• Use a AVL-based structure
+• To support KTH, you need order statistics — store subtree sizes.
+• To support COUNT a b, you can count how many nodes ≤ b minus those < a.
+• Maintain balance so that each operation runs in O(log n).
+
+You are not required to re-implement the balancing logic of an AVL tree from 
+scratch, but you must show how a balanced BST (like AVL) ensures logarithmic 
+efficiency compared to an unbalanced BST.
+
+Example Input 1:
+10
+ADD 1 150
+ADD 2 180
+ADD 3 120
+COUNT 100 160
+KTH 1
+REMOVE 2
+KTH 1
+COUNT 100 160
+ADD 4 200
+KTH 2
+
+Example Output 1:
+2
+180
+150
+2
+180
+
+TUTORIAL QUESTIONS (PREPARE TO DISCUSS)
+
+In their base forms, a heap offers only some of the functions an AVL tree does, 
+in exchange for being simpler to implement and having less computational overhead.
+
+1. Which operations run in a lower time complexity on a heap than on an AVL tree? 
+   Which operations run faster overall (whether or not they have a lower time 
+   complexity)?
+
+For the following array of integers:
+50, 60, 40, 20, 35, 70, 1, 25, 5, 2, 9, 55, 54
+
+Draw, as trees, the max-heaps created after
+
+2. running heapify() on the array,
+
+3. inserting the elements one by one into an empty heap (from left to right in 
+   the array).
+
+Are the two heaps created the same?
+
+4. Given some array, under what conditions will the heap generated by heapify() 
+   be the same as the heap generated by inserting the elements one by one?
+
+5. Return to the heap created in Question 3. Delete the maximum element & rebuild 
+   four times in a row, and draw the result.
+
+EXTRA TASKS (NOT GRADED)
+
+Extra Question 1 (Toy II)
+
+Jeremy's pet cat Fluffy is generating numbers again – Fluffy presses the toy, 
+the toy generates a number, and the number is sent to Jeremy's phone. This time, 
+Fluffy is aiming to generate the most ordinary numbers possible – in these hectic 
+few weeks, having stability is key! Jeremy wishes to see how lucky Fluffy is, in 
+these terms. He checks his phone now for the median of the generated numbers:
+
+If the numbers were a sorted array, the median is the number exactly in the 
+middle position. If there are two numbers in the middle, just take the lower of 
+the two.
+
+INPUT:
+• The first line consists of an integer, N (1 ≤ N ≤ 10^5).
+• The second line contains N integers a1, ..., aN (0 ≤ ai ≤ 10^9).
+• The third line consists of an integer, M (1 ≤ M ≤ 10^5).
+• Then M lines follow, each a single action of the following:
+
+QUERY    Jeremy checks the median of the numbers Fluffy has generated. Output 
+         the current median (if two middles, take the lower).
+ADD b    Fluffy press the toy again, generating one more number b.
+REMOVE   Jeremy removes the median of the numbers Fluffy has generated.
+
+It is guaranteed that whenever QUERY is called, there is at least one number in 
+history.
+
+Example Input 1:
+7
+12 4 3 3 8 2 5
+10
+QUERY
+REMOVE
+QUERY
+ADD 20
+QUERY
+ADD 2
+REMOVE
+REMOVE
+REMOVE
+QUERY
+
+Example Output:
+4
+3
+5
+8
+
+Explanation: [Full walkthrough table showing state changes through operations]
+
+Extra Question 2 (Pillars)
+
+Jeremy is visiting the scenic ruins of the Pool of Pillars. The site is made up 
+of N pairs of pillars—the two pillars in every pair are identical, while each 
+pair looks different from every other. Due to the drifting sand and soil, all 
+2N pillars stand today at various points along a single straight line. For each 
+pair of pillars i, the two pillars are located at distances ai and bi from the 
+left end of the line (ai ≤ bi).
+
+Jeremy would like to stand at M spots p1, p2, ..., pM on the line and pose for 
+pictures, on the condition that each photo shows Jeremy between at least one 
+pair of identical pillars. (Being in the same position as a pillar counts as 
+being between the pair.) Now, you can always take a step back to increase your 
+camera's field of view—but that involves walking, and walking is hard! For each 
+of the M spots, what is the minimum left-to-right width of a photo that has 
+Jeremy between a pillar pair? If no such width exists, output -1.
+
+INPUT:
+• First line: N and M (1 ≤ N, M ≤ 10^5).
+• Second line: a1, ..., aN (0 ≤ ai ≤ 10^9).
+• Third line: b1, ..., bN (0 ≤ bi ≤ 10^9).
+• Fourth line: p1, ..., pM (0 ≤ pj ≤ 10^9).
+
+OUTPUT: Print M space-separated integers w1, ..., wM on one line, where wj is 
+the minimum width for pj (or -1 if none).
+
+Example Input:
+8 7
+12 14 13 10 32 31 25 28
+16 19 21 20 38 35 32 33
+18 15 11 23 32 34 28
+
+Example Output:
+5 4 10 -1 4 4 5
+
+Explanation: [Details about minimum widths for each position]
+
+Extra Question 3 (Candies)
+
+On TIC2001 Street, there are N houses in a row, numbered from 1 to N.
+
+You wish to pass the street and visit some of the houses in increasing order of 
+house number. If you decide to visit house i, you will receive Ai candies from 
+the house owner. Ai can be negative, in which case you will lose |Ai| candies 
+to the house owner (even though you could have sworn you had gotten some from 
+them instead—spooky!)
+
+Anyway, you have plenty of candy at home—so you're just trying to visit as many 
+houses as possible. You start with 0 candy, and must always keep your candies 
+non-negative; how many houses can you visit at most?
+
+INPUT:
+• First line: N (1 ≤ N ≤ 10^5).
+• Second line: A1, ..., AN (-10^9 ≤ Ai ≤ 10^9).
+
+OUTPUT: A single integer: the maximum number of houses you can visit.
+
+Example Input:
+6
+4 -4 1 -3 1 -3
+
+Example Output:
+5
+
+Explanation (one valid plan): Visit 1 (+4), 3 (+1), 4 (-3), 5 (+1), 6 (-3) ⇒ 
+never negative.
+
+You can visit 5 houses as follows:
+• Visit house 1 and receive 4 candies (4 candies left).
+• Visit house 3 and receive 1 candy (5 candies left).
+• Visit house 4 and lose 3 candies (2 candies left).
+• Visit house 5 and receive 1 candy (3 candies left).
+• Visit house 6 and lose 3 candies (0 candies left).
+
+On the other hand, you cannot visit all 6 houses since you would have negative 
+candies partway through.
+
+
+================================================================================
+MOCK PRACTICAL EXAM PRACTICE
+================================================================================
+
+BEFORE WE START
+
+The format for this PE is the same as Assignment 3 onwards, whereby your code 
+has to take in input as specified in the question, similar to that of 
+LeetCode/HackerRank/Codeforces. Output must be ended with an endline character. 
+A zipped file of the solution files for MS Visual Studio is provided for each 
+problem which contains a file with an empty int main function for you to modify 
+and test your code. When submitting on Coursemology, paste your code into the 
+void solution function and remove any return 0 statements.
+
+PROBLEM 1: POP MIDDLE
+
+Simulate a Queue that supports the following operations:
+
+Operation     Description
+PUSH [x]      Push [x] into the queue
+POP           Remove the front element of the queue and output its value. It is
+              guaranteed there will be at least one element in the queue when
+              this operation happens.
+POPMIDDLE     Remove the middle element of the queue and output its value. It
+              is guaranteed there will be an odd number of elements in the
+              queue when this operation happens.
+
+After executing all the given operations, list the values in the queue from 
+front to back. It is guaranteed there will be at least one element in the queue 
+at the end of all the operations.
+
+INPUT:
+The first line of input contains an integer Q. Q lines will follow, representing 
+an operation each. The operations should be executed in order and the format 
+would be as described in the table above.
+
+OUTPUT:
+For every POP and POPMIDDLE operation, output the value removed.
+At the end of all Q operations, output all the values in the queue from front 
+to back. Add a single space between two consecutive values. Do not print a space 
+after the last value. Instead, remember to print an end-line character at the 
+end of the output.
+
+CONSTRAINTS:
+• 1 ≤ Q ≤ 400,000
+• All the values will range from 1 to 10^9 inclusive
+• It is guaranteed there is at least one element in the queue when a POP 
+  operation happens
+• It is guaranteed there is an odd number of elements in the queue when a 
+  POPMIDDLE operation happens
+• It is guaranteed there is at least one element in the queue at the end of all 
+  the operations
+
+Sample Input:
+13
+PUSH 1
+POP
+PUSH 2
+POPMIDDLE
+PUSH 5
+PUSH 3
+PUSH 4
+PUSH 4
+POP
+PUSH 2
+PUSH 2
+POPMIDDLE
+PUSH 4
+
+Sample Output:
+1
+2
+5
+4
+3 4 2 2 4
+
+Explanation:
+The first element 1 is pushed and then popped. The next element 2 is pushed and 
+then popped again since it is the only element in the queue and thus also the 
+middle element. The next 4 elements pushed will give [5, 3, 4, 4] in the queue. 
+The next pop will remove the element 5 which is at the front, giving [3, 4, 4]. 
+The next 2 pushes will give [3, 4, 4, 2, 2] in the queue and the middle element 
+is 4 which is popped, leaving [3, 4, 2, 2]. The last push will give [3, 4, 2, 2, 4] 
+in the queue.
+
+PROBLEM 2: SPEAKERS
+
+There are several guest speakers, each of which talks for L time units. In other 
+words, if a speaker starts their speech at time S, the speech will end at time 
+(S + L - 1). Only one speaker can be talking at any time. Therefore, some 
+speeches might clash.
+
+The speakers are scheduled on a first-come-first-serve basis. In other words, a 
+speaker is allowed to speak only if their speech does not clash with any currently 
+scheduled speeches. If there are clashes, the speaker is rejected. Furthermore, 
+some speakers might decide to pull out halfway. This means that their speech 
+will no longer be in the schedule. If this is done, all previously rejected 
+speakers will not be reconsidered.
+
+Implement a data structure that supports the following operations:
+
+Operation     Description
+INSERT [S]    Attempt to insert a speech that starts at time S and ends at 
+              (S + L - 1). If there is no other speech that clashes with speech, 
+              output "Y" on one line and add it to the schedule. Otherwise, 
+              output "N" on one line and ignore the operation.
+REMOVE [S]    Attempt to remove a speech that starts at exactly time S and ends
+              at (S + L - 1). If such a speech exists, output "Y" and remove it
+              from the schedule. Otherwise, output "N" on one line and ignore
+              the operation.
+
+At the end of all the operations, list the final schedule by listing all the 
+start times of the speeches in increasing order. It is guaranteed that there is 
+at least one speech in the schedule at the end of all the operations.
+
+INPUT:
+The first line of input contains two integers Q and L. Q lines will follow, 
+representing an operation each. The operations should be executed in order and 
+the format would be as described in the table above.
+
+OUTPUT:
+For every INSERT and REMOVE operation, output "Y" or "N" according to the 
+description in the table above.
+
+At the end of all Q operations, output all the start times of the speeches in 
+the schedule in increasing order, separated by whitespaces. Do not print a space 
+after the last start time. Instead, remember to print an end-line character at 
+the end of the output.
+
+CONSTRAINTS:
+• 1 ≤ Q ≤ 200,000
+• 1 ≤ L ≤ 10^18
+• All the start times will range from 1 to 10^18 inclusive.
+• Make sure to use the long long 64-bit data type to store the value of L and 
+  the start times.
+• It is guaranteed that there is at least one speech in the schedule at the end 
+  of all the operations.
+
+Sample Input:
+10 4
+INSERT 5
+INSERT 2
+INSERT 8
+INSERT 1
+INSERT 9
+REMOVE 2
+REMOVE 9
+INSERT 12
+INSERT 10
+REMOVE 5
+
+Sample Output:
+Y
+N
+N
+Y
+Y
+N
+Y
+Y
+N
+Y
+1 12
+
+Explanation:
+[Full operation table showing schedule changes]
+
+PROBLEM 3: QUEENS
+
+In chess, a queen piece can move and attack horizontally, vertically or 
+diagonally from its own position. Given an N × N chessboard with M queens such 
+that no queens attack each other, decide whether it is possible to place N - M 
+more queens on the board such that no queens attack each other.
+
+INPUT:
+The first line of input contains two integers N and M. N lines will follow, 
+where the ith line represents the ith row of the chessboard. "." and "Q" 
+represent an empty space and a queen respectively.
+
+OUTPUT:
+Output "true" if it is possible to place N - M more queens on the board such 
+that no queens attack each other. Otherwise, output "false". Remember to print 
+an end-line character at the end of the output.
+
+CONSTRAINTS:
+• 1 ≤ N ≤ 12
+• 0 ≤ M < N
+
+Sample Input:
+4 1
+Q...
+....
+....
+....
+
+Sample Output:
+false
+
+Sample Input:
+4 1
+....
+...Q
+....
+....
+
+Sample Output:
+true
+
+Explanation:
+For the first sample input, it is not possible to place 3 more queens such that 
+all queens do not attack each other.
+
+For the second sample input, the queens can be placed in this way:
+.Q..
+...Q
+Q...
+..Q.
+
+PROBLEM 4: INSTRUCTION
+
+Given N instructions of the form <operator> <number>, where <operator> is either 
+'+', '-', '*' or '/'. Starting from the number 0, for each instruction from the 
+first instruction, choose whether to apply it to the current number. Note that 
+the instructions cannot be reordered.
+
+Your goal is to minimise the difference between the final number and a target 
+number K. If there are more than one number that minimises the difference, pick 
+the smaller one.
+
+Note: In this problem, '/' corresponds to integer division.
+
+INPUT:
+The first line of input contains two integers N and K. N lines will follow, 
+where the i-th line represents the i-th given instruction.
+
+OUTPUT:
+Output the final number that is as close as possible to K. If there are more 
+than one number that minimises the difference, pick the smaller one.
+
+CONSTRAINTS:
+• 1 ≤ N ≤ 16
+• 1 ≤ K ≤ 10^9
+• It is guaranteed that for any combination of instruction that you apply, the 
+  results will fit in a 32-bit signed integer.
+
+Sample Input:
+3 10
++ 4
++ 3
+* 3
+
+Sample Output:
+9
+
+Sample Input:
+5 1
++ 2
++ 3
++ 4
++ 5
++ 6
+
+Sample Output:
+0
+
+Explanation:
+In the first sample, you can get 9 by applying + 3 and * 3.
+0 + 3 = 3
+3 * 3 = 9
+
+In the second sample, you can get 0 by not applying any instruction at all. 
+Applying + 2 will result in the final number 2, which has the same difference 
+from K = 1 as 0. However, 0 is smaller than 2, and therefore we pick 0 as our 
+answer.
+
+PROBLEM 5: LONGEST INCREASING SUBSEQUENCE
+
+A subsequence is a sequence that can be derived from the given sequence by 
+deleting zero or more elements without changing the order of the remaining 
+elements. For example, [3, 6, 2, 7] and [3, 1, 6] are subsequences of 
+[3, 1, 6, 2, 2, 7], but [6, 1] is not. A sequence of length n, [a1, a2, ..., an]
+is said to be increasing if a1 < a2 < ... < an.
+
+Given a sequence A of length N, find the length of the longest increasing 
+subsequence of A.
+
+INPUT:
+The first line of input contains an integer N.
+The second line of input contains N integers separated by spaces representing 
+the array A.
+
+OUTPUT:
+An integer representing the length of the longest increasing subsequence of A.
+
+CONSTRAINTS:
+• 1 ≤ N ≤ 10
+• Each element in A will be between 1 and 10^9 inclusive.
+
+Sample Input:
+4
+1 4 2 3
+
+Sample Output:
+3
+
+Sample Input:
+4
+4 3 2 1
+
+Sample Output:
+1
+
+Explanation:
+In the first sample, the longest increasing subsequence is [1, 2, 3].
+In the second sample, the longest increasing subsequence can be [4], [3], [2] 
+or [1].
+
+PROBLEM 6: XOR
+
+Let ⊕ be the binary xor operator on integers. In C++, if you have two integers 
+a and b, you can get the value of a ⊕ b by doing
+
+int a = 5;
+int b = 3;
+int result = a ^ b;
+
+⊕ is commutative and associative. In other words, for every integer a, b and c, 
+we have a ⊕ b = b ⊕ a and a ⊕ (b ⊕ c) = (a ⊕ b) ⊕ c = a ⊕ b ⊕ c.
+Additionally, for every integer a, 0 ⊕ a = a.
+
+Define the xor-sum of a set of integers A = {a1, a2, ..., ak} to be 
+a1⊕a2⊕...⊕ak.
+
+Given a set of integers A, your task is to find out the largest xor-sum of any 
+subset of A.
+
+INPUT:
+The first line of input contains an integer N.
+The second line of input contains N integers separated by spaces representing 
+the set A.
+
+OUTPUT:
+Output an integer representing the largest xor-sum of any subset of A.
+
+CONSTRAINTS:
+• 1 ≤ N ≤ 16
+• Each element in A will be between 1 and 10^9 inclusive.
+
+Sample Input:
+4
+1 2 3 5
+
+Sample Output:
+7
+
+Sample Input:
+5
+1 2 4 8 16
+
+Sample Output:
+31
+
+Explanation:
+In the first sample, the largest that you can get is the xor-sum of {1, 3, 5}, 
+which is 7.
+In the second sample, the largest that you can get is the xor-sum of A itself, 
+which is 31.
+
+DETAILS ABOUT THE XOR OPERATION
+
+a⊕b is computed by
+1. Converting both numbers into binary
+2. Operating on each bit using the table below
+3. Converting the result back to decimal
+
+A    B    Result
+0    0    0
+1    0    1
+0    1    1
+1    1    0
+
+For example, 9 in binary is 1001 and 12 in binary is 1100.
+
+1001
+1100
+----
+0101
+
+Since 0101 is 5 in decimal, we have 9 ⊕ 12 = 5.
+
+
+================================================================================
+UNCLE TAN'S CHECKPOINTED LEADERBOARD (SNAP/UNDO + TOP-K)
+================================================================================
+
+TASK
+
+Story: Uncle Tan runs a weekend arcade league. Players come and go, scores are 
+adjusted on the fly (sometimes corrected with negative adjustments), and—because 
+Uncle Tan experiments with prize rules—he needs to checkpoint the entire state 
+and later undo everything back to the last checkpoint if the experiment flops. 
+At any time he may ask for the current top-k players, or the exact score of a 
+particular player.
+
+Your job: Build an online leaderboard system that processes a sequence of Q 
+operations and prints outputs where required. The system must:
+
+• Maintain a mapping from player id (ASCII, no spaces) to its current integer 
+  score (starts at 0 upon first update).
+• Maintain a global ordering of players by score descending, breaking ties by 
+  lexicographically smaller id.
+• Support checkpoints that capture the whole state implicitly and undo that 
+  restores the state to the most recent checkpoint.
+• Handle negative updates, repeated updates to the same player, and nested 
+  checkpoints.
+
+Clue: A natural design uses a hashmap for scores, an ordered set for ranking, 
+and a stack for SNAP/UNDO.
+
+UNIFIED OPERATION SEMANTICS
+
+Name          Form         Effect                                    Output
+Add           ADD id delta Add integer delta to id; create if unseen. -
+Checkpoint    SNAP         Start a checkpoint (nested allowed).      -
+Undo          UNDO         Revert changes since the most recent      EMPTY if no 
+                           SNAP.                                     checkpoint.
+Top-k         TOP k        List k highest by score desc; tie by      The selected 
+                           id asc.                                   ids in one 
+                                                                     line.
+Query         SCORE id     Print current score; unseen prints 0.     The integer 
+                                                                     score.
+
+INPUT FORMAT:
+Q
+<op_1>
+<op_2>
+...
+<op_Q>
+
+Constraints: 1 ≤ Q ≤ 2 · 10^5; id is a non-empty ASCII string (no spaces, 
+length ≤ 32); -10^9 ≤ delta ≤ 10^9.
+
+OUTPUT FORMAT:
+• For each UNDO with no checkpoint: print EMPTY.
+• For each TOP k: one line containing the chosen ids separated by single spaces 
+  (blank line if none).
+• For each SCORE id: the score on its own line.
+
+SUBTASKS BY OPERATION (WITH MARKS)
+
+Subtask 1 — ADD only
+Enabled: ADD  Ignore: SCORE, TOP, SNAP, UNDO
+Specification: ADD id delta updates a player's score; the player must persist 
+even if the score becomes ≤ 0.
+Marks: 15
+
+Subtask 2 — ADD, SCORE
+Enabled: ADD, SCORE  Ignore: TOP, SNAP, UNDO
+Specification: SCORE id prints current score (unseen → 0, query does not create).
+Marks: 15
+
+Coursemology Example (I/O):
+
+Sample Input:
+9
+SCORE zoe
+ADD alice 10
+SCORE alice
+ADD alice -3
+SCORE alice
+ADD bob -2
+SCORE bob
+SCORE carl
+SCORE alice
+
+Sample Output:
+0
+10
+7
+-2
+0
+7
+
+Explanation:
+1. SCORE zoe → 0 (unseen id prints 0).
+2. ADD alice 10 sets alice=10 (no output).
+3. SCORE alice prints 10.
+4. ADD alice -3 updates alice=7 (no output).
+5. SCORE alice prints 7.
+6. ADD bob -2 sets bob=-2 (no output).
+7. SCORE bob prints -2.
+8. SCORE carl → 0 (unseen).
+9. SCORE alice prints 7.
+
+Subtask 3 — ADD, SCORE, TOP
+Enabled: ADD, SCORE, TOP  Ignore: SNAP, UNDO
+Specification: TOP k prints up to k player ids with highest scores (score desc, 
+tie id asc); print a blank line if none.
+Marks: 20
+
+[Additional coursemology example provided]
+
+Subtask 4 — + SNAP
+Enabled: ADD, SCORE, TOP, SNAP  Ignore: UNDO
+Specification: SNAP records a checkpoint of the current state (supporting later 
+undo).
+Marks: 15
+
+Subtask 5 — + UNDO
+Enabled: ADD, SCORE, TOP, SNAP, UNDO
+Specification: UNDO reverts all changes back to the most recent SNAP; if none 
+exists, print EMPTY.
+Marks: 20
+
+Subtask 6 — Nested checkpoints (full system)
+Enabled: all operations; multiple SNAP markers allowed; each UNDO reverts to 
+the most recent.
+Specification: support arbitrarily nested checkpoints with correct pop-to-marker 
+semantics.
+Marks: 15
+
+UNIFIED EXAMPLE (USED FOR SUBTASKS 4-6)
+
+Input:
+12
+ADD alice 10
+ADD bob 5
+TOP 2
+SNAP
+ADD bob 20
+ADD carl -3
+TOP 3
+UNDO
+TOP 3
+SCORE carl
+UNDO
+UNDO
+
+Output:
+alice bob
+bob alice carl
+alice bob
+0
+EMPTY
+
+Explanation:
+Initially, the leaderboard is empty. After ADD alice 10 and ADD bob 5, the 
+scores are {alice:10, bob:5}, so TOP 2 prints alice bob. The SNAP marks a 
+checkpoint. Then ADD bob 20 updates bob to 25 and ADD carl -3 adds carl with -3, 
+hence TOP 3 prints bob alice carl. UNDO restores to the checkpoint (removing 
+carl, bob back to 5), so the next TOP 3 prints alice bob. SCORE carl prints 0 
+since carl no longer exists. The final UNDO has no checkpoint and prints EMPTY.
+
+MARKS ALLOCATION (SUMMARY)
+
+Subtask                                    Marks
+Subtask 1 — ADD only                       15
+Subtask 2 — ADD, SCORE                     15
+Subtask 3 — ADD, SCORE, TOP                20
+Subtask 4 — + SNAP                         15
+Subtask 5 — + UNDO                         20
+Subtask 6 — Nested checkpoints (full)      15
+Total                                      100
+
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
+TIC2001 Data Structures and Algorithms
+Complete Lab Assignments & Mock Practical Exam Collection
+Compiled: November 2025
