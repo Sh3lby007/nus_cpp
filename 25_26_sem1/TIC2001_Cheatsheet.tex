@@ -1,0 +1,681 @@
+\documentclass[8pt,a4paper,landscape]{extarticle}
+\usepackage[margin=0.3in]{geometry}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{amsmath}
+
+% Compact spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{15pt}
+\setlist{nosep,leftmargin=*}
+
+% Section formatting
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+% Code listing style
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  numbers=none,
+  breaklines=true,
+  frame=none,
+  showstringspaces=false,
+  tabsize=2,
+  aboveskip=2pt,
+  belowskip=2pt
+}
+
+\begin{document}
+\begin{multicols*}{3}
+
+\begin{center}
+\textbf{\LARGE TIC2001 Data Structures \& Algorithms}\\
+\textbf{\large Quick Reference Cheatsheet}
+\end{center}
+
+\section*{1. SORTING ALGORITHMS}
+
+\subsection*{Bubble Sort - O(n²)}
+\begin{lstlisting}
+void bubbleSort(vector<int>& arr) {
+  int n = arr.size();
+  for (int i = 0; i < n-1; i++) {
+    bool swapped = false;
+    for (int j = 0; j < n-i-1; j++) {
+      if (arr[j] > arr[j+1]) {
+        swap(arr[j], arr[j+1]);
+        swapped = true;
+      }
+    }
+    if (!swapped) break; // Optimized
+  }
+}
+\end{lstlisting}
+\textbf{Use:} Small datasets, nearly sorted data. Stable.
+
+\subsection*{Selection Sort - O(n²)}
+\begin{lstlisting}
+void selectionSort(vector<int>& arr) {
+  int n = arr.size();
+  for (int i = 0; i < n-1; i++) {
+    int minIdx = i;
+    for (int j = i+1; j < n; j++) {
+      if (arr[j] < arr[minIdx])
+        minIdx = j;
+    }
+    swap(arr[i], arr[minIdx]);
+  }
+}
+\end{lstlisting}
+\textbf{Use:} When writes are costly. Unstable.
+
+\subsection*{Insertion Sort - O(n²)}
+\begin{lstlisting}
+void insertionSort(vector<int>& arr) {
+  int n = arr.size();
+  for (int i = 1; i < n; i++) {
+    int key = arr[i];
+    int j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j+1] = arr[j];
+      j--;
+    }
+    arr[j+1] = key;
+  }
+}
+\end{lstlisting}
+\textbf{Use:} Small/nearly sorted data, online sorting. Stable.
+
+\subsection*{Merge Sort - O(n log n)}
+\begin{lstlisting}
+void merge(vector<int>& arr, int l, int m, int r) {
+  vector<int> left(arr.begin()+l, arr.begin()+m+1);
+  vector<int> right(arr.begin()+m+1, arr.begin()+r+1);
+  int i = 0, j = 0, k = l;
+  while (i < left.size() && j < right.size()) {
+    if (left[i] <= right[j]) arr[k++] = left[i++];
+    else arr[k++] = right[j++];
+  }
+  while (i < left.size()) arr[k++] = left[i++];
+  while (j < right.size()) arr[k++] = right[j++];
+}
+
+void mergeSort(vector<int>& arr, int l, int r) {
+  if (l < r) {
+    int m = l + (r - l) / 2;
+    mergeSort(arr, l, m);
+    mergeSort(arr, m+1, r);
+    merge(arr, l, m, r);
+  }
+}
+// Call: mergeSort(arr, 0, arr.size()-1);
+\end{lstlisting}
+\textbf{Use:} Large datasets, guaranteed O(n log n), linked lists. Stable. Space: O(n).
+
+\subsection*{Quick Sort - O(n log n) avg, O(n²) worst}
+\begin{lstlisting}
+int partition(vector<int>& arr, int low, int high) {
+  int pivot = arr[high];
+  int i = low - 1;
+  for (int j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      i++;
+      swap(arr[i], arr[j]);
+    }
+  }
+  swap(arr[i+1], arr[high]);
+  return i + 1;
+}
+
+void quickSort(vector<int>& arr, int low, int high) {
+  if (low < high) {
+    int pi = partition(arr, low, high);
+    quickSort(arr, low, pi - 1);
+    quickSort(arr, pi + 1, high);
+  }
+}
+// Call: quickSort(arr, 0, arr.size()-1);
+\end{lstlisting}
+\textbf{Use:} General purpose, cache-friendly. Unstable. Space: O(log n).
+
+\subsection*{Heap Sort - O(n log n)}
+\begin{lstlisting}
+void heapify(vector<int>& arr, int n, int i) {
+  int largest = i;
+  int l = 2*i + 1, r = 2*i + 2;
+  if (l < n && arr[l] > arr[largest]) largest = l;
+  if (r < n && arr[r] > arr[largest]) largest = r;
+  if (largest != i) {
+    swap(arr[i], arr[largest]);
+    heapify(arr, n, largest);
+  }
+}
+
+void heapSort(vector<int>& arr) {
+  int n = arr.size();
+  // Build max heap
+  for (int i = n/2 - 1; i >= 0; i--)
+    heapify(arr, n, i);
+  // Extract elements
+  for (int i = n-1; i > 0; i--) {
+    swap(arr[0], arr[i]);
+    heapify(arr, i, 0);
+  }
+}
+\end{lstlisting}
+\textbf{Use:} When O(n log n) guaranteed + O(1) space. Unstable.
+
+\subsection*{Counting Sort - O(n+k)}
+\begin{lstlisting}
+void countingSort(vector<int>& arr) {
+  int maxVal = *max_element(arr.begin(), arr.end());
+  vector<int> count(maxVal + 1, 0);
+  for (int x : arr) count[x]++;
+  int idx = 0;
+  for (int i = 0; i <= maxVal; i++)
+    for (int j = 0; j < count[i]; j++)
+      arr[idx++] = i;
+}
+\end{lstlisting}
+\textbf{Use:} Small range of integers. Stable. Space: O(k).
+
+\subsection*{Quick Select - O(n) avg}
+\begin{lstlisting}
+// Find k-th smallest element
+int quickSelect(vector<int>& arr, int l, int r, int k) {
+  if (l == r) return arr[l];
+  int pi = partition(arr, l, r);
+  if (pi == k-1) return arr[pi];
+  else if (k-1 < pi)
+    return quickSelect(arr, l, pi-1, k);
+  else
+    return quickSelect(arr, pi+1, r, k);
+}
+\end{lstlisting}
+
+\section*{2. DATA STRUCTURES}
+
+\subsection*{Linked List - Basic Operations}
+\begin{lstlisting}
+struct Node {
+  int data;
+  Node* next;
+  Node(int val) : data(val), next(nullptr) {}
+};
+
+// Insert at head - O(1)
+void insertHead(Node*& head, int val) {
+  Node* newNode = new Node(val);
+  newNode->next = head;
+  head = newNode;
+}
+
+// Insert at tail - O(n)
+void insertTail(Node*& head, int val) {
+  Node* newNode = new Node(val);
+  if (!head) { head = newNode; return; }
+  Node* curr = head;
+  while (curr->next) curr = curr->next;
+  curr->next = newNode;
+}
+
+// Delete node - O(n)
+void deleteNode(Node*& head, int val) {
+  if (!head) return;
+  if (head->data == val) {
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+    return;
+  }
+  Node* curr = head;
+  while (curr->next && curr->next->data != val)
+    curr = curr->next;
+  if (curr->next) {
+    Node* temp = curr->next;
+    curr->next = curr->next->next;
+    delete temp;
+  }
+}
+
+// Reverse list - O(n)
+Node* reverse(Node* head) {
+  Node *prev = nullptr, *curr = head, *next;
+  while (curr) {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+  return prev;
+}
+\end{lstlisting}
+
+\subsection*{Stack - LIFO}
+\begin{lstlisting}
+#include <stack>
+stack<int> st;
+st.push(10);          // Add to top
+st.pop();             // Remove top
+int top = st.top();   // View top
+bool empty = st.empty();
+int sz = st.size();
+
+// Monotonic Stack Pattern (Largest Rectangle)
+stack<int> st;
+for (int i = 0; i < n; i++) {
+  while (!st.empty() && arr[i] < arr[st.top()]) {
+    int h = arr[st.top()]; st.pop();
+    int w = st.empty() ? i : i - st.top() - 1;
+    maxArea = max(maxArea, h * w);
+  }
+  st.push(i);
+}
+\end{lstlisting}
+
+\subsection*{Queue - FIFO}
+\begin{lstlisting}
+#include <queue>
+queue<int> q;
+q.push(10);           // Add to back
+q.pop();              // Remove front
+int front = q.front();
+int back = q.back();
+bool empty = q.empty();
+\end{lstlisting}
+
+\subsection*{Deque - Double-ended Queue}
+\begin{lstlisting}
+#include <deque>
+deque<int> dq;
+dq.push_back(10);     // Add to back
+dq.push_front(5);     // Add to front
+dq.pop_back();        // Remove back
+dq.pop_front();       // Remove front
+int val = dq[i];      // Random access O(1)
+\end{lstlisting}
+
+\subsection*{Priority Queue - Heap}
+\begin{lstlisting}
+#include <queue>
+// Max heap (default)
+priority_queue<int> maxHeap;
+maxHeap.push(10);
+int maxVal = maxHeap.top();
+maxHeap.pop();
+
+// Min heap
+priority_queue<int, vector<int>, greater<int>> minHeap;
+
+// Custom comparator for pairs
+auto cmp = [](pair<int,int> a, pair<int,int> b) {
+  return a.second < b.second; // Max heap by second
+};
+priority_queue<pair<int,int>,
+  vector<pair<int,int>>, decltype(cmp)> pq(cmp);
+\end{lstlisting}
+
+\subsection*{Set - Ordered, Unique (BST)}
+\begin{lstlisting}
+#include <set>
+set<int> s;
+s.insert(10);         // O(log n)
+s.erase(10);          // O(log n)
+s.count(10);          // Returns 0 or 1
+auto it = s.find(10); // O(log n)
+auto lower = s.lower_bound(10); // >= 10
+auto upper = s.upper_bound(10); // > 10
+
+// Multiset allows duplicates
+multiset<int> ms;
+ms.erase(ms.find(10)); // Erase one instance
+ms.erase(10);         // Erase all instances
+\end{lstlisting}
+
+\subsection*{Map - Key-Value (BST)}
+\begin{lstlisting}
+#include <map>
+map<int, string> m;
+m[1] = "one";         // Insert/update O(log n)
+m.erase(1);           // O(log n)
+if (m.count(1)) { }   // Check existence
+if (m.find(1) != m.end()) { }
+
+// Iterate
+for (auto& [key, val] : m) { }
+
+// Multimap allows duplicate keys
+multimap<int, string> mm;
+\end{lstlisting}
+
+\subsection*{Hash Table - O(1) avg}
+\begin{lstlisting}
+#include <unordered_map>
+#include <unordered_set>
+unordered_map<int, string> umap;
+umap[1] = "one";      // O(1) avg
+umap.erase(1);
+
+unordered_set<int> uset;
+uset.insert(10);
+uset.count(10);
+\end{lstlisting}
+
+\section*{3. RECURSION PATTERNS}
+
+\subsection*{Basic Template}
+\begin{lstlisting}
+int recursiveFunc(params) {
+  // BASE CASE - stop condition
+  if (base_condition) return base_value;
+
+  // RECURSIVE CASE - break into subproblems
+  // Do work before recursion (pre-order)
+  result = recursiveFunc(smaller_params);
+  // Do work after recursion (post-order)
+
+  return result;
+}
+\end{lstlisting}
+
+\subsection*{Factorial - Linear Recursion}
+\begin{lstlisting}
+int factorial(int n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}
+// Call stack depth: O(n), Time: O(n)
+\end{lstlisting}
+
+\subsection*{Fibonacci - Tree Recursion}
+\begin{lstlisting}
+// Naive - O(2^n)
+int fib(int n) {
+  if (n <= 1) return n;
+  return fib(n-1) + fib(n-2);
+}
+
+// Memoized - O(n)
+int memo[1000];
+int fib(int n) {
+  if (n <= 1) return n;
+  if (memo[n] != -1) return memo[n];
+  return memo[n] = fib(n-1) + fib(n-2);
+}
+\end{lstlisting}
+
+\subsection*{Power - Binary Recursion}
+\begin{lstlisting}
+// O(log n)
+long long power(long long n, int p) {
+  if (p == 0) return 1;
+  long long half = power(n, p/2);
+  if (p % 2 == 0) return half * half;
+  return n * half * half;
+}
+\end{lstlisting}
+
+\subsection*{GCD - Euclidean Algorithm}
+\begin{lstlisting}
+int gcd(int a, int b) {
+  if (b == 0) return a;
+  return gcd(b, a % b);
+}
+// Time: O(log min(a,b))
+\end{lstlisting}
+
+\subsection*{Binary Search - Divide \& Conquer}
+\begin{lstlisting}
+int binarySearch(vector<int>& arr, int l, int r, int x) {
+  if (l > r) return -1;
+  int mid = l + (r - l) / 2;
+  if (arr[mid] == x) return mid;
+  if (arr[mid] > x)
+    return binarySearch(arr, l, mid-1, x);
+  return binarySearch(arr, mid+1, r, x);
+}
+\end{lstlisting}
+
+\subsection*{Permutations - Backtracking}
+\begin{lstlisting}
+void permute(vector<int>& arr, int start,
+             vector<vector<int>>& result) {
+  if (start == arr.size()) {
+    result.push_back(arr);
+    return;
+  }
+  for (int i = start; i < arr.size(); i++) {
+    swap(arr[start], arr[i]);
+    permute(arr, start + 1, result);
+    swap(arr[start], arr[i]); // Backtrack
+  }
+}
+\end{lstlisting}
+
+\subsection*{Subset Generation - Bitmask}
+\begin{lstlisting}
+// Generate all subsets
+void subsets(vector<int>& arr) {
+  int n = arr.size();
+  for (int mask = 0; mask < (1 << n); mask++) {
+    vector<int> subset;
+    for (int i = 0; i < n; i++) {
+      if (mask & (1 << i))
+        subset.push_back(arr[i]);
+    }
+    // Process subset
+  }
+}
+\end{lstlisting}
+
+\subsection*{N-Queens - Backtracking}
+\begin{lstlisting}
+bool isSafe(vector<string>& board, int row, int col, int n) {
+  for (int i = 0; i < row; i++)
+    if (board[i][col] == 'Q') return false;
+  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
+    if (board[i][j] == 'Q') return false;
+  for (int i = row, j = col; i >= 0 && j < n; i--, j++)
+    if (board[i][j] == 'Q') return false;
+  return true;
+}
+
+bool solveNQueens(vector<string>& board, int row, int n) {
+  if (row == n) return true;
+  for (int col = 0; col < n; col++) {
+    if (isSafe(board, row, col, n)) {
+      board[row][col] = 'Q';
+      if (solveNQueens(board, row + 1, n)) return true;
+      board[row][col] = '.'; // Backtrack
+    }
+  }
+  return false;
+}
+\end{lstlisting}
+
+\section*{4. COMMON PATTERNS}
+
+\subsection*{Two Pointers}
+\begin{lstlisting}
+// Find pair with sum = target in sorted array
+pair<int,int> twoSum(vector<int>& arr, int target) {
+  int l = 0, r = arr.size() - 1;
+  while (l < r) {
+    int sum = arr[l] + arr[r];
+    if (sum == target) return {l, r};
+    else if (sum < target) l++;
+    else r--;
+  }
+  return {-1, -1};
+}
+\end{lstlisting}
+
+\subsection*{Sliding Window}
+\begin{lstlisting}
+// Max sum of k consecutive elements
+int maxSum(vector<int>& arr, int k) {
+  int sum = 0, maxSum = 0;
+  for (int i = 0; i < k; i++) sum += arr[i];
+  maxSum = sum;
+  for (int i = k; i < arr.size(); i++) {
+    sum += arr[i] - arr[i-k];
+    maxSum = max(maxSum, sum);
+  }
+  return maxSum;
+}
+\end{lstlisting}
+
+\subsection*{Prefix Sum}
+\begin{lstlisting}
+// Range sum queries
+vector<int> prefixSum(n+1, 0);
+for (int i = 1; i <= n; i++)
+  prefixSum[i] = prefixSum[i-1] + arr[i-1];
+// Sum of arr[l..r] = prefixSum[r+1] - prefixSum[l]
+\end{lstlisting}
+
+\subsection*{Monotonic Stack}
+\begin{lstlisting}
+// Next Greater Element
+vector<int> nextGreater(vector<int>& arr) {
+  int n = arr.size();
+  vector<int> result(n, -1);
+  stack<int> st;
+  for (int i = 0; i < n; i++) {
+    while (!st.empty() && arr[i] > arr[st.top()]) {
+      result[st.top()] = arr[i];
+      st.pop();
+    }
+    st.push(i);
+  }
+  return result;
+}
+\end{lstlisting}
+
+\subsection*{Binary Search on Answer}
+\begin{lstlisting}
+// Find minimum value that satisfies condition
+int binarySearchAnswer(int low, int high) {
+  int result = high;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (isValid(mid)) {
+      result = mid;
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return result;
+}
+\end{lstlisting}
+
+\section*{5. COMPLEXITY ANALYSIS}
+
+\subsection*{Time Complexity}
+\textbf{O(1)}: Array access, hash table operations\\
+\textbf{O(log n)}: Binary search, balanced BST operations\\
+\textbf{O(n)}: Linear scan, counting sort\\
+\textbf{O(n log n)}: Merge sort, heap sort, sorting\\
+\textbf{O(n²)}: Nested loops, bubble/insertion/selection sort\\
+\textbf{O(2ⁿ)}: Naive recursion (Fibonacci), subsets\\
+\textbf{O(n!)}: Permutations
+
+\subsection*{Space Complexity}
+\textbf{Stack depth}: Recursion depth\\
+\textbf{Extra arrays}: Merge sort O(n), counting sort O(k)\\
+\textbf{In-place}: Quick sort O(log n), heap sort O(1)
+
+\subsection*{Recurrence Relations}
+$T(n) = T(n-1) + O(1) \Rightarrow O(n)$ (linear)\\
+$T(n) = 2T(n/2) + O(n) \Rightarrow O(n \log n)$ (merge sort)\\
+$T(n) = T(n/2) + O(1) \Rightarrow O(\log n)$ (binary search)\\
+$T(n) = 2T(n-1) + O(1) \Rightarrow O(2^n)$ (tree recursion)
+
+\section*{6. TIPS \& TRICKS}
+
+\subsection*{Input/Output}
+\begin{lstlisting}
+// Fast I/O
+ios_base::sync_with_stdio(false);
+cin.tie(NULL);
+
+// Reading until EOF
+int n;
+while (cin >> n) { }
+
+// Reading line with spaces
+string line;
+getline(cin, line);
+\end{lstlisting}
+
+\subsection*{Common Pitfalls}
+• \textbf{Integer overflow}: Use \texttt{long long} for large values\\
+• \textbf{Off-by-one}: Check array bounds carefully\\
+• \textbf{Division by zero}: Validate before dividing\\
+• \textbf{Uninitialized variables}: Always initialize\\
+• \textbf{Memory leaks}: Delete dynamically allocated memory
+
+\subsection*{STL Algorithms}
+\begin{lstlisting}
+#include <algorithm>
+sort(v.begin(), v.end());
+reverse(v.begin(), v.end());
+int mx = *max_element(v.begin(), v.end());
+int mn = *min_element(v.begin(), v.end());
+bool found = binary_search(v.begin(), v.end(), x);
+auto it = lower_bound(v.begin(), v.end(), x);
+auto it = upper_bound(v.begin(), v.end(), x);
+int cnt = count(v.begin(), v.end(), x);
+\end{lstlisting}
+
+\subsection*{Custom Sorting}
+\begin{lstlisting}
+// Sort by custom criteria
+sort(v.begin(), v.end(), [](int a, int b) {
+  return a > b; // Descending
+});
+
+// Sort pairs
+sort(pairs.begin(), pairs.end(),
+  [](pair<int,int> a, pair<int,int> b) {
+    if (a.first != b.first) return a.first > b.first;
+    return a.second < b.second;
+  });
+\end{lstlisting}
+
+\subsection*{Bit Manipulation}
+\begin{lstlisting}
+int setBit = n | (1 << i);      // Set i-th bit
+int clearBit = n & ~(1 << i);   // Clear i-th bit
+int toggleBit = n ^ (1 << i);   // Toggle i-th bit
+bool isSet = n & (1 << i);      // Check i-th bit
+int countBits = __builtin_popcount(n); // Count 1s
+\end{lstlisting}
+
+\subsection*{Quick Reference}
+\textbf{Stable sorts}: Merge, Insertion, Bubble, Counting\\
+\textbf{Unstable sorts}: Quick, Heap, Selection\\
+\textbf{In-place}: Quick, Heap, Bubble, Selection, Insertion\\
+\textbf{Not in-place}: Merge, Counting
+
+\subsection*{Problem-Solving Strategy}
+1. \textbf{Understand} the problem and constraints\\
+2. \textbf{Identify} patterns (two pointers, sliding window, etc.)\\
+3. \textbf{Choose} appropriate data structure\\
+4. \textbf{Analyze} time/space complexity\\
+5. \textbf{Handle} edge cases (empty input, single element)\\
+6. \textbf{Test} with sample inputs
+
+\end{multicols*}
+\end{document}

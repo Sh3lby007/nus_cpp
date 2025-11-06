@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC2001 Cheatsheet</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0.3in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 7pt;
+            line-height: 1.2;
+            column-count: 3;
+            column-gap: 12px;
+            padding: 0.3in;
+        }
+
+        h1 {
+            font-size: 18pt;
+            text-align: center;
+            margin-bottom: 8px;
+            column-span: all;
+            border-bottom: 2px solid #000;
+            padding-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 9pt;
+            margin-top: 6px;
+            margin-bottom: 3px;
+            background: #333;
+            color: white;
+            padding: 2px 4px;
+        }
+
+        h3 {
+            font-size: 8pt;
+            margin-top: 4px;
+            margin-bottom: 2px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        pre {
+            font-size: 6pt;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 3px;
+            margin: 2px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 6pt;
+        }
+
+        p {
+            margin: 2px 0;
+        }
+
+        ul, ol {
+            margin-left: 12px;
+            margin-bottom: 2px;
+        }
+
+        li {
+            margin-bottom: 1px;
+        }
+
+        .note {
+            background: #ffffcc;
+            padding: 2px;
+            margin: 2px 0;
+            border-left: 2px solid #ff9900;
+        }
+
+        .complexity {
+            font-weight: bold;
+            color: #c00;
+        }
+
+        .keyword {
+            color: #00f;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                column-count: 3;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>TIC2001 DATA STRUCTURES & ALGORITHMS<br>Quick Reference Cheatsheet</h1>
+
+<h2>1. SORTING ALGORITHMS</h2>
+
+<h3>Bubble Sort - O(n²)</h3>
+<pre><code>void bubbleSort(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  for (int i = 0; i &lt; n-1; i++) {
+    bool swapped = false;
+    for (int j = 0; j &lt; n-i-1; j++) {
+      if (arr[j] > arr[j+1]) {
+        swap(arr[j], arr[j+1]);
+        swapped = true;
+      }
+    }
+    if (!swapped) break;
+  }
+}</code></pre>
+<p><strong>Use:</strong> Small datasets, nearly sorted. <strong>Stable</strong>.</p>
+
+<h3>Selection Sort - O(n²)</h3>
+<pre><code>void selectionSort(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  for (int i = 0; i &lt; n-1; i++) {
+    int minIdx = i;
+    for (int j = i+1; j &lt; n; j++) {
+      if (arr[j] &lt; arr[minIdx])
+        minIdx = j;
+    }
+    swap(arr[i], arr[minIdx]);
+  }
+}</code></pre>
+<p><strong>Use:</strong> When writes are costly. <strong>Unstable</strong>.</p>
+
+<h3>Insertion Sort - O(n²)</h3>
+<pre><code>void insertionSort(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  for (int i = 1; i &lt; n; i++) {
+    int key = arr[i];
+    int j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j+1] = arr[j];
+      j--;
+    }
+    arr[j+1] = key;
+  }
+}</code></pre>
+<p><strong>Use:</strong> Small/nearly sorted, online. <strong>Stable</strong>.</p>
+
+<h3>Merge Sort - O(n log n)</h3>
+<pre><code>void merge(vector&lt;int&gt;& arr, int l, int m, int r) {
+  vector&lt;int&gt; left(arr.begin()+l, arr.begin()+m+1);
+  vector&lt;int&gt; right(arr.begin()+m+1, arr.begin()+r+1);
+  int i=0, j=0, k=l;
+  while (i &lt; left.size() && j &lt; right.size()) {
+    if (left[i] &lt;= right[j]) arr[k++] = left[i++];
+    else arr[k++] = right[j++];
+  }
+  while (i &lt; left.size()) arr[k++] = left[i++];
+  while (j &lt; right.size()) arr[k++] = right[j++];
+}
+
+void mergeSort(vector&lt;int&gt;& arr, int l, int r) {
+  if (l &lt; r) {
+    int m = l + (r - l) / 2;
+    mergeSort(arr, l, m);
+    mergeSort(arr, m+1, r);
+    merge(arr, l, m, r);
+  }
+}
+// Call: mergeSort(arr, 0, arr.size()-1);</code></pre>
+<p><strong>Use:</strong> Large datasets, guaranteed O(n log n). <strong>Stable</strong>. Space: O(n).</p>
+
+<h3>Quick Sort - O(n log n) avg, O(n²) worst</h3>
+<pre><code>int partition(vector&lt;int&gt;& arr, int low, int high) {
+  int pivot = arr[high];
+  int i = low - 1;
+  for (int j = low; j &lt; high; j++) {
+    if (arr[j] &lt;= pivot) {
+      i++;
+      swap(arr[i], arr[j]);
+    }
+  }
+  swap(arr[i+1], arr[high]);
+  return i + 1;
+}
+
+void quickSort(vector&lt;int&gt;& arr, int low, int high) {
+  if (low &lt; high) {
+    int pi = partition(arr, low, high);
+    quickSort(arr, low, pi-1);
+    quickSort(arr, pi+1, high);
+  }
+}
+// Call: quickSort(arr, 0, arr.size()-1);</code></pre>
+<p><strong>Use:</strong> General purpose. <strong>Unstable</strong>. Space: O(log n).</p>
+
+<h3>Heap Sort - O(n log n)</h3>
+<pre><code>void heapify(vector&lt;int&gt;& arr, int n, int i) {
+  int largest = i;
+  int l = 2*i + 1, r = 2*i + 2;
+  if (l &lt; n && arr[l] > arr[largest]) largest = l;
+  if (r &lt; n && arr[r] > arr[largest]) largest = r;
+  if (largest != i) {
+    swap(arr[i], arr[largest]);
+    heapify(arr, n, largest);
+  }
+}
+
+void heapSort(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  for (int i = n/2-1; i >= 0; i--)
+    heapify(arr, n, i);
+  for (int i = n-1; i > 0; i--) {
+    swap(arr[0], arr[i]);
+    heapify(arr, i, 0);
+  }
+}</code></pre>
+<p><strong>Use:</strong> O(n log n) guaranteed + O(1) space. <strong>Unstable</strong>.</p>
+
+<h3>Counting Sort - O(n+k)</h3>
+<pre><code>void countingSort(vector&lt;int&gt;& arr) {
+  int maxVal = *max_element(arr.begin(), arr.end());
+  vector&lt;int&gt; count(maxVal + 1, 0);
+  for (int x : arr) count[x]++;
+  int idx = 0;
+  for (int i = 0; i &lt;= maxVal; i++)
+    for (int j = 0; j &lt; count[i]; j++)
+      arr[idx++] = i;
+}</code></pre>
+<p><strong>Use:</strong> Small range of integers. <strong>Stable</strong>. Space: O(k).</p>
+
+<h3>Quick Select - O(n) avg</h3>
+<pre><code>// Find k-th smallest
+int quickSelect(vector&lt;int&gt;& arr, int l, int r, int k) {
+  if (l == r) return arr[l];
+  int pi = partition(arr, l, r);
+  if (pi == k-1) return arr[pi];
+  else if (k-1 &lt; pi)
+    return quickSelect(arr, l, pi-1, k);
+  else
+    return quickSelect(arr, pi+1, r, k);
+}</code></pre>
+
+<h2>2. DATA STRUCTURES</h2>
+
+<h3>Linked List - Basic Operations</h3>
+<pre><code>struct Node {
+  int data;
+  Node* next;
+  Node(int val) : data(val), next(nullptr) {}
+};
+
+// Insert at head - O(1)
+void insertHead(Node*& head, int val) {
+  Node* newNode = new Node(val);
+  newNode->next = head;
+  head = newNode;
+}
+
+// Insert at tail - O(n)
+void insertTail(Node*& head, int val) {
+  Node* newNode = new Node(val);
+  if (!head) { head = newNode; return; }
+  Node* curr = head;
+  while (curr->next) curr = curr->next;
+  curr->next = newNode;
+}
+
+// Delete node - O(n)
+void deleteNode(Node*& head, int val) {
+  if (!head) return;
+  if (head->data == val) {
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+    return;
+  }
+  Node* curr = head;
+  while (curr->next && curr->next->data != val)
+    curr = curr->next;
+  if (curr->next) {
+    Node* temp = curr->next;
+    curr->next = curr->next->next;
+    delete temp;
+  }
+}
+
+// Reverse list - O(n)
+Node* reverse(Node* head) {
+  Node *prev = nullptr, *curr = head, *next;
+  while (curr) {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+  return prev;
+}</code></pre>
+
+<h3>Stack - LIFO</h3>
+<pre><code>#include &lt;stack&gt;
+stack&lt;int&gt; st;
+st.push(10);         // Add to top
+st.pop();            // Remove top
+int top = st.top();  // View top
+bool empty = st.empty();
+
+// Monotonic Stack (Largest Rectangle)
+stack&lt;int&gt; st;
+for (int i = 0; i &lt; n; i++) {
+  while (!st.empty() && arr[i] &lt; arr[st.top()]) {
+    int h = arr[st.top()]; st.pop();
+    int w = st.empty() ? i : i - st.top() - 1;
+    maxArea = max(maxArea, h * w);
+  }
+  st.push(i);
+}</code></pre>
+
+<h3>Queue - FIFO</h3>
+<pre><code>#include &lt;queue&gt;
+queue&lt;int&gt; q;
+q.push(10);          // Add to back
+q.pop();             // Remove front
+int front = q.front();
+int back = q.back();</code></pre>
+
+<h3>Deque - Double-ended Queue</h3>
+<pre><code>#include &lt;deque&gt;
+deque&lt;int&gt; dq;
+dq.push_back(10);    // Add to back
+dq.push_front(5);    // Add to front
+dq.pop_back();       // Remove back
+dq.pop_front();      // Remove front
+int val = dq[i];     // Random access O(1)</code></pre>
+
+<h3>Priority Queue - Heap</h3>
+<pre><code>#include &lt;queue&gt;
+// Max heap (default)
+priority_queue&lt;int&gt; maxHeap;
+maxHeap.push(10);
+int maxVal = maxHeap.top();
+maxHeap.pop();
+
+// Min heap
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap;
+
+// Custom comparator
+auto cmp = [](pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
+  return a.second &lt; b.second; // Max heap by second
+};
+priority_queue&lt;pair&lt;int,int&gt;,
+  vector&lt;pair&lt;int,int&gt;&gt;, decltype(cmp)&gt; pq(cmp);</code></pre>
+
+<h3>Set - Ordered, Unique (BST)</h3>
+<pre><code>#include &lt;set&gt;
+set&lt;int&gt; s;
+s.insert(10);        // O(log n)
+s.erase(10);         // O(log n)
+s.count(10);         // Returns 0 or 1
+auto it = s.find(10); // O(log n)
+auto lower = s.lower_bound(10); // >= 10
+auto upper = s.upper_bound(10); // > 10
+
+// Multiset allows duplicates
+multiset&lt;int&gt; ms;
+ms.erase(ms.find(10)); // Erase one
+ms.erase(10);          // Erase all</code></pre>
+
+<h3>Map - Key-Value (BST)</h3>
+<pre><code>#include &lt;map&gt;
+map&lt;int, string&gt; m;
+m[1] = "one";        // Insert/update O(log n)
+m.erase(1);          // O(log n)
+if (m.count(1)) { }  // Check existence
+if (m.find(1) != m.end()) { }
+
+// Iterate
+for (auto& [key, val] : m) { }</code></pre>
+
+<h3>Hash Table - O(1) avg</h3>
+<pre><code>#include &lt;unordered_map&gt;
+#include &lt;unordered_set&gt;
+unordered_map&lt;int, string&gt; umap;
+umap[1] = "one";     // O(1) avg
+umap.erase(1);
+
+unordered_set&lt;int&gt; uset;
+uset.insert(10);
+uset.count(10);</code></pre>
+
+<h2>3. RECURSION PATTERNS</h2>
+
+<h3>Basic Template</h3>
+<pre><code>int recursiveFunc(params) {
+  // BASE CASE
+  if (base_condition) return base_value;
+
+  // RECURSIVE CASE
+  // Pre-order work
+  result = recursiveFunc(smaller_params);
+  // Post-order work
+
+  return result;
+}</code></pre>
+
+<h3>Factorial - Linear</h3>
+<pre><code>int factorial(int n) {
+  if (n &lt;= 1) return 1;
+  return n * factorial(n - 1);
+}
+// O(n) time, O(n) space</code></pre>
+
+<h3>Fibonacci - Tree Recursion</h3>
+<pre><code>// Naive - O(2^n)
+int fib(int n) {
+  if (n &lt;= 1) return n;
+  return fib(n-1) + fib(n-2);
+}
+
+// Memoized - O(n)
+int memo[1000];
+int fib(int n) {
+  if (n &lt;= 1) return n;
+  if (memo[n] != -1) return memo[n];
+  return memo[n] = fib(n-1) + fib(n-2);
+}</code></pre>
+
+<h3>Power - Binary Recursion O(log n)</h3>
+<pre><code>long long power(long long n, int p) {
+  if (p == 0) return 1;
+  long long half = power(n, p/2);
+  if (p % 2 == 0) return half * half;
+  return n * half * half;
+}</code></pre>
+
+<h3>GCD - Euclidean O(log min(a,b))</h3>
+<pre><code>int gcd(int a, int b) {
+  if (b == 0) return a;
+  return gcd(b, a % b);
+}</code></pre>
+
+<h3>Binary Search</h3>
+<pre><code>int binarySearch(vector&lt;int&gt;& arr, int l, int r, int x) {
+  if (l > r) return -1;
+  int mid = l + (r - l) / 2;
+  if (arr[mid] == x) return mid;
+  if (arr[mid] > x)
+    return binarySearch(arr, l, mid-1, x);
+  return binarySearch(arr, mid+1, r, x);
+}</code></pre>
+
+<h3>Permutations - Backtracking</h3>
+<pre><code>void permute(vector&lt;int&gt;& arr, int start,
+             vector&lt;vector&lt;int&gt;&gt;& result) {
+  if (start == arr.size()) {
+    result.push_back(arr);
+    return;
+  }
+  for (int i = start; i &lt; arr.size(); i++) {
+    swap(arr[start], arr[i]);
+    permute(arr, start + 1, result);
+    swap(arr[start], arr[i]); // Backtrack
+  }
+}</code></pre>
+
+<h3>Subsets - Bitmask</h3>
+<pre><code>void subsets(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
+    vector&lt;int&gt; subset;
+    for (int i = 0; i &lt; n; i++) {
+      if (mask & (1 &lt;&lt; i))
+        subset.push_back(arr[i]);
+    }
+    // Process subset
+  }
+}</code></pre>
+
+<h3>N-Queens - Backtracking</h3>
+<pre><code>bool isSafe(vector&lt;string&gt;& board, int row, int col, int n) {
+  for (int i = 0; i &lt; row; i++)
+    if (board[i][col] == 'Q') return false;
+  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
+    if (board[i][j] == 'Q') return false;
+  for (int i = row, j = col; i >= 0 && j &lt; n; i--, j++)
+    if (board[i][j] == 'Q') return false;
+  return true;
+}
+
+bool solveNQueens(vector&lt;string&gt;& board, int row, int n) {
+  if (row == n) return true;
+  for (int col = 0; col &lt; n; col++) {
+    if (isSafe(board, row, col, n)) {
+      board[row][col] = 'Q';
+      if (solveNQueens(board, row + 1, n)) return true;
+      board[row][col] = '.'; // Backtrack
+    }
+  }
+  return false;
+}</code></pre>
+
+<h2>4. COMMON PATTERNS</h2>
+
+<h3>Two Pointers</h3>
+<pre><code>// Find pair with sum in sorted array
+pair&lt;int,int&gt; twoSum(vector&lt;int&gt;& arr, int target) {
+  int l = 0, r = arr.size() - 1;
+  while (l &lt; r) {
+    int sum = arr[l] + arr[r];
+    if (sum == target) return {l, r};
+    else if (sum &lt; target) l++;
+    else r--;
+  }
+  return {-1, -1};
+}</code></pre>
+
+<h3>Sliding Window</h3>
+<pre><code>// Max sum of k consecutive
+int maxSum(vector&lt;int&gt;& arr, int k) {
+  int sum = 0, maxSum = 0;
+  for (int i = 0; i &lt; k; i++) sum += arr[i];
+  maxSum = sum;
+  for (int i = k; i &lt; arr.size(); i++) {
+    sum += arr[i] - arr[i-k];
+    maxSum = max(maxSum, sum);
+  }
+  return maxSum;
+}</code></pre>
+
+<h3>Prefix Sum</h3>
+<pre><code>vector&lt;int&gt; prefixSum(n+1, 0);
+for (int i = 1; i &lt;= n; i++)
+  prefixSum[i] = prefixSum[i-1] + arr[i-1];
+// Sum of arr[l..r] = prefixSum[r+1] - prefixSum[l]</code></pre>
+
+<h3>Monotonic Stack - Next Greater</h3>
+<pre><code>vector&lt;int&gt; nextGreater(vector&lt;int&gt;& arr) {
+  int n = arr.size();
+  vector&lt;int&gt; result(n, -1);
+  stack&lt;int&gt; st;
+  for (int i = 0; i &lt; n; i++) {
+    while (!st.empty() && arr[i] > arr[st.top()]) {
+      result[st.top()] = arr[i];
+      st.pop();
+    }
+    st.push(i);
+  }
+  return result;
+}</code></pre>
+
+<h3>Binary Search on Answer</h3>
+<pre><code>int binarySearchAnswer(int low, int high) {
+  int result = high;
+  while (low &lt;= high) {
+    int mid = low + (high - low) / 2;
+    if (isValid(mid)) {
+      result = mid;
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return result;
+}</code></pre>
+
+<h2>5. COMPLEXITY ANALYSIS</h2>
+
+<h3>Time Complexity</h3>
+<ul>
+<li><strong>O(1)</strong>: Array access, hash operations</li>
+<li><strong>O(log n)</strong>: Binary search, BST ops</li>
+<li><strong>O(n)</strong>: Linear scan, counting sort</li>
+<li><strong>O(n log n)</strong>: Merge/heap/quick sort</li>
+<li><strong>O(n²)</strong>: Nested loops, simple sorts</li>
+<li><strong>O(2ⁿ)</strong>: Naive recursion, subsets</li>
+<li><strong>O(n!)</strong>: Permutations</li>
+</ul>
+
+<h3>Recurrence Relations</h3>
+<ul>
+<li>T(n) = T(n-1) + O(1) → O(n)</li>
+<li>T(n) = 2T(n/2) + O(n) → O(n log n)</li>
+<li>T(n) = T(n/2) + O(1) → O(log n)</li>
+<li>T(n) = 2T(n-1) + O(1) → O(2ⁿ)</li>
+</ul>
+
+<h2>6. TIPS & TRICKS</h2>
+
+<h3>Fast I/O</h3>
+<pre><code>ios_base::sync_with_stdio(false);
+cin.tie(NULL);</code></pre>
+
+<h3>STL Algorithms</h3>
+<pre><code>#include &lt;algorithm&gt;
+sort(v.begin(), v.end());
+reverse(v.begin(), v.end());
+int mx = *max_element(v.begin(), v.end());
+int mn = *min_element(v.begin(), v.end());
+bool found = binary_search(v.begin(), v.end(), x);
+auto it = lower_bound(v.begin(), v.end(), x);
+auto it = upper_bound(v.begin(), v.end(), x);
+int cnt = count(v.begin(), v.end(), x);</code></pre>
+
+<h3>Custom Sorting</h3>
+<pre><code>// Descending
+sort(v.begin(), v.end(), [](int a, int b) {
+  return a > b;
+});
+
+// Sort pairs
+sort(pairs.begin(), pairs.end(),
+  [](pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
+    if (a.first != b.first) return a.first > b.first;
+    return a.second &lt; b.second;
+  });</code></pre>
+
+<h3>Bit Manipulation</h3>
+<pre><code>int setBit = n | (1 &lt;&lt; i);      // Set i-th bit
+int clearBit = n & ~(1 &lt;&lt; i);   // Clear i-th bit
+int toggleBit = n ^ (1 &lt;&lt; i);   // Toggle i-th bit
+bool isSet = n & (1 &lt;&lt; i);      // Check i-th bit
+int countBits = __builtin_popcount(n);</code></pre>
+
+<h3>Quick Reference</h3>
+<p><strong>Stable sorts:</strong> Merge, Insertion, Bubble, Counting</p>
+<p><strong>Unstable sorts:</strong> Quick, Heap, Selection</p>
+<p><strong>In-place:</strong> Quick, Heap, Bubble, Selection, Insertion</p>
+<p><strong>Not in-place:</strong> Merge, Counting</p>
+
+<h3>Common Pitfalls</h3>
+<ul>
+<li><strong>Integer overflow:</strong> Use long long</li>
+<li><strong>Off-by-one:</strong> Check bounds</li>
+<li><strong>Division by zero:</strong> Validate first</li>
+<li><strong>Uninitialized vars:</strong> Always initialize</li>
+<li><strong>Memory leaks:</strong> Delete allocated memory</li>
+</ul>
+
+<h3>Problem-Solving Strategy</h3>
+<ol>
+<li>Understand problem & constraints</li>
+<li>Identify patterns</li>
+<li>Choose data structure</li>
+<li>Analyze complexity</li>
+<li>Handle edge cases</li>
+<li>Test with samples</li>
+</ol>
+
+</body>
+</html>
